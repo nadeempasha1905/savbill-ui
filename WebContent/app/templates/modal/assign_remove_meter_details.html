@@ -1,0 +1,180 @@
+<form name="assignRemoveMeterForm" id="assign_remove_meter_detail_modal" novalidate>
+	<div class="modal-header">
+	    <h3 class="modal-title">Assign/Remove Meter</h3>
+	</div>
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-xs-3">
+				<label>RR Number</label>
+							<input type="text" ng-model="data.rr_no" id="assign-remove-meter-rr-number" class="text-input" 
+						   ng-enter="load_meter_detail_modal($event)" ng-disabled="assign-remove-meter_rr_no"/>
+			</div>
+			<div class="col-xs-3">
+				<label>Customer ID</label>
+							<input type="text" ng-model="data.customer_id" id="assign-remove-meter-customer-id" class="text-input" 
+						   ng-enter="load_meter_detail_modal($event)" ng-disabled="assign-remove-meter_customer-id"/>
+			</div>
+		</div>	
+		<br/>
+				   
+		<div class="row">
+			<div class="col-xs-6" ng-show="action === 'edit'">
+				<table class="table table-striped table-sm table-bordered table-condensed">
+					<thead>
+						<tr>
+							<th class="label-warning"  colspan="2" style="text-align: center;"><h4>Removed Meter Details</h4></th>
+						</tr>
+					</thead>
+					<tr>
+						<td>Meter Sl. No.</td>
+						<td><input type="text" ng-model="data.mtr_sl_no" id="assign-remove-meter-meter-slno" class="text-input" /></td>
+					</tr>
+					<tr>
+						<td>Meter Make</td>
+						<td>
+							<select id="meter-detail-meter-make" class="text-input text-select" ng-model="data.mtr_make"  >
+								<option value="">-- Select --</option>
+								<option ng-repeat="option in MeterMakeList" value="{{option.key}}" >{{option.value}}</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Meter Type</td>
+						<td>
+							<select id="meter-detail-meter-type" class="text-input text-select" ng-model="data.mtr_type"  >
+								<option value="">-- Select --</option>
+								<option ng-repeat="option in MeterTypeList" value="{{option.key}}" >{{option.value}}</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Meter Amps</td>
+						<td><input type="text" ng-model="data.mtr_amp" id="assign-remove-meter-rr-number" class="text-input" /></td>
+					</tr>
+					<tr>
+						<td>Meter Status</td>
+						<td>
+							<select id="meter-detail-meter-type" class="text-input text-select" ng-model="data.mtr_sts"  >
+								<option value="">-- Select --</option>
+								<option ng-repeat="option in MeterStatusList" value="{{option.key}}" >{{option.value}}</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Assigned Date</td>
+						<td><input type="text" ng-model="data.mra_assigned_dt" web-datepicker class="text-input" /></td>
+					</tr>
+					<tr>
+						<td>Removed Date</td>
+						<td><input type="text" ng-model="data.mra_release_dt" web-datepicker class="text-input" /></td>
+					</tr>
+					<tr>
+						<td colspan="2"  style="text-align: center;    background-color: darkgray;"><h4>Final Reading</h4></td>
+					</tr>
+					<tr>
+						<td>Present Reading (BKWH)</td>
+						<td><input type="text" ng-model="data.mtr_meter_bkwh" id="assign-remove-meter-bkwh" class="text-input" /></td>
+					</tr>
+					<tr ng-show="data.mtr_type === '3' || data.mtr_type === '6'">
+						<td>CKWH</td>
+						<td><input type="text" ng-model="data.mtr_meter_ckwh" id="assign-remove-meter-ckwh" class="text-input" /></td>
+					</tr>
+					<tr ng-show="data.mtr_type === '3' || data.mtr_type === '6'">
+						<td>BMD</td>
+						<td><input type="text" ng-model="data.mtr_meter_bmd" id="assign-remove-meter-bmd" class="text-input" /></td>
+					</tr>
+					<tr ng-show="data.mtr_type === '3' || data.mtr_type === '6'">
+						<td>BPF</td>
+						<td><input type="text" ng-model="data.mtr_meter_bpf" id="assign-remove-meter-bpf" class="text-input" /></td>
+					</tr>
+					<tr>
+						<td colspan="2" style="text-align: left;padding-left: 10px;">Remarks
+						<br/>
+							<input type="text" ng-model="data.remarks" id="assign-remove-meter-remarks" class="text-input" style="min-width:100%;"/>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<div class="col-xs-6">
+				<table class="table table-striped table-sm table-bordered table-condensed">
+					<thead>
+						<tr>
+							<th class="label-success" colspan="2" style="text-align: center;"><h4>Fixed Meter Details</h4></th>
+						</tr>
+					</thead>
+					<tr>
+						<td>Meter Sl. No.</td>
+						<td><input type="text" ng-model="fixedmeter.mtr_sl_no" id="assign-remove-meter-rr-number" class="text-input" /></td>
+					</tr>
+					<tr>
+						<td>Meter Make</td>
+						<td>
+							<select id="meter-detail-meter-make" class="text-input text-select" ng-model="fixedmeter.mtr_make"  >
+								<option value="">-- Select --</option>
+								<option ng-repeat="option in MeterMakeList" value="{{option.key}}" >{{option.value}}</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Meter Type</td>
+						<td>
+							<select id="meter-detail-meter-type" class="text-input text-select" ng-model="fixedmeter.mtr_type"  >
+								<option value="">-- Select --</option>
+								<option ng-repeat="option in MeterTypeList" value="{{option.key}}" >{{option.value}}</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Meter Amps</td>
+						<td><input type="text" ng-model="fixedmeter.mtr_amp" id="assign-remove-meter-amp" class="text-input" /></td>
+					</tr>
+					<tr>
+						<td>Meter Status</td>
+						<td>
+							<select id="meter-detail-meter-type" class="text-input text-select" ng-model="fixedmeter.mtr_sts"  >
+								<option value="">-- Select --</option>
+								<option ng-repeat="option in MeterStatusList" value="{{option.key}}" >{{option.value}}</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Assigned Date</td>
+						<td><input type="text" ng-model="fixedmeter.mra_assigned_dt" web-datepicker class="text-input" /></td>
+					</tr>
+					<tr>
+						<td colspan="2"  style="text-align: center;    background-color: darkgray;"><h4>Initial Reading</h4></td>
+					</tr>
+					<tr>
+						<td>Present Reading (BKWH)</td>
+						<td><input type="text" ng-model="fixedmeter.mtr_sl_no" id="assign-remove-meter-bkwh" class="text-input" /></td>
+					</tr>
+					<tr ng-show="fixedmeter.mtr_type === '3' || fixedmeter.mtr_type === '6'">
+						<td>CKWH</td>
+						<td><input type="text" ng-model="fixedmeter.mtr_sl_no" id="assign-remove-meter-ckwh" class="text-input" /></td>
+					</tr>
+					<tr ng-show="fixedmeter.mtr_type === '3' || fixedmeter.mtr_type === '6'">
+						<td>BMD</td>
+						<td><input type="text" ng-model="fixedmeter.mtr_sl_no" id="assign-remove-meter-bmd" class="text-input" /></td>
+					</tr>
+					<tr ng-show="fixedmeter.mtr_type === '3' || fixedmeter.mtr_type === '6'">
+						<td>BPF</td>
+						<td><input type="text" ng-model="fixedmeter.mtr_sl_no" id="assign-remove-meter-bpf" class="text-input" /></td>
+					</tr>
+					<tr>
+						<td colspan="2" style="text-align: left;padding-left: 10px;">Remarks
+						<br/>
+							<input type="text" ng-model="fixedmeter.remarks" id="assign-remove-meter-remarks" class="text-input" style="min-width:100%;"/>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer margin-0">
+		<button class="btn btn-primary" type="button" ng-click="load_withdrawal_new_entry()">Show</button>
+		<button class="btn btn-primary" type="button" ng-click="clear()">Clear</button>
+		<button class="btn btn-primary" type="button" ng-click="ok()">Save</button>
+	    <button class="btn btn-warning" type="button" ng-click="cancel()">Close</button>
+	</div>
+</form>

@@ -1,0 +1,16 @@
+
+.parallax>div.link {
+	cursor:pointer;
+}
+.parallax>div {
+	position:relative;
+	background-position:top;
+	background-repeat:no-repeat;
+	background-size:cover;
+	-webkit-background-size:cover;
+}
+.parallax p {
+	position:relative;
+	display:block;
+}
+

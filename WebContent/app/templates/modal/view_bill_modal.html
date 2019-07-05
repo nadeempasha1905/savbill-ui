@@ -1,0 +1,23 @@
+<div id="view_bill_modal">
+	<div class="modal-header">
+	    <h3 class="modal-title">Bill Details
+	    	<button class="glyphicon glyphicon-print pull-right" ng-click="print_bill($event,data)" title="Print Bill"></button>
+	    </h3>
+	</div>
+	<div class="modal-body">
+		<div class="frames" ng-repeat="frame in frames">
+	    	<div class="frames-header">{{frame.header}}</div>
+	    	<div class="frames-content width-100">
+	    		<div ng-repeat="fieldSet in frame.config" class="width-33 inline-block" ng-class="{'relative-pos': fieldSet.options }">
+   					<label>{{fieldSet.displayName}} : </label>
+   					<div class="inline-block">{{data[fieldSet.field]}}</div>
+   				</div>
+	    	</div>
+	    </div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
+		<button class="btn btn-primary pull-left" type="button" ng-click="next()">Next</button>
+	    <button class="btn btn-warning pull-right" type="button" ng-click="$dismiss()">Close</button>
+	</div>
+</div>

@@ -1,0 +1,80 @@
+<div ng-class="{'container': page === 'container', 'container-fluid': !page }">
+	<div class="cb-wrapper">
+		<div class="col-md-3 col-xs-12 reset-padding">
+			<div class="menu-toggle-button pull-left" ng-if="!page">
+				<a>
+					<i></i><i></i><i></i>
+				    <span>Menu</span>
+				</a>
+			</div>
+			<a class="cb-logo pull-left" href="#/home" title="{{user.company}}">
+				<img alt="{{user.company}}" ng-src="./app/img/partners/{{user.company}}_logo.jpg" title="{{user.company}}" width="100%" height="100%" />
+			</a>
+			<a class="cb-company pull-left" href="#/home" title="{{user.company}}">{{user.company}}</a>
+		</div>
+		<web-search class="col-md-5 col-xs-12 margin-top-5 relative-pos">
+			<input autocomplete="off" ng-model="searchWord" name="keyword" type="text" class="col-md-10 col-xs-10 searchformInput" placeholder="Find your wish!" value="">
+			<button class="searchformButton col-md-2 col-xs-2">
+	        	<i class="fa fa-search"></i>
+	        </button>
+	        <div class="searchAutoSuggstn">
+				<div class="topSearch-container autoSuggestor-container-shadow">
+	                <div class="topsearch-suggestionBox">
+	                   	<ul>
+		                   	<div class="searchContainer">
+								<span class="topsearches" ng-if="defaultSearch">Favorite Searches</span>
+								<span class="topsearches" ng-if="!defaultSearch">Related Searches</span>
+ 							</div>
+		                   	<li ng-repeat="search in searches">
+                       			<div>
+									<a class="subDefault" ng-href="{{search.link}}">
+										<div class="width-100 link">{{search.label}}</div>
+										<div class="width-100 parent">In {{search.parent}}</div>
+									</a>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</web-search>
+		<div class="pull-right col-md-3 margin-top-5 reset-padding">
+			<ul class="pull-right rhs-links reset-margin">
+				<li class=" moreOptionsHeader">
+	           		<div class="menuLinks"><i class="fa fa-th"></i><span class="moreText">more</span></div>
+	           	</li>
+				<li class="accountHeaderClass" id="accountHeader">
+	       			<div class="menuLinks hoverLink">
+	       				<i class="fa fa-user"></i>
+	       				<i class="fa fa-angle-down"></i>
+	       				<span>account</span>
+	       			</div>
+		      		<div class="dropdownWrapper hard-hidden">
+		      			<div class="dropdownAccount">
+			 				<div class="accountInfoLoggedIn">
+			 					<div class="default-user-image" ng-if="!user.imagePath">
+									<i class="fa fa-user"></i>
+								</div>
+			 					<img alt="user Image" class="imgUser" ng-if="user.imagePath" ng-src="user.imagePath"/>
+			 					<p class="userLoginName">{{user.name}}</p>
+			 					<p class="userLoginEmail">{{user.user_id}}@cloudbill.com</p>
+			 					<span class="accountBtn"><a href="#" class="color-white">View My Account</a></span>
+			 				</div>
+							<div class="accountList">
+								<ul class="pull-left">
+									<li><a ng-click="$root.logout()" class="sign-out">Logout</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+	        	</li>
+	       		<li class="faqsHeader">
+	       			<a href="#" class="menuLinks"><i class="fa fa-question"></i><span class="helptext">FAQs</span></a>
+	       		</li>
+	        	<li class="helpHeader">
+	       			<a href="#" class="menuLinks"><i class="fa fa-tty"></i><span class="helptext">Help</span></a>
+	       		</li>
+			</ul>
+		</div>
+	</div>
+</div>

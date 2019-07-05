@@ -1,0 +1,203 @@
+<form name="meterReadingEntryForm" id="meterReadingEntryModal" novalidate ng-class="{'deleted': data.save_type === 'delete'}">
+	<div class="modal-header">
+	    <h3 class="modal-title">
+	    	Meter Reading Entry
+	    	<button ng-if="!isNewEntry && data.bill_sts !== 'Y'" ng-hide="data.save_type === 'delete'" class="glyphicon glyphicon-trash pull-right" ng-click="delete_reading_entry()" tooltip-placement="bottom-right" uib-tooltip="Delete Current Entry"></button>
+			<button ng-if="!isNewEntry && data.bill_sts !== 'Y'" ng-show="data.save_type === 'delete'" class="fa-stack fa-lg pull-right" ng-click="delete_reading_entry()" tooltip-placement="bottom-right" uib-tooltip="Undo Delete">
+				<i class="fa fa-trash fa-stack-1x"></i>
+  				<i class="fa fa-ban fa-stack-1x"></i>
+			</button>
+	    	<button ng-if="!isNewEntry" ng-hide="data.bill_sts === 'Y'" class="fa fa-refresh pull-right" ng-click="reload_reading_entry()" tooltip-placement="bottom-right" uib-tooltip="Get the current db record"></button>
+	    	<button ng-if="isNewEntry" class="btn btn-warning pull-right" ng-click="clear_reading_entry()">Clear</button>
+	    </h3>
+	</div>
+	<!-- <div class="updated-data-section" ng-class="{ 'width-0': !dataToSave.length, 'width-20': dataToSave.length }">
+		<div>Updated Entries : </div>
+		<div></div>
+	</div> -->
+	<div class="modal-body" ng-class="{'deleted': data.save_type === 'delete'}">
+	    <div id="meter-reading-info" class="frames">
+	    	<div class="frames-header">Meter Reading Informations</div>
+	    	<table class="width-100">
+	    		<tbody>
+	    			<tr>
+	    				<td># : </td>
+	    				<td ng-if="!isNewEntry">{{data.row_num}}</td>
+	    				<td ng-if="isNewEntry">New Entry</td>
+	    				<td>RR No : </td>
+	    				<td ng-if="!isNewEntry">{{data.rr_no}}</td>
+	    				<td ng-if="isNewEntry">
+	    					<input type="text" class="text-input" ng-model="data.rr_no" ng-enter="getRRNoDetails()" ng-disabled="disable_meter_reading_rrno_input" />
+	    				</td>
+	    				<td>MR Code : </td>
+	    				<td>{{data.mr_cd}}</td>
+	    				<td>Rdg Day : </td>
+	    				<td>{{data.rdg_day}}</td>
+	    			</tr>
+	    			<tr>
+	    				<td>Rdg Date : </td>
+	    				<td ng-if="!isNewEntry">{{data.pres_rdg_dt}}</td>
+	    				<td ng-if="isNewEntry">
+	    					<input type="text" class="text-input" ng-model="data.pres_rdg_dt" web-datepicker web-required tooltip-placement="top-right" />
+	    				</td>
+	    				<td>Bill Status : </td>
+	    				<td>
+		    				<span ng-if="data.bill_sts === 'Y'">Yes</span>
+		    				<span ng-if="data.bill_sts === 'N'">No</span>
+		    			</td>
+	    				<td>TOD Meter Flag : </td>
+	    				<td>
+		    				<span ng-if="data.tod_meter_flag === 'Y'">Yes</span>
+		    				<span ng-if="data.tod_meter_flag === 'N'">No</span>
+		    			</td>
+	    				<td>Meter Type : </td>
+	    				<td>{{data.install_type_description}}</td>
+	    			</tr>
+	    		</tbody>
+	    	</table>
+		</div>
+		<div id="meter-reading-entries" class="frames">
+			<div class="frames-header">Meter Reading Entries</div>
+	    	<table class="width-100">
+	    		<tbody>
+	    			<tr>
+	    				<td class="width-20"></td>
+	    				<td class="width-40">Previous</td>
+	    				<td class="width-40">Present</td>
+	    			</tr>
+	    			<tr>
+	    				<td>Reading Status : </td>
+	    				<td>
+		    				<span ng-if="data.prev_rdg_sts === ''">Normal</span>
+		    				<span ng-if="data.prev_rdg_sts === '1'">Door Lock</span>
+		    				<span ng-if="data.prev_rdg_sts === '2'">MNR/Faulty</span>
+		    			</td>
+	    				<td>
+	    					<select class="text-input text-select" ng-model="data.pres_rdg_sts" ng-disabled="data.bill_sts === 'Y'">
+	    						<option value="">Normal</option> 
+	    						<option value="1">Door Lock</option>
+	    						<option value="2">MNR/Faulty</option>
+	    					</select>
+	    				</td>
+	    			</tr>
+	    			<tr>
+	    				<td>
+		    				<span ng-if="data.install_type !== '3'">BKWH : </span>
+		    				<span ng-if="data.install_type === '3'">Reading : </span>
+		    			</td>
+	    				<td>{{data.prev_bkwh}}</td>
+	    				<td><input class="text-input" ng-model="data.pres_bkwh" type="text" ng-disabled="data.bill_sts === 'Y' || data.tod_meter_flag === 'Y' || data.pres_rdg_sts !== ''" web-required web-float tooltip-placement="left" /></td>
+	    			</tr>
+	    			<tr ng-if="data.install_type !== '3'">
+	    				<td>CKWH : </td>
+	    				<td>{{data.prev_ckwh}}</td>
+	    				<td><input class="text-input" ng-model="data.pres_ckwh" type="text" ng-disabled="data.bill_sts === 'Y' || data.tod_meter_flag === 'Y' || data.pres_rdg_sts !== ''" web-required web-float tooltip-placement="left" /></td>
+	    			</tr>
+	    			<tr ng-if="data.install_type !== '3'">
+	    				<td>BMD : </td>
+	    				<td>{{data.prev_bmd}}</td>
+	    				<td><input class="text-input" ng-model="data.pres_bmd" type="text" ng-disabled="data.bill_sts === 'Y' || data.tod_meter_flag === 'Y' || data.pres_rdg_sts !== ''" web-required web-float tooltip-placement="left" /></td>
+	    			</tr>
+	    			<tr ng-if="data.install_type !== '3'">
+	    				<td>BPF : </td>
+	    				<td>{{data.prev_bpf}}</td>
+	    				<td><input class="text-input" ng-model="data.pres_bpf" type="text" ng-disabled="data.bill_sts === 'Y' || data.tod_meter_flag === 'Y' || data.pres_rdg_sts !== ''" web-required web-float tooltip-placement="left" /></td>
+	    			</tr>
+	    			<tr>
+	    				<td>M/C Flag : </td>
+	    				<td>
+	    					<span ng-if="data.prev_mc_flg === 'Y'">Yes</span>
+	    					<span ng-if="data.prev_mc_flg === 'N' || data.prev_mc_flg === ''">No</span>
+	    				</td>
+	    				<td>
+	    					<select class="text-input text-select" ng-model="data.pres_mc_flg" ng-disabled="data.bill_sts === 'Y' || data.tod_meter_flag === 'Y' || data.pres_rdg_sts !== ''">
+	    						<option value="">No</option>
+	    						<option value="Y">Yes</option>
+	    					</select>
+	    				</td>
+	    			</tr>
+	    			<tr>
+	    				<td>IR/FR : </td>
+	    				<td>
+		    				<span ng-if="data.prev_ir_fr === ''"></span>
+		    				<span ng-if="data.prev_ir_fr === 'IR'">IR</span>
+		    				<span ng-if="data.prev_ir_fr === 'FR'">FR</span>
+		    			</td>
+	    				<td>
+	    					<select class="text-input text-select" ng-model="data.pres_ir_fr" ng-disabled="data.bill_sts === 'Y' || data.tod_meter_flag === 'Y' || data.pres_mc_flg === '' || data.pres_rdg_sts !== ''">
+	    						<option value="">-- Select --</option>
+	    						<option value="IR">IR</option>
+	    						<option value="FR">FR</option>
+	    					</select>
+	    				</td>
+	    			</tr>
+	    		</tbody>
+	    	</table>
+		</div>
+		<div id="meter-reading-tod" class="frames reset-margin" ng-if="data.tod_meter_flag === 'Y'">
+			<div class="frames-header">Time Of the Day(TOD) Entries</div>
+	    	<table class="width-100">
+	    		<tbody>
+	    			<tr>
+	    				<td></td>
+	    				<td colspan="2">T0-Slot 1 [22.00-06.00 hrs]</td>
+	    				<td colspan="2">T1-Slot 2 [06.00-18.00 hrs]</td>
+	    				<td colspan="2">T2-Slot 3 [18.00-22.00 hrs]</td>
+	    			</tr>
+	    			<tr>
+	    				<td class="width-10"></td>
+	    				<td class="width-15">Previous</td>
+	    				<td class="width-15">Present</td>
+	    				<td class="width-15">Previous</td>
+	    				<td class="width-15">Present</td>
+	    				<td class="width-15">Previous</td>
+	    				<td class="width-15">Present</td>
+	    			</tr>
+	    			<tr>
+	    				<td>BKWH : </td>
+	    				<td>{{data.slot1_tod_prev_bkwh}}</td>
+	    				<td><input type="text" class="text-input" ng-model="data.slot1_tod_pres_bkwh" ng-disabled="true" /></td>
+	    				<td>{{data.slot2_tod_prev_bkwh}}</td>
+	    				<td><input type="text" class="text-input" ng-model="data.slot2_tod_pres_bkwh" ng-disabled="true" /></td>
+	    				<td>{{data.slot3_tod_prev_bkwh}}</td>
+	    				<td><input type="text" class="text-input" ng-model="data.slot3_tod_pres_bkwh" ng-disabled="true" /></td>
+	    			</tr>
+	    			<tr>
+	    				<td>CKWH : </td>
+	    				<td>{{data.slot1_tod_prev_ckwh}}</td>
+	    				<td><input type="text" class="text-input" ng-model="data.slot1_tod_pres_ckwh" ng-disabled="data.bill_sts === 'Y'" web-required web-float tooltip-placement="left" /></td>
+	    				<td>{{data.slot2_tod_prev_ckwh}}</td>
+	    				<td><input type="text" class="text-input" ng-model="data.slot2_tod_pres_ckwh" ng-disabled="data.bill_sts === 'Y'" web-required web-float tooltip-placement="left" /></td>
+	    				<td>{{data.slot3_tod_prev_ckwh}}</td>
+	    				<td><input type="text" class="text-input" ng-model="data.slot3_tod_pres_ckwh" ng-disabled="data.bill_sts === 'Y'" web-required web-float tooltip-placement="left" /></td>
+	    			</tr>
+	    			<tr>
+	    				<td>BMD : </td>
+	    				<td>{{data.slot1_tod_prev_bmd}}</td>
+	    				<td><input type="text" class="text-input" ng-model="data.slot1_tod_pres_bmd" ng-disabled="data.bill_sts === 'Y'" web-required web-float tooltip-placement="left" /></td>
+	    				<td>{{data.slot2_tod_prev_bmd}}</td>
+	    				<td><input type="text" class="text-input" ng-model="data.slot2_tod_pres_bmd" ng-disabled="data.bill_sts === 'Y'" web-required web-float tooltip-placement="left" /></td>
+	    				<td>{{data.slot3_tod_prev_bmd}}</td>
+	    				<td><input type="text" class="text-input" ng-model="data.slot3_tod_pres_bmd" ng-disabled="data.bill_sts === 'Y'" web-required web-float tooltip-placement="left" /></td>
+	    			</tr>
+	    			<tr>
+	    				<td>BPF : </td>
+	    				<td>{{data.slot1_tod_prev_bpf}}</td>
+	    				<td><input type="text" class="text-input" ng-model="data.slot1_tod_pres_bpf" ng-disabled="data.bill_sts === 'Y'" web-required web-float tooltip-placement="left" /></td>
+	    				<td>{{data.slot2_tod_prev_bpf}}</td>
+	    				<td><input type="text" class="text-input" ng-model="data.slot2_tod_pres_bpf" ng-disabled="data.bill_sts === 'Y'" web-required web-float tooltip-placement="left" /></td>
+	    				<td>{{data.slot3_tod_prev_bpf}}</td>
+	    				<td><input type="text" class="text-input" ng-model="data.slot3_tod_pres_bpf" ng-disabled="data.bill_sts === 'Y'" web-required web-float tooltip-placement="left" /></td>
+	    			</tr>
+	    		</tbody>
+	    	</table>
+		</div>
+	</div>
+	<div class="modal-footer reset-margin">
+		<button ng-if="!isNewEntry" class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
+		<button ng-if="!isNewEntry" class="btn btn-primary pull-left" type="button" ng-click="next()">Next</button>
+	    <button ng-if="!isNewEntry" class="btn btn-primary pull-right" type="button" ng-click="ok()" tooltip-placement="top-right" uib-tooltip="Save all updated records">Save All</button>
+	    <button ng-if="isNewEntry" class="btn btn-primary pull-right" type="button" ng-click="ok()" title="Save">Save</button>
+	    <button class="btn btn-warning pull-right margin-right-5" type="button" ng-click="cancel()">Cancel</button>
+	</div>
+</form>

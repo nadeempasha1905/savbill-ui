@@ -1,0 +1,52 @@
+<div id="infrastructure" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper infrastructure-transformer-details">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<div class="pull-left margin-top-5">
+					O&M Code :
+					<select id="transformer-details-om-code" class="text-input text-select" ng-model="om_code"  ng-enter="load_transformer_details($event)" >
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in om_list" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+					</select>
+				</div>
+				<div class="pull-left margin-top-5">
+					 Station Code:
+					<select id="transformer-details-station-code" class="text-input text-select" ng-model="StationCode" ng-change="get_feeder_info()" ng-enter="load_transformer_details($event)" >
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in StationCodeList" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+					</select>
+				</div>
+										
+				<div class="pull-left margin-top-5">
+					Feeder Code: 
+					<select id="transformer-details-feeder-code" class="text-input text-select" ng-model="FeederCode" ng-change="get_transformer_info()" ng-enter="load_transformer_details($event)">
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in FeederCodeList" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+					</select>
+				</div>
+				
+				<div class="pull-left margin-top-5">
+					DTC Code : 
+					<select id="transformer-details-transformer-code" class="text-input text-select" ng-model="DTCCode" ng-enter="load_transformer_details($event)">
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in TransformerCodeList" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+					</select>
+				</div>
+				<div class="pull-right margin-top-5">
+					<button ng-click="load_transformer_details($event)" class="">Show</button>
+					<button ng-click="add_transformer_details()" class="transformer-details-save">Add New</button>
+					<button ng-click="transformer_details_clear()" class="transformer-details-clear">Clear</button>
+				</div>
+			</div>
+			<div class="width-100 clear-both padding-top-15">
+				<div id="transformer_details">
+					<div class="gridStyle" ui-grid="transformerDetailsGridOptions" style="width: 100%;height: 440px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>	

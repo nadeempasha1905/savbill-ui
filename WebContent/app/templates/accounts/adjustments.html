@@ -1,0 +1,40 @@
+<div id="accounts" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper accounts-adjustments">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<div class="pull-left">
+					From RR Number : <input type="text" placeholder="Type & Hit Enter" ng-model="fromRRNumber" id="adjustments-from-rr-number"  tooltip-placement="right" uib-tooltip-html="adjustmentsFromRRNoTooltipHtml" class="text-input adjustments-from-rr-number" ng-enter="load_adjustments_details($event)" ng-disabled="adjustments_from_rr_no">
+				</div>
+				<div class="pull-left">
+					To RR Number : <input type="text" placeholder="Type & Hit Enter" ng-model="toRRNumber" id="adjustments-to-rr-number"  tooltip-placement="right" uib-tooltip-html="adjustmentsToRRNoTooltipHtml" class="text-input adjustments-to-rr-number" ng-enter="load_adjustments_details($event)" ng-disabled="adjustments_to_rr_no">
+				</div>
+				<div class="pull-left">
+					Receipt Number : <input type="text" placeholder="Type & Hit Enter" ng-model="receiptNumber" id="adjustments-receipt-number" class="text-input adjustments-receipt-number"/>
+				</div>
+				<div class="pull-left">
+					Receipt Date : <input type="text" placeholder="Select" ng-model="receiptDate" web-datepicker id="adjustments-receipt-date" class="text-input" ng-enter="load_adjustments_details($event)" />
+				</div>
+				<div class="pull-left">
+					Counter Number : 
+					<select type="text" ng-model="counterNumber" id="adjustments-counter-number" class="text-input" ng-enter="load_adjustments_details($event)">
+						<option value="">-- Select --</option>
+						<option ng-repeat="type in cash_counters_list" value="{{type.key}}">{{type.value}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="action width-100 text-center margin-top-15">
+				<button ng-click="load_adjustments_details($event)" class="load-adjustments-details">Show</button>
+				<button ng-click="adjustments_clear()" class="adjustments-clear">Clear</button>
+			</div>
+			<div class="width-100 clear-both padding-top-15">
+				<div id="adjustments_details">
+					<div class="gridStyle" ui-grid="adjustmentsDetailsGridOptions" style="width: 100%;height: 440px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

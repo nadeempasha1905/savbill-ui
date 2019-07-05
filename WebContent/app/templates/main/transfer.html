@@ -1,0 +1,65 @@
+<div id="main" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper main-transfer">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<table class="width-50">
+					<tbody>
+						<tr>
+							<td>Transfer Details :</td>
+							<td>From</td>
+							<td>To</td>
+						</tr>
+						<tr>
+							<td>MR Code :</td>
+							<td>
+								<select class="text-input text-select mandatory" ng-model="from_mr_code" ng-change="load_from_reading_days()">
+									<option value="">-- Select --</option>
+									<option ng-repeat="option in MRCodeList" value="{{option.key}}">{{option.value}}</option>
+								</select>
+							</td>
+							<td>
+								<select class="text-input text-select mandatory" ng-model="to_mr_code" ng-change="load_to_reading_days()">
+									<option value="">-- Select --</option>
+									<option ng-repeat="option in MRCodeList" value="{{option.key}}">{{option.value}}</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>Reading Day :</td>
+							<td>
+								<select class="text-input text-select mandatory" ng-model="from_reading_day" >
+									<option value="">-- Select --</option>
+									<option ng-repeat="option in fromMeterReadingDay" value="{{option.key}}">{{option.value}}</option>
+								</select>
+							</td>
+							<td>
+								<select class="text-input text-select mandatory" ng-model="to_reading_day" >
+									<option value="">-- Select --</option>
+									<option ng-repeat="option in toMeterReadingDay" value="{{option.key}}">{{option.value}}</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>From Folio No :</td>
+							<td>
+								<input type="text" class="text-input mandatory" ng-model="from_folio_no" />
+							</td>
+							<td>
+								<input type="text" class="text-input mandatory" ng-model="to_folio_no" />
+							</td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>				
+				<div class="width-100 text-center">
+					<button ng-click="transfer_save()">Transfer</button>
+					<button ng-click="transfer_clear()">Clear</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>	

@@ -1,0 +1,67 @@
+<div id="main" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper main-reconciliation">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<table class="width-50">
+					<tbody>
+						<tr>
+							<td>
+								<div ng-click="selected = 'date_wise'">
+									<span class="fa" ng-class="{'fa-circle': selected === 'date_wise', 'fa-circle-o': selected !== 'date_wise' }"></span>
+								</div>
+							</td>
+							<td><span ng-click="selected = 'date_wise'">Receipt Date Wise</span></td>
+							<td>
+								<div ng-click="selected = 'rr_no_wise'">
+									<span class="fa" ng-class="{'fa-circle': selected === 'rr_no_wise', 'fa-circle-o': selected !== 'rr_no_wise' }"></span>
+								</div>
+							</td>
+							<td><span ng-click="selected = 'rr_no_wise'">RR No Wise</span></td>
+							<td>
+								<div ng-click="selected = 'receipt_wise'">
+									<span class="fa" ng-class="{'fa-circle': selected === 'receipt_wise', 'fa-circle-o': selected !== 'receipt_wise' }"></span>
+								</div>
+							</td>
+							<td><span ng-click="selected = 'receipt_wise'">Receipt No Wise</span></td>
+						</tr>
+					</tbody>
+				</table>
+				<table class="width-50">
+					<tbody>
+						<tr>
+							<td>Receipt Date :</td>
+							<td>
+								<input type="text" id="receipt_date" ng-model="receiptDate" web-datepicker max-date="+0D" class="text-input" />
+							</td>							
+							<td>RR No :</td>
+							<td>
+								<input ng-disabled="selected !== 'rr_no_wise'" ng-model="rrNo" type="text" id="rr_number" class="text-input" />
+							</td>
+						</tr>
+						<tr>
+							<td>Receipt No :</td>
+							<td>
+								<input ng-disabled="selected !== 'receipt_wise'" type="text" ng-model="receiptNo" id="receipt_number" class="text-input" />
+							</td>
+							<td>Counter :</td>
+							<td>
+								<select ng-disabled="selected !== 'receipt_wise'" class="text-input text-select" ng-model="counter">
+									<option value="">-- Select --</option>
+									<option ng-repeat="option in counters" value="{{option.key}}">{{option.value}}</option>
+							  	</select>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="width-100 text-center">
+					<button ng-click="reconciliation_clear()">Clear</button>
+					<button ng-click="reconciliation_process()">OK</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

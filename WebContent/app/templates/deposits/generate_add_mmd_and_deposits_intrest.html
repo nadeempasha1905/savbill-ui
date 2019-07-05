@@ -1,0 +1,84 @@
+<div id="deposits" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper main-generate-add-mmd-and-deposits-intrest">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<table class="width-50">
+					<tbody>
+						<tr>
+							<td>
+								<div ng-click="selected = 'additional_mmd'">
+									<span class="fa" ng-class="{'fa-circle': selected === 'additional_mmd', 'fa-circle-o': selected !== 'additional_mmd' }"></span>
+								</div>
+							</td>
+							<td><span ng-click="selected = 'additional_mmd'">Calculate Additional MMD</span></td>
+							<td>
+								<div ng-click="selected = 'interest'">
+									<span class="fa" ng-class="{'fa-circle': selected === 'interest', 'fa-circle-o': selected !== 'interest' }"></span>
+								</div>
+							</td>
+							<td><span ng-click="selected = 'interest'">Calculate Interest</span></td>
+						</tr>
+						<tr class="rr_no_selection">
+							<td>
+								<div ng-click="rr_selected = 'all'">
+									<span class="fa" ng-class="{'fa-circle': rr_selected === 'all', 'fa-circle-o': rr_selected !== 'all' }"></span>
+								</div>
+							</td>
+							<td><span ng-click="rr_selected = 'all'">All RR No</span></td>
+							<td>
+								<div ng-click="rr_selected = 'single'">
+									<span class="fa" ng-class="{'fa-circle': rr_selected === 'single', 'fa-circle-o': rr_selected !== 'single' }"></span>
+								</div>
+							</td>
+							<td>
+								<span ng-click="rr_selected = 'single'">Single RR No</span>
+								<input ng-model="rrNo" ng-disabled="rr_selected === 'all'" type="text" id="rr-number" class="text-input" />
+							</td>
+						</tr>
+						<tr>
+							<td>MMD :</td>
+							<td>
+								<input ng-model="mmd" ng-disabled="selected === 'interest'"  type="text" id="mmd" class="text-input" />
+							</td>
+							<td>Prompt Payee MMD :</td>
+							<td>
+								<input ng-model="promptMmd" ng-disabled="selected === 'interest'" type="text" id="promptMmd" class="text-input" />
+							</td>
+						</tr>
+						<tr>
+							<td>Rate of Interest :</td>
+							<td>
+								<input ng-model="interest" ng-disabled="selected === 'additional_mmd'" type="text" id="interest" class="text-input" />
+							</td>
+							<td>TDS Exempt Amount :</td>
+							<td>
+								<input ng-model="tdsAmount" ng-disabled="selected === 'additional_mmd'" type="text" id="tds_amount" class="text-input" />
+							</td>
+							<td>TDS Rate of Interest :</td>
+							<td>
+								<input ng-model="tdsInterest" ng-disabled="selected === 'additional_mmd'" type="text" id="tds_interest" class="text-input" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<table class="width-50 text-center">
+					<tbody>
+						<tr>
+							<td ng-model="year" ng-if="depositIntNmmdParameters[0].year">For The Year : <b>{{depositIntNmmdParameters[0].year}}</b></td>
+							<td ng-model="from_dt" ng-if="depositIntNmmdParameters[0].from_dt">From Date : <b>{{depositIntNmmdParameters[0].from_dt}}</b></td>
+							<td ng-model="to_dt" ng-if="depositIntNmmdParameters[0].to_dt">To Date : <b>{{depositIntNmmdParameters[0].to_dt}}</b></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="width-100 text-center">
+					<button ng-click="generate_mmd_interest()">Generate</button>
+					<button ng-click="clear_form()">Clear</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

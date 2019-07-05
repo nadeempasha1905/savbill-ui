@@ -1,0 +1,42 @@
+<div id="energy_audit" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper energy-audit-feeder-energy-audit-details">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<div class="pull-left margin-top-5">
+					 Station :
+					<select id="feeder-energy-audit-details-station-code" class="text-input text-select" ng-model="StationCode" ng-change="get_feeder_info()" ng-enter="load_feeder_energy_audit_details($event)" >
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in StationCodeList" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+					</select>
+				</div>
+										
+				<div class="pull-left margin-top-5">
+					Feeder : 
+					<select id="feeder-energy-audit-details-feeder-code" class="text-input text-select" ng-model="FeederCode" ng-change="get_transformer_info()" ng-enter="load_feeder_energy_audit_details($event)">
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in FeederCodeList" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+					</select>
+				</div>
+				<div class="pull-left margin-top-5">
+					Month Year : <input type="text" ng-model="monthYear" web-datepicker class="text-input" ng-enter="load_feeder_energy_audit_details($event)" />
+				</div>
+				
+				<div class="pull-right margin-top-5">
+					<button ng-click="load_feeder_energy_audit_details($event)" class="">Show</button>
+					<button ng-click="feeder_energy_audit_details_save()" class="feeder_energy_audit_details-save">Save</button>
+					<button ng-click="feeder_energy_audit_details_print()" class="feeder_energy_audit_details-print">Print</button>
+					<button ng-click="feeder_energy_audit_details_clear()" class="feeder_energy_audit_details-clear">Clear</button>
+				</div>
+			</div>
+			<div class="width-100 clear-both padding-top-15">
+				<form name="feederEnergyAuditForm" novalidate>
+					<div class="gridStyle" id="feederEnergyAuditDetailsGrid" ui-grid="feederEnergyAuditDetailsGridOptions" style="width: 100%;height: 480px;"></div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>	

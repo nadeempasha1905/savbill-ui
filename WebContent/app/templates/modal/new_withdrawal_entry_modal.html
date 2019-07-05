@@ -1,0 +1,32 @@
+<form name="newWithdrawalEntryForm" id="new_withdrawal_entry_modal" novalidate>
+	<div class="modal-header">
+	    <h3 class="modal-title">New Withdrawal Entry</h3>
+	</div>
+	<div class="modal-body">
+		<table class="width-100 margin-bottom-15">
+			<tr>
+				<td>RR Number : </td>
+				<td><input type="text" ng-model="data.rr_no" id="withdrawal-new-entry-rr-number" class="text-input" ng-enter="load_withdrawal_new_entry()" ng-disabled="withdrawal_disable_rr_no"/></td>
+				<td>Withdrawal Date : </td>
+				<td>{{data.new_withdrawl_details[0].withdrawl_dt}}</td>
+				<td>Withdrawal Amount : </td>
+				<td>{{data.new_withdrawl_details[0].wdrl_amt}}</td>
+			</tr>
+			<tr>
+				<td>Bill Number : </td>
+				<td>{{data.new_withdrawl_details[0].bill_no}}</td>
+				<td>Bill Date : </td>
+				<td>{{data.new_withdrawl_details[0].bill_dt}}</td>
+				<td>Billed Amount : </td>
+				<td>{{data.new_withdrawl_details[0].total_billed_amt}}</td>
+			</tr>
+		</table>
+		<div class="gridStyle" ui-grid="newWithdrawalEntryGridOptions" ui-grid-auto-resize style="width: 100%;height: 300px;font-size: 13px;"></div>
+	</div>
+	<div class="modal-footer margin-0">
+		<button class="btn btn-primary" type="button" ng-click="load_withdrawal_new_entry()">Show</button>
+		<button class="btn btn-primary" type="button" ng-click="clear()">Clear</button>
+		<button class="btn btn-primary" type="button" ng-click="ok()">Save</button>
+	    <button class="btn btn-warning" type="button" ng-click="$dismiss()">Close</button>
+	</div>
+</form>

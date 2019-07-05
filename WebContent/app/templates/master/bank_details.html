@@ -1,0 +1,41 @@
+<div id="master" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper bank-details">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			
+			<div class="action width-100">
+				
+				<div class="pull-left margin-top-5">
+					MICR Code: <input type="text" id="bank-details-micr-code" class="text-input" placeholder="Type & Hit Enter" tooltip-placement="bottom-right" uib-tooltip-html="bankDetailsMICRCodeTooltipHtml"  ng-enter="load_bank_details($event)"/>
+				</div>
+				<div class="pull-left margin-top-5">
+					City Code: <input type="text" id="bank-details-city-code" class="text-input" placeholder="Type & Hit Enter" tooltip-placement="bottom-right" uib-tooltip-html="bankDetailsCityCodeTooltipHtml"  ng-enter="load_bank_details($event)"/>
+				</div>
+				<div class="pull-left margin-top-5">
+					Bank Code: <input type="text" id="bank-details-bank-code" class="text-input" placeholder="Type & Hit Enter" tooltip-placement="bottom-right" uib-tooltip-html="bankDetailsBankCodeTooltipHtml"  ng-enter="load_bank_details($event)"/>
+				</div>
+				<div class="pull-left margin-top-5">
+					Branch Code: <input type="text" id="bank-details-branch-code" class="text-input" placeholder="Type & Hit Enter" tooltip-placement="bottom-right" uib-tooltip-html="bankDetailsBranchCodeTooltipHtml"  ng-enter="load_bank_details($event)"/>
+				</div>
+								
+				<div class="pull-left">
+					<button ng-click="load_bank_details($event)" class="">Show</button>
+				</div>
+				<div class="pull-right">
+					<button ng-click="add_bank_details()">Add New</button>
+					<button ng-click="bank_details_clear()" class="bank-details-clear">Clear</button>
+				</div>
+				
+				
+			</div>
+			<div class="width-100 clear-both padding-top-15">
+				<div id="bank_form_details">
+					<div class="gridStyle" ui-grid="bankDetailsGridOptions" style="width: 100%;height: 440px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

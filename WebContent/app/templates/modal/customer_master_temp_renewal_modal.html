@@ -1,0 +1,47 @@
+<form name="tempRenewalForm" id="customer_master_temp_renewal_modal" novalidate>
+	<div class="modal-header">
+	    <h3 class="modal-title">Temporary Renewal (LT7)</h3>
+	</div>
+	<div class="modal-body">
+		<table class="width-100">
+			<tr>
+				<td>RR Number : </td>
+				<td>{{data.cmRrNo}}</td>
+				<td>Tariff : </td>
+				<td>{{data.cmTariffcatogory}}</td>
+			</tr>
+			<tr>
+				<td>Service Date : </td>
+				<td>{{data.cmServiceDt}}</td>
+				<td>Previous Renewal Date : </td>
+				<td>{{data.renewalDate}}</td>
+			</tr>
+			<tr>
+				<td>Previous Duration : </td>
+				<td>{{data.cmTmpDurn}} Days</td>
+				<td>MR Code : </td>
+				<td>{{data.cmMtrRdrCd}}</td>
+			</tr>
+			<tr>
+				<td>New Duration : </td>
+				<td><input type="text" class="text-input" ng-model="new_duration" web-required web-numeric 
+					tooltip-placement="bottom-right" 
+					uib-tooltip="This field is required"
+					tooltip-class="error"
+					tooltip-trigger="show" /> Days
+				</td>
+				<td>Remarks : </td>
+				<td><input type="text" class="text-input" ng-model="renewal_remarks" web-required web-alphanumeric
+					tooltip-placement="bottom-right" 
+					uib-tooltip="This field is required"
+					tooltip-class="error"
+					tooltip-trigger="show" />
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" ng-click="ok()">Renew</button>
+	    <button class="btn btn-warning" type="button" ng-click="$dismiss()">Close</button>
+	</div>
+</form>

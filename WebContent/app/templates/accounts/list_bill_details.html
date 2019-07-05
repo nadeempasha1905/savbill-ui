@@ -1,0 +1,39 @@
+<div id="accounts" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper accounts-list-bill-details">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<div class="pull-left margin-top-5">
+					RR Number : <input type="text" placeholder="Type & Hit Enter" id="list-bill-rr-number" class="text-input" ng-enter="load_list_bill_details($event)">
+				</div>
+				<div class="pull-left margin-top-5">
+					No.Of Months : <input type="text" id="list-bill-no-of-months" class="text-input" ng-enter="load_list_bill_details($event)">
+				</div>
+				<div class="pull-left margin-top-5">
+					From Date : <input type="text" ng-model="listBillsFromDate" web-datepicker class="text-input" ng-enter="load_list_bill_details($event)" />
+				</div>
+				<div class="pull-left margin-top-5">
+					To Date : <input type="text" ng-model="listBillsToDate" web-datepicker class="text-input" ng-enter="load_list_bill_details($event)" />
+				</div>
+				<div class="pull-right">
+					<button ng-click="list_bill_details_clear()" class="list-bill-details-clear">Clear</button>
+				</div>
+				<div class="pull-right">
+					<button ng-click="load_list_bill_details($event)" class="">Show</button>
+				</div>
+			</div>
+			<div class="action width-100" style="margin-top:10px">
+				<div class="width-40 pull-left" ng-if="list_bills[0].name">Customer Name : <b>{{list_bills[0].name}}</b></div>
+				<div class="width-40 pull-left" ng-if="list_bills[0].adr1">Address : <b>{{list_bills[0].adr1}}</b></div>
+			</div> 
+			<div class="width-100 clear-both padding-top-15">
+				<div id="list_bill_details">
+					<div class="gridStyle" ui-grid="listBillDetailsGridOptions" style="width: 100%;height: 440px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

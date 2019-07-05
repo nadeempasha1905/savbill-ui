@@ -1,0 +1,914 @@
+<div id="customer" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper customer-master">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<web-tabs>
+			<ul class="reset-margin width-100 tabs customer-master-tabs">
+				<li class="active">Customer Details</li>
+				<li>Location Details</li>
+				<li>Ledger Details</li>
+				<li>Power Details</li>
+				<li>DTC Details</li>
+				<li class="customer-master-deposits-tab">Deposits</li>
+				<li class="customer-master-documents-tab">Documents</li>
+				<li class="customer-master-ct-pt-ratio-tab">CT-PT Ratio</li>
+				<li class="customer-master-intimations-tab">Intimations</li>
+			</ul>
+			<div class="action width-100">
+				<div class="pull-left margin-top-5">
+					RR Number : <input type="text" id="get-customer-master-details"
+						class="text-input" ng-model="customer_master.rrno_detail.cmRrNo"
+						ng-enter="getCustomerRRNoDetails($event)"
+						placeholder="Type & Press Enter"
+						ng-disabled="customer_master_disable_rr_no" />
+				</div>
+				<div class="pull-left margin-top-5 margin-left-5"
+					ng-if="customer_master_temp_renew_date_visible">
+					Next Renewal Date : <b>{{customer_master.rrno_detail.renewalDate}}</b>
+				</div>
+				<div class="pull-right">
+					<button ng-click="renew()"
+						ng-show="customer_master_temp_renew_action_visible"
+						class="green_action">Renew</button>
+					<button ng-click="customer_master_add_deposits()"
+						ng-show="customer_master_add_deposits_visible && (customer_master_save_visible || customer_master_update_visible)">Add
+						Deposits</button>
+					<button ng-click="customer_master_add_documents()"
+						ng-show="customer_master_add_documents_visible && (customer_master_save_visible || customer_master_update_visible)">Add
+						Documents</button>
+					<button ng-click="customer_master_add_ct_pt_ratio()"
+						ng-show="customer_master_add_ct_pt_ratio_visible && (customer_master_save_visible || customer_master_update_visible)">Add
+						CT PT Ratio</button>
+					<button ng-click="customer_master_add_intimations()"
+						ng-show="customer_master_add_intimations_visible && (customer_master_save_visible || customer_master_update_visible)">Add
+						Intimations</button>
+					<button ng-click="customer_master_update()"
+						ng-show="customer_master_update_visible">Update</button>
+					<button ng-click="customer_master_edit()"
+						ng-show="customer_master_edit_visible">Edit</button>
+					<button ng-click="customer_master_save()"
+						ng-show="customer_master_save_visible">Save</button>
+					<button ng-click="customer_master_clear()">Clear</button>
+				</div>
+			</div>
+			<form name="customerMaster" novaidate>
+				<div class="width-100 tabs-content">
+					<div class="tab-active">
+						<table class="width-100">
+							<tbody>
+								<tr>
+									<td>Customer Name</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_customerDescription.cdConsmrName"
+										ng-disabled="customer_master_disable_fields || customer_master_update_visible"
+										web-required web-alpha web-limit="1::100"
+										tooltip-placement="right" /></td>
+									<td>Side RR No</td>
+									<td><input ng-hide="customer_master_save_visible"
+										type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmNxtRrNo"
+										ng-disabled="customer_master_disable_fields" /> 
+										<input ng-show="customer_master_save_visible" type="text"
+										id="get-side-rrno-details" class="text-input"
+										ng-model="customer_master.rrno_detail.cmNxtRrNo"
+										ng-enter="getSideRRNoDetails($event)"
+										placeholder="Type & Press Enter"
+										ng-disabled="customer_master_disable_fields" /></td>
+								</tr>
+								<tr>
+									<td>Corresponding Address</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_customerDescription.cdCorresAddr1"
+										ng-disabled="customer_master_disable_fields || customer_master_update_visible"
+										web-limit="0::100" web-required tooltip-placement="right" /></td>
+									<td>Customer Status</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmConsmrSts"
+										ng-disabled="customer_master_disable_fields || customer_master_update_visible"
+										web-required tooltip-placement="left">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.CustomerStatus"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>Address 1/Village</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_customerDescription.cdCorresAddr2"
+										web-limit="0::100"
+										ng-disabled="customer_master_disable_fields || customer_master_update_visible" /></td>
+									<td>Customer Type</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmApplntTyp"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="left">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.ConsumerType"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>Address 2/City</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_customerDescription.cdCorresAddr3"
+										web-limit="0::100"
+										ng-disabled="customer_master_disable_fields || customer_master_update_visible" /></td>
+									<td>Service Date</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmServiceDt"
+										web-datepicker max-date="+0D"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="left" /></td>
+								</tr>
+								<tr>
+									<td>Address 3/Camp</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_customerDescription.cdCorresAddr4"
+										web-limit="0::100"
+										ng-disabled="customer_master_disable_fields" /></td>
+									<td>Tariff Category</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmTrfCatg"
+										ng-disabled="customer_master_disable_fields || customer_master_update_visible"
+										web-required tooltip-placement="left">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.TariffCode"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>PIN Code</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmPinCd"
+										ng-disabled="customer_master_disable_fields" web-numeric
+										web-limit="6::6" /></td>
+									<td>Tariff Effected From Date</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmTrfEffectFrmDt"
+										web-datepicker max-date="+0D"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="left" /></td>
+								</tr>
+								<tr>
+									<td>Mobile No</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmTelephoneNo"
+										ng-disabled="customer_master_disable_fields" web-numeric
+										web-limit="10::10" tooltip-placement="right" /></td>
+									<td>Installation Type</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmInstallTyp"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="left">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.InstallationType"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>Email ID</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmEmailId"
+										ng-disabled="customer_master_disable_fields"
+										web-limit="0::100" web-email tooltip-placement="right" /></td>
+									<td>O&M Unit</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmOmUnitCd"
+										ng-change="get_customer_master_meter_reader_info()"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="left">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.OM_CODE_LIST"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>Tax Exemption Flag</td>
+									<td class="relative-pos"><select type="text"
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmTaxExemptFlg"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="right">
+											<option value="">-- Select --</option>
+											<option ng-repeat="option in $root.customer_master_picklists.YesNo"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+									<td>Meter Reader Code</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmMtrRdrCd"
+										ng-change="get_customer_master_meter_reading_day_info()"
+										ng-disabled="customer_master_disable_fields || !$root.customer_master_picklists.MeterReaderCode"
+										web-required tooltip-placement="left">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.MeterReaderCode"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>Free Lighting Flag</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmFlConsumer"
+										ng-disabled="true">
+											<option value="">-- Select --</option>
+											<option ng-repeat="option in $root.customer_master_picklists.YesNo"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+									<td>Meter Reading Day</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmMtrRdgDay"
+										ng-disabled="customer_master_disable_fields || !$root.customer_master_picklists.MeterReadingDay"
+										web-required tooltip-placement="left">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.MeterReadingDay"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>Office Flag</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmKebOfficeFlg"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="right">
+											<option value="">-- Select --</option>
+											<option ng-repeat="option in $root.customer_master_picklists.YesNo"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+									<td>TOD Meter Flag</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmTodMeterFlag"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="left">
+											<option value="">-- Select --</option>
+											<option ng-repeat="option in $root.customer_master_picklists.YesNo"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>Temp Duration (In Days)</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmTmpDurn"
+										ng-disabled="customer_master_disable_fields || customer_master.rrno_detail.cmTrfCatg !== '171' || customer_master_update_visible"
+										web-numeric web-required tooltip-placement="right" /></td>
+									<td>Customer Id</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_IVRS_ID" ng-disabled="true" /></td>
+								</tr>
+								<tr>
+									<td>Last Bill No</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_customerBills.cbBillNo"
+										ng-disabled="true" /></td>
+									<td>Last Bill Date</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_customerBills.cbBillDt"
+										ng-disabled="true" /></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					
+										<div id="place_details" class="tab-right">
+						<table class="width-100">
+							<tbody>
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td>Premises Address</td>
+									<td><input class="text-input"
+										ng-model="customer_master.rrno_customerDescription.cdPremiseAddr1"
+										ng-disabled="customer_master_disable_fields || customer_master_update_visible"
+										web-limit="0::100" web-required tooltip-placement="right" /></td>
+									<td>Region</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmRegionCd"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="left">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.Regions"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>Address 1/Village</td>
+									<td><input class="text-input"
+										ng-model="customer_master.rrno_customerDescription.cdPremiseAddr2"
+										web-limit="0::100"
+										ng-disabled="customer_master_disable_fields || customer_master_update_visible" /></td>
+									<td>District</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmDistrictCd"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="left">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.District"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>Address 2/City</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_customerDescription.cdPremiseAddr3"
+										web-limit="0::100"
+										ng-disabled="customer_master_disable_fields || customer_master_update_visible" /></td>
+									<td>Taluk</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmTalukCd"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="left">
+											<option value="">-- Select --</option>
+											<option ng-repeat="option in $root.customer_master_picklists.Taluk"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>Place Name/Gram Panchayth</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_customerDescription.cdPlaceName"
+										web-limit="0::100"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="right" /></td>
+									<td>State Constutiency</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmStateConstituencyCd"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="left">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.StateConstncy"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>Jurisdiction</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmPremisJuris"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="right">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.Juridiction"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+									<td>Central Constutiency</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmCentralConstituencyCd"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="left">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.CentralConstncy"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>No Of Houses</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmBulkNoOfHouses"
+										ng-disabled="customer_master_disable_fields" web-numeric
+										tooltip-placement="right" web-limit="0::3"/></td>
+									<td>Connection Type</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmConnTyp"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="left">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.ConnectionType"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>KST No</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmKstNo"
+										ng-disabled="customer_master_disable_fields" web-limit="0::50"
+										web-alphanumeric tooltip-placement="right" /></td>
+									<td>CST No</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmCstNo"
+										ng-disabled="customer_master_disable_fields" web-limit="0::50"
+										web-alphanumeric tooltip-placement="left" /></td>
+								</tr>
+								<tr>
+									<td>TIN No</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmTinNo"
+										ng-disabled="customer_master_disable_fields" web-limit="0::50"
+										web-alphanumeric tooltip-placement="right" /></td>
+									<td>Remarks</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmRmks"
+										ng-disabled="customer_master_disable_fields"
+										web-limit="0::100" web-alphanumeric tooltip-placement="left" /></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					
+					<div id="ledger_details" class="tab-right">
+						<table class="width-100">
+							<tbody>
+								<tr>
+									<td>Ledger No</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmLdgrNo"
+										ng-disabled="customer_master_disable_fields" web-limit="0::6"
+										web-alphanumeric tooltip-placement="right" /></td>
+									<td>Old RR No</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmOldRrNo"
+										ng-disabled="customer_master_disable_fields" /></td>
+								</tr>
+								<tr>
+									<td>Ledger Folio No</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmFolioNo"
+										ng-disabled="customer_master_disable_fields" web-limit="0::10"
+										web-alphanumeric tooltip-placement="right" /></td>
+									<td>Ledger Open Date</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmLdgrOpenedDt"
+										web-datepicker max-date="+0D"
+										ng-disabled="customer_master_disable_fields" /></td>
+								</tr>
+								<tr>
+									<td>Loan Amount</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmLoanAmount"
+										ng-disabled="customer_master_disable_fields" web-numeric
+										tooltip-placement="right" /></td>
+									<td>Spot Folio No</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_customerSpotFolio.spFolioNo"
+										ng-disabled="customer_master_disable_fields" web-limit="0::10"
+										web-required web-alphanumeric tooltip-placement="left" /></td>
+								</tr>
+								<tr>
+									<td>Metered Flag</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmMeteredFlg"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="right">
+											<option value="">-- Select --</option>
+											<option ng-repeat="option in $root.customer_master_picklists.YesNo"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+									<td>Sub-Meter Flag</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmSubmeterFlg"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="left">
+											<option value="">-- Select --</option>
+											<option ng-repeat="option in $root.customer_master_picklists.YesNo"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>Line Minimum</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmLineMin"
+										ng-disabled="customer_master_disable_fields" web-numeric
+										tooltip-placement="right" /></td>
+									<td>Load/Line Due Date</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmLdgrOpenedDt"
+										web-datepicker max-date="+0D"
+										ng-disabled="customer_master_disable_fields" /></td>
+								</tr>
+								<tr>
+									<td>Reading Cycle</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmMtrRdgCycle"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="right">
+											<option value="">-- Select --</option>
+											<option	ng-repeat="option in $root.customer_master_picklists.ReadingCycle"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}
+											</option>
+									</select></td>
+									<td>Begining Month</td>
+									<td><select class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmBegMnth"
+										ng-disabled="customer_master_disable_fields || customer_master.rrno_detail.cmMtrRdgCycle == 1 || customer_master.rrno_detail.cmMtrRdgCycle == 7" >
+											<option value="">-- Select --</option>
+											<option	ng-repeat="option in $root.customer_master_picklists.BeginingMonth"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}
+											</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>Direct Connection Flag</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmFirstBillDcFlg"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="right">
+											<option value="">-- Select --</option>
+											<option ng-repeat="option in $root.customer_master_picklists.YesNo"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+									<td>Phase Of Installation</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmPhaseOfInstln"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="left">
+											<option value="">-- Select --</option>
+											<option	ng-repeat="option in $root.customer_master_picklists.RequiredPhase"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}
+											</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>Cheque Bounce Flag</td>
+									<td><select class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmChqBounceFlg"
+										ng-options="option.key as option.value for option in $root.customer_master_picklists.YesNo"
+										ng-disabled="true"></select></td>
+									<td>Power Cut Exempt Flag</td>
+									<td><select class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmPwrCutExemptFlg"
+										ng-disabled="customer_master_disable_fields">
+											<option value="">-- Select --</option>
+											<option ng-repeat="option in $root.customer_master_picklists.YesNo"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>Slum Flag</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmSlumFlg"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="right">
+											<option value="">-- Select --</option>
+											<option ng-repeat="option in $root.customer_master_picklists.YesNo"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+									<td>Unauthorized Flag</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmUnauthFlg"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="left">
+											<option value="">-- Select --</option>
+											<option ng-repeat="option in $root.customer_master_picklists.YesNo"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+								</tr>
+								<!-- <tr>
+									<td>Purge Flag</td>
+									<td><select class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmPurgeFlg"
+										ng-options="option.key as option.value for option in $root.customer_master_picklists.YesNo"
+										ng-disabled="true"></select></td>
+								</tr> -->
+							</tbody>
+						</table>
+					</div>
+					<div id="power_details" class="tab-right">
+						<table class="width-100">
+							<tbody>
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td>Power Purpose</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmPwrPurpose"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="right">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.PowerPurpose"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+									<td>Lighting Type</td>
+									<td><select class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmLightingTyp"
+										ng-disabled="customer_master_disable_fields">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.LightingType"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>Industry Code</td>
+									<td><select class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmIndustryCd"
+										ng-disabled="customer_master_disable_fields">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.InsdustryCode"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+									<td>Industry Effected From Date</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmIndEffFrmDt"
+										web-datepicker max-date="+0D"
+										ng-disabled="customer_master_disable_fields" /></td>
+								</tr>
+								<tr>
+									<td>Sanctioned Load KW</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmLdSanctKw"
+										ng-disabled="customer_master_disable_fields || customer_master_update_visible"
+										web-required web-float tooltip-placement="right" web-limit="1::6" /></td>
+									<td>Power Sanction No</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmPowerSanctNo"
+										ng-disabled="customer_master_disable_fields" web-limit="0::15"
+										web-required web-alphanumeric tooltip-placement="left" /></td>
+								</tr>
+								<tr>
+									<td>Sanctioned Load HP</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmLdSanctHp"
+										ng-disabled="customer_master_disable_fields || customer_master_update_visible"
+										web-required web-float tooltip-placement="right" web-limit="1::6"/></td>
+									<td>Power Sanction Date</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmPowerSanctDt"
+										web-datepicker max-date="+0D"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="left" /></td>
+								</tr>
+								<tr>
+									<td>Sanctioned Load KVA</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmLdSanctKva"
+										ng-disabled="customer_master_disable_fields || customer_master_update_visible"
+										web-required web-float tooltip-placement="right" web-limit="1::6"/></td>
+									<td>Power Sanctioned By</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmPowerSanctAuth"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="left">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.PowerSanctionedBy"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>Connected Load KW</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmConnLdKw"
+										ng-disabled="customer_master_disable_fields" web-float
+										tooltip-placement="right" web-limit="1::6"/></td>
+									<td>Power Effected From Date</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmPwrPurEffFrmDt"
+										web-datepicker max-date="+0D"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="left" /></td>
+								</tr>
+								<tr>
+									<td>Connected Load HP</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmConnLdHp"
+										ng-disabled="customer_master_disable_fields" web-float
+										tooltip-placement="right" web-limit="1::6"/></td>
+									<td>Supply Effected From Date</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmSupplyEffFrmDt"
+										web-datepicker max-date="+0D"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="left" /></td>
+								</tr>
+								<tr>
+									<td>Heating Load</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmHeatLoad"
+										ng-disabled="customer_master_disable_fields" web-float
+										tooltip-placement="right" web-limit="1::6"/></td>
+									<td>Load Effected From Date</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmLdEffectFrmDt"
+										web-datepicker max-date="+0D"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="left" /></td>
+								</tr>
+								<tr>
+									<td>Lighting Load</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmLightLoad"
+										ng-disabled="customer_master_disable_fields" web-float
+										tooltip-placement="right" web-limit="1::6"/></td>
+									<td>Well Type</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmWellTyp"
+										ng-disabled="customer_master_disable_fields || (customer_master.rrno_detail.cmTrfCatg !== '141' && customer_master.rrno_detail.cmTrfCatg !== '142' && customer_master.rrno_detail.cmTrfCatg !== '143' && customer_master.rrno_detail.cmTrfCatg !== '144' && customer_master.rrno_detail.cmTrfCatg !== '145' && customer_master.rrno_detail.cmTrfCatg !== '146')"
+										web-required tooltip-placement="left">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.WellType"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>Motive Power</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmMotivePower"
+										ng-disabled="customer_master_disable_fields" web-float
+										tooltip-placement="right" /></td>
+									<td>Starter Type</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmStarterTyp"
+										ng-disabled="customer_master_disable_fields || (customer_master.rrno_detail.cmTrfCatg !== '141' && customer_master.rrno_detail.cmTrfCatg !== '142' && customer_master.rrno_detail.cmTrfCatg !== '143' && customer_master.rrno_detail.cmTrfCatg !== '144' && customer_master.rrno_detail.cmTrfCatg !== '145' && customer_master.rrno_detail.cmTrfCatg !== '146')"
+										web-required tooltip-placement="left">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.StarterType"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>Supply Voltage</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmSupplyVolt"
+										ng-disabled="customer_master_disable_fields" web-float
+										tooltip-placement="right" /></td>
+									<td>Capacitor Capacity</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmCapacitorCap"
+										ng-disabled="customer_master_disable_fields" web-float
+										tooltip-placement="left" /></td>
+								</tr>
+
+								<tr>
+									<td>Number of Outlets</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmBjkjOutlet"
+										ng-disabled="customer_master_disable_fields" web-numeric
+										tooltip-placement="right" web-limit="0::2"/></td>
+								<!-- 	<td>Min Demand Entitlement Percentage</td>
+									<td><input type="text" class="text-input"
+										ng-model="customer_master.rrno_detail.cmMinDemandEntl"
+										ng-disabled="customer_master_disable_fields" web-float
+										tooltip-placement="left" /></td> -->
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div id="dtc_details" class="tab-right">
+						<table class="width-100">
+							<tbody>
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
+
+								<tr>
+									<td>Station</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmStationNo"
+										ng-change="get_customer_master_feeder_info()"
+										ng-disabled="customer_master_disable_fields" web-required
+										tooltip-placement="right">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.StationCodeList"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+									<td>Latitude</td>
+									<td class="relative-pos"><input class="text-input"
+										disabled="disabled"/></td>
+								</tr>
+								<tr>
+									<td>Feeder</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmFdrNo"
+										ng-change="get_customer_master_transformer_info()"
+										ng-disabled="customer_master_disable_fields || !$root.customer_master_picklists.FeederCodeList"
+										web-required tooltip-placement="right">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.FeederCodeList"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+									<td>Longitude</td>
+									<td class="relative-pos"><input class="text-input"
+										disabled="disabled" /></td>
+								</tr>
+								<tr>
+									<td>Transformer</td>
+									<td class="relative-pos"><select
+										class="text-input text-select"
+										ng-model="customer_master.rrno_detail.cmTrsfmrNo"
+										ng-disabled="customer_master_disable_fields || !$root.customer_master_picklists.TransformerCodeList"
+										web-required tooltip-placement="right">
+											<option value="">-- Select --</option>
+											<option
+												ng-repeat="option in $root.customer_master_picklists.TransformerCodeList"
+												value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+									</select></td>
+									<td>Altitude</td>
+									<td class="relative-pos"><input class="text-input"
+										disabled="disabled" /></td>
+								</tr>
+								<tr>
+									<td>Pole Number</td>
+									<td><input class="text-input"
+										ng-model="customer_master.rrno_detail.cmPoleNo"
+										web-limit="0::30" ng-disabled="customer_master_disable_fields" /></td>
+									<td>Delivery Point ID</td>
+									<td><input class="text-input"
+										ng-disabled="customer_master_disable_fields" /></td>
+								</tr>
+								<tr>
+									<td>Transmission Line No</td>
+									<td><input class="text-input"
+										ng-model="customer_master.rrno_detail.cmTransmissionLineNo"
+										web-limit="0::3" ng-disabled="customer_master_disable_fields" /></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td>DTC Capacity(KVA)</td>
+									<td><input class="text-input"
+										ng-model="customer_master.rrno_detail.DTC_CAP"
+										disabled="disabled" /></td>
+									<td>DTC Connected Load(KVA)</td>
+									<td><input class="text-input"
+										ng-model="customer_master.rrno_detail.DTC_CONN_LD"
+										disabled="disabled" /></td>
+								</tr>
+								<tr>
+									<td>DTC Load(%)</td>
+									<td><input class="text-input"
+										ng-model="customer_master.rrno_detail.DTC_CONN_PER"
+										disabled="disabled" /></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div id="deposits" class="tab-right"></div>
+					<div id="documents" class="tab-right"></div>
+					<div id="ct_pt_ratio" class="tab-right"></div>
+					<div id="intimations" class="tab-right"></div>
+				</div>
+			</form>
+			<div class="width-50 pull-left text-center last-updated"
+				ng-if="customer_master.rrno_detail.cmUser && (customer_master_edit_visible || customer_master_update_visible)">Last
+				Updated By : {{customer_master.rrno_detail.cmUser}}</div>
+			<div class="width-50 pull-left text-center last-updated"
+				ng-if="customer_master.rrno_detail.cmTmpstp && (customer_master_edit_visible || customer_master_update_visible)">Last
+				Updated Time : {{customer_master.rrno_detail.cmTmpstp}}</div>
+			</web-tabs>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,55 @@
+<div id="infrastructure" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper infrastructure-transformer-town-mapping">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<div class="pull-left margin-top-5">
+					O&M Unit :
+					<select id="transformer-town-mapped-details-om-code" class="text-input text-select" ng-model="om_code"  ng-enter="load_transformer_town_mapped_details($event)" >
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in om_list" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+					</select>
+				</div>
+				<div class="pull-left margin-top-5">
+					 Station :
+					<select id="transformer-town-mapped-details-station-code" class="text-input text-select" ng-model="StationCode" ng-change="get_feeder_info()" ng-enter="load_transformer_town_mapped_details($event)" >
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in StationCodeList" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+					</select>
+				</div>
+										
+				<div class="pull-left margin-top-5">
+					Feeder : 
+					<select id="transformer-town-mapped-details-feeder-code" class="text-input text-select" ng-model="FeederCode" ng-change="get_transformer_info()" ng-enter="load_transformer_town_mapped_details($event)">
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in FeederCodeList" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+					</select>
+				</div>
+				
+				<div class="pull-left margin-top-5">
+					Select Town : 
+					<select id="transformer-town-mapped-details-town-code" class="text-input text-select" ng-model="townCode">
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in Town_List" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+					</select>
+				</div>
+				
+				<div class="pull-right">
+					<button ng-click="load_transformer_town_mapped_details($event)" class="transformer-town-mapping-show">Show</button>
+					<button ng-click="transformer_town_mapping_save()" class="transformer-town-mapping-save">Save</button>
+					<button ng-click="transformer_town_mapping_clear()" class="transformer-town-mapping-clear">Clear</button>
+				</div>
+				
+				
+			</div>
+			<div class="width-100 clear-both padding-top-15">
+				<div id="transformer_town_mapping_details">
+					<div class="gridStyle" ui-grid="transformerTownMappingGridOptions" ui-grid-selection style="width: 100%;height: 440px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>	

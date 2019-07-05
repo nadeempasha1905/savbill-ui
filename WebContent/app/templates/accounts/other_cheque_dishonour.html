@@ -1,0 +1,36 @@
+<div id="accounts" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper accounts-ohter-cheque-dishonour">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<div class="pull-left margin-top-5">
+					RR Number : <input type="text" id="other-cheque-dishonour-rr-number" class="text-input cheque-dishonour-rr-number" ng-enter="load_other_cheque_dishoner_details($event)">
+				</div>
+				<div class="pull-left margin-top-5">
+					Receipt Date : <input type="text" ng-model="receiptDate" web-datepicker class="text-input" ng-enter="load_other_cheque_dishoner_details($event)" />
+				</div>
+				<div class="pull-left margin-top-5">
+					Cheque Number : <input type="text" id="other-cheque-dishonour-cheque-number" class="text-input other-cheque-dishonour-cheque-number" ng-enter="load_other_cheque_dishoner_details($event)"/>
+				</div>
+				<div class="pull-left margin-top-5">
+					Cheque Date : <input type="text" ng-model="chequeDate" web-datepicker class="text-input" ng-enter="load_other_cheque_dishoner_details($event)" />
+				</div>	
+				<div class="pull-left margin-top-5">
+					Bank Name : <input type="text" id="other-cheque-dishonour-bank-name" class="text-input other-cheque-dishonour-bank-name" ng-enter="load_cheque_dishoner_details($event)"/>
+				</div>
+			</div>
+			<div class="action width-100 text-center margin-top-15">
+				<button ng-click="load_other_cheque_dishoner_details($event)" class="load-other-cheque-dishoner-details">Show</button>
+				<button ng-click="cheque_dishonour_clear()" class="cheque-dishonour-clear">Clear</button>
+			</div>
+			<div class="width-100 clear-both padding-top-15">
+				<div id="other-cheque_dishonour_details">
+					<div class="gridStyle" ui-grid="otherchequeDishonourDetailsGridOptions" style="width: 100%;height: 440px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

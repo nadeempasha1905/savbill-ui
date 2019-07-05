@@ -1,0 +1,55 @@
+<div id="customer" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper customer-region-mapping">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<div class="pull-left margin-top-5">
+					O&M Unit :
+					<select id="customer-region-mapping-om-code" class="text-input text-select" ng-model="omCode"  ng-change="get_meter_reader_info()" ng-enter="load_customer_region_mapping_details($event)" >
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in om_list" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+					</select>
+				</div>
+				<div class="pull-left margin-top-5">
+					 MR Code :
+					<select id="customer-region-mapping-mr-code" class="text-input text-select" ng-model="mrCode" ng-change="get_reading_day_info()" ng-enter="load_customer_region_mapping_details($event)" >
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in MeterReaderCode" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+					</select>
+				</div>
+										
+				<div class="pull-left margin-top-5">
+					Reading day : 
+					<select id="customer-region-mapping-reading-day" class="text-input text-select" ng-model="readingDay"  ng-enter="load_customer_region_mapping_details($event)">
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in MeterReadingDay" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+					</select>
+				</div>
+				
+				<div class="pull-left margin-top-5">
+					Region Type : 
+					<select id="transformer-town-mapped-details-region-code" class="text-input text-select" ng-model="regionCode">
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in RegionTypeList" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+					</select>
+				</div>
+				
+				<div class="pull-right">
+					<button ng-click="load_customer_region_mapping_details($event)" class="transformer-town-mapping-show">Show</button>
+					<button ng-click="customer_region_mapping_save()" class="transformer-town-mapping-save">Save</button>
+					<button ng-click="customer_region_mapping_clear()" class="transformer-town-mapping-clear">Clear</button>
+				</div>
+				
+				
+			</div>
+			<div class="width-100 clear-both padding-top-15">
+				<div id="customer_region_mapping_details">
+					<div class="gridStyle" ui-grid="customerRegionMappingGridOptions" ui-grid-selection style="width: 100%;height: 440px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>	

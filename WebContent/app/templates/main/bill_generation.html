@@ -1,0 +1,64 @@
+<div id="main" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper main-bill-generation">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<table class="width-100">
+					<tbody>
+						<tr>
+							<td>
+								<div ng-click="selected = 'rr_no_wise'">
+									<span class="fa" ng-class="{'fa-circle': selected === 'rr_no_wise', 'fa-circle-o': selected !== 'rr_no_wise' }"></span>
+								</div>
+							</td>
+							<td><span ng-click="selected = 'rr_no_wise'">RR No Wise</span></td>
+							<td>
+								<div ng-click="selected = 'mr_code_wise'">
+									<span class="fa" ng-class="{'fa-circle': selected === 'mr_code_wise', 'fa-circle-o': selected !== 'mr_code_wise' }"></span>
+								</div>
+							</td>
+							<td><span ng-click="selected = 'mr_code_wise'">MR Code Wise</span></td>
+							<td>
+								<div ng-click="selected = 'bulk_billing'">
+									<span class="fa" ng-class="{'fa-circle': selected === 'bulk_billing', 'fa-circle-o': selected !== 'bulk_billing' }"></span>
+								</div>
+							</td>
+							<td><span ng-click="selected = 'bulk_billing'">Bulk Billing</span></td>
+							<td class="padding-0">
+								<button ng-click="clear_bill_generation()">Clear</button>
+							</td>
+						</tr>
+						<tr>
+							<td>RR No :</td>
+							<td>
+								<input ng-model="rrNo" ng-disabled="selected === 'mr_code_wise' || selected === 'bulk_billing'" type="text" id="rr-number" class="text-input" />
+							</td>
+							<td>MR Code :</td>
+							<td>
+								<select ng-disabled="selected === 'rr_no_wise' || selected === 'bulk_billing'" class="text-input text-select" ng-model="mrCode" >
+									<option value="">-- Select --</option>
+									<option ng-repeat="option in MeterReaderCode" value="{{option.key}}">{{option.value}}</option>
+							  	</select>
+							</td>
+							<td>Bill Date :</td>
+							<td>
+								<input type="text" id="bill_date" ng-model="billDate" web-datepicker max-date="+0D" class="text-input" />
+							</td>
+							<td class="padding-0">
+								<button ng-click="generate_bills()">Generate</button>
+							</td>							
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="width-100 clear-both padding-top-15">
+				<div id="bill_generation">
+					<div class="gridStyle" ui-grid="billGenerationGridOptions" style="width: 100%;height: 445px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

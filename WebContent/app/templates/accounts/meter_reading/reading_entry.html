@@ -1,0 +1,45 @@
+<div id="accounts" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper accounts-reading-entry">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<div class="pull-left margin-top-5">
+					RR Number : <input type="text" class="text-input" ng-model="rrNo" id="reading-entry-rr-number" ng-enter="load_reading_entry($event)" web-isvalidrr tooltip-placement="bottom-right" />
+				</div>
+				<div class="pull-left margin-top-5">
+					MR Code : 
+					<select class="text-input text-select" id="mr-code" ng-model="mrCode" ng-change="load_reading_days()" ng-disabled="rrNo">
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in mrCodes" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+					</select>
+				</div>
+				<div class="pull-left margin-top-5">
+					Reading Day : 
+					<select class="text-input text-select" id="mr-day" ng-model="readingDay" ng-change="load_reading_date()" ng-disabled="rrNo || !mrCode">
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in readingDays" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+					</select>
+				</div>
+				<div class="pull-left margin-top-5" ng-class="{ 'disabled-datepicker' : rrNo || !mrCode || !readingDay }">
+					Reading Date : 
+					<input type="text" class="text-input" id="mr-date" ng-model="readingDate" web-datepicker ng-disabled="rrNo || !mrCode || !readingDay" />
+				</div>
+				<div class="pull-left">
+					<button ng-click="load_reading_entry()">Show</button>
+				</div>
+				<div class="pull-right">
+					<button ng-click="add_reading_entry()">Add New</button>
+					<button ng-click="clear_reading_entry()">Clear</button>
+				</div>
+			</div>
+			<div class="width-100 clear-both padding-top-5">
+				<div id="reading_entry">
+					<div class="gridStyle" ui-grid="readingEntryGridOptions" style="width: 100%;height: 480px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

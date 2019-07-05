@@ -1,0 +1,39 @@
+<div id="cash_section" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper cash-section-list-of-payment-details">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<div class="pull-left margin-top-5">
+					RR Number : <input type="text" ng-model="listPaymentsRRNumber" id="list-payments-rr-number" class="text-input" ng-enter="load_list_payments_details($event)">
+				</div>
+				<div class="pull-left margin-top-5">
+					No.Of Months : <input type="text" id="list-payments-no-of-months" class="text-input" ng-enter="load_list_payments_details($event)">
+				</div>
+				<div class="pull-left margin-top-5">
+					From Date : <input type="text" ng-model="listPaymentsFromDate" web-datepicker class="text-input" ng-enter="load_list_payments_details($event)" />
+				</div>
+				<div class="pull-left margin-top-5">
+					To Date : <input type="text" ng-model="listPaymentsToDate" web-datepicker class="text-input" ng-enter="load_list_payments_details($event)" />
+				</div>
+				<div class="pull-right">
+					<button ng-click="list_payments_details_clear()" class="list-bill-details-clear">Clear</button>
+				</div>
+				<div class="pull-right">
+					<button ng-click="load_list_payments_details($event)" class="">Show</button>
+				</div>
+			</div>
+			<div class="action width-100" style="margin-top:10px">
+				<div class="width-40 pull-left" ng-if="list_of_payment_details[0].customer_name">Customer Name : <b>{{list_of_payment_details[0].customer_name}}</b></div>
+				<div class="width-40 pull-left" ng-if="list_of_payment_details[0].premise_addr1">Address : <b>{{list_of_payment_details[0].premise_addr1}}</b></div>
+			</div> 
+			<div class="width-100 clear-both padding-top-15">
+				<div id="list_of_payment_details">
+					<div class="gridStyle" ui-grid="listOfPaymentDetailsGridOptions" style="width: 100%;height: 440px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

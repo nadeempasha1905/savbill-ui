@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html ng-app="sav_bill" lang="en" ng-controller="cb_controller">
+	<head>
+	    <meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>SAV-Bill</title>
+		<script type="text/javascript">
+			var domain = location.origin,
+				service_domain = null, //use "http://192.168.0.190:8080" or null to hit another server... 
+				baseURL = "/savbill-ui/",
+				baseURL_1 = "/savbill-res/",
+				serviceURL = (service_domain || domain) + baseURL_1 + "savbill/services/",
+				headEl = document.getElementsByTagName('head')[0],
+		        sync = true;
+		    (function() {
+		    	
+		    	addTag('link', {rel: 'icon', href: 'app/img/favicon.ico'});
+		    	addTag('link', {rel: 'stylesheet', href: 'assets/others/css/reset.css', type: 'text/css'});
+		    	addTag('link', {rel: 'stylesheet', href: 'assets/jquery-ui/css/jquery-ui.min.css', type: 'text/css'});
+		    	addTag('link', {rel: 'stylesheet', href: 'assets/angular-ui/css/ui-grid.css', type: 'text/css'});
+		    	addTag('link', {rel: 'stylesheet', href: 'assets/bootstrap/css/bootstrap.min.css', type: 'text/css'});
+		    	addTag('link', {rel: 'stylesheet', href: '//fonts.googleapis.com/css?family=Arvo:n,b,i,bi|Open+Sans:n,b,i,bi|Oswald:n,b|Play:n,b&amp;subset=Latin,Cyrillic,Cyrillic-ext,Greek,Greek-ext,Latin-ext,Vietnamese', type: 'text/css'});
+		    	addTag('link', {rel: 'stylesheet', href: 'assets/font-awesome/css/font-awesome.min.css', type: 'text/css'});
+		    	addTag('link', {rel: 'stylesheet', href: 'assets/camera/css/camera.css', type: 'text/css'});
+		    	addTag('link', {rel: 'stylesheet', href: 'assets/parallax/css/parallax.css', type: 'text/css'});
+		    	addTag('link', {rel: 'stylesheet', href: 'assets/others/css/animate.css', type: 'text/css'});
+		    	addTag('link', {rel: 'stylesheet', href: 'app/css/custom.css', type: 'text/css'});
+		    	addTag('link', {rel: 'stylesheet', href: 'assets/chart/c3.css', type: 'text/css'});
+		    	addTag('link', {rel: 'stylesheet', href: 'assets/reports/left_nav.css', type: 'text/css'});
+		    	addTag('link', {rel: 'stylesheet', href: 'assets/reports/bootstrap-datetimepicker.min.css', type: 'text/css'});
+		    	addTag('link', {rel: 'stylesheet', href: 'assets/reports/cards.css', type: 'text/css'});
+		    	
+		    	<!-- Library and Plugin scripts starts-->
+		    	addTag('script', {src: 'assets/jquery/js/jquery-2.1.1.min.js'}, sync);
+		    	addTag('script', {src: 'assets/jquery-ui/js/jquery-ui.min.js'}, sync);
+		    	addTag('script', {src: 'assets/angular/js/angular.min.js'}, sync);
+		    	addTag('script', {src: 'assets/angular/js/angular-route.min.js'}, sync);
+		    	addTag('script', {src: 'assets/angular/js/angular-touch.min.js'}, sync);
+		    	addTag('script', {src: 'assets/bootstrap/js/bootstrap.min.js'}, sync);
+		    	addTag('script', {src: 'assets/angular-ui/js/ui-grid.js'}, sync);
+		    	addTag('script', {src: 'assets/angular-ui/js/csv.js'}, sync);
+		    	addTag('script', {src: 'assets/angular-ui/js/pdfmake.js'}, sync);
+		    	addTag('script', {src: 'assets/angular-ui/js/vfs_fonts.js'}, sync);
+		    	addTag('script', {src: 'assets/angular-ui/js/ui-bootstrap-custom-tpls-1.0.0.min.js'}, sync); //modal, tooltip, tabs
+		    	addTag('script', {src: 'assets/jquery/js/jquery.easing.1.3.js'}, sync);
+		    	addTag('script', {src: 'assets/camera/js/camera.min.js'}, sync);
+		    	addTag('script', {src: 'assets/parallax/js/jquery.parallax-1.1.3.js'}, sync);
+		    	addTag('script', {src: 'assets/chart/js/chart.min.js'}, sync);
+		    	addTag('script', {src: 'assets/others/js/wow.js'}, sync);
+		    	addTag('script', {src: 'assets/others/js/jquery.mousewheel.min.js'}, sync);
+		    	addTag('script', {src: 'assets/others/js/jquery.simplr.smoothscroll.min.js'}, sync);
+		    	addTag('script', {src: 'assets/chart/d3-5.4.0.min.js'}, sync);
+		    	addTag('script', {src: 'assets/chart/c3.min.js'}, sync);
+		    	addTag('script', {src: 'assets/reports/VerticalNavigation.min.js'}, sync);
+		    	addTag('script', {src: 'assets/reports/bootstrap-datetimepicker.min.js'}, sync);
+		    	addTag('script', {src: 'assets/reports/moment.min.js'}, sync);
+		    	addTag('script', {src: 'assets/reports/saveAsExcel.js'}, sync);
+		    	
+		    	addTag('script', {src: 'assets/reports/amcharts/core.js'}, sync);
+		    	addTag('script', {src: 'assets/reports/amcharts/charts.js'}, sync);
+		    	addTag('script', {src: 'assets/reports/amcharts/animated.js'}, sync);
+		    	addTag('script', {src: 'assets/reports/amcharts/material.js'}, sync);
+		    	addTag('script', {src: 'assets/reports/amcharts/de_DE.js'}, sync);
+		    	addTag('script', {src: 'assets/reports/amcharts/germanyLow.js'}, sync);
+		    	<!-- Library and Plugin scripts ends-->
+		    	
+		    	<!-- Modules starts-->
+		    	addTag('script', {src: 'app/modules/cb_templates.js'}, sync);
+		    	addTag('script', {src: 'app/modules/cb_app.js'}, sync);
+		    	addTag('script', {src: 'app/modules/initiate_ui.js'}, sync);
+		    	addTag('script', {src: 'app/modules/cb_config.js'}, sync);
+		    	addTag('script', {src: 'app/modules/cb_directives.js'}, sync);
+		    	addTag('script', {src: 'app/modules/cb_utility.js'}, sync);
+		    	addTag('script', {src: 'app/modules/cb_validations.js'}, sync);
+		    	<!-- Modules ends-->
+		    	
+		    	<!-- Controllers starts-->
+		    	addTag('script', {src: 'app/controllers/cb_controllers.js'}, sync);
+		    	addTag('script', {src: 'app/controllers/login_controller.js'}, sync);
+		    	addTag('script', {src: 'app/controllers/master_controller.js'}, sync);
+		    	addTag('script', {src: 'app/controllers/customer_controller.js'}, sync);
+		    	addTag('script', {src: 'app/controllers/accounts_controller.js'}, sync);
+		    	addTag('script', {src: 'app/controllers/infrastructure_controller.js'}, sync);
+		    	addTag('script', {src: 'app/controllers/user_controller.js'}, sync);
+		    	addTag('script', {src: 'app/controllers/cash_section_controller.js'}, sync);
+		    	addTag('script', {src: 'app/controllers/deposits_controller.js'}, sync);
+		    	addTag('script', {src: 'app/controllers/main_controller.js'}, sync);
+		    	addTag('script', {src: 'app/controllers/energy_audit_controller.js'}, sync);
+		    	addTag('script', {src: 'app/controllers/reports_controller.js'}, sync);
+		    	<!-- Controllers ends-->
+		    	
+		    	function addTag(name, attributes, sync) {
+		            var el = document.createElement(name),
+		                attrName;
+		            for (attrName in attributes) {
+		              el.setAttribute(attrName, attributes[attrName]);
+		            }
+		            sync ? document.write(outerHTML(el)) : headEl.appendChild(el);
+		        }
+		        function outerHTML(node){
+		            // if IE, Chrome take the internal method otherwise build one
+		            return node.outerHTML || (
+		                function(n){
+		                    var div = document.createElement('div'), h;
+		                    div.appendChild(n);
+		                    h = div.innerHTML;
+		                    div = null;
+		                    return h;
+		                })(node);
+		        }
+		    })();
+		</script>
+	</head>
+	<body>
+		<div id="loading">
+			<div class="loader">Loading...</div>
+		</div>
+		<div id="notification" class="alert" role="alert">
+			<strong>Well done!</strong> You successfully read this important alert message. 
+		</div>
+		<div ng-view style="    margin-top: 50px;"></div>
+	</body>
+</html>

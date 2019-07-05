@@ -1,0 +1,60 @@
+<div ng-class="{'container': page === 'container', 'container-fluid': !page }">
+	<div class="cb-wrapper">
+		<div class="menu-wrapper">
+			<div class="menu-bar">
+				<div class="primary-menu">
+					<div class="all-menus">
+						<i class="icon-all-menus"></i>
+						<label class="reset-margin">Go by categories</label>
+					</div>			
+					<div class="menu" id="menu">
+						<ul class="main-menu reset-margin">
+							<li class="main-menu-link" ng-repeat="main_menu in menu.MENU" ng-init="height = ((menu.MENU.length + 1) * 41)">
+								<a ng-if="main_menu.subMenuList.length == 0" data-search="{{main_menu.title | lowercase}}" title="{{main_menu.title | capitalize}}" class="{{main_menu.title | lowercase | replace:' ':'_' }}" ng-href="#/{{main_menu.title | lowercase | replace:' ':'_' }}">{{main_menu.title | lowercase}}</a>
+								<a ng-if="main_menu.subMenuList.length > 0" title="{{main_menu.title | capitalize}}">{{main_menu.title | lowercase}}</a>
+								<div class="sub-menu-container" ng-style="{'height': height+'px'}" ng-class="{ 'one-column': main_menu.subMenuList.length <= 10, 'two-column': main_menu.subMenuList.length > 10 && main_menu.subMenuList.length <= 20, 'three-column': main_menu.subMenuList.length > 20}" ng-if="main_menu.subMenuList.length > 0">
+									<ul class="sub-menu reset-margin">
+										<li class="sub-menu-link" ng-repeat="sub_menu in main_menu.subMenuList" ng-class="{'sub-menu-link-hover': sub_menu.subMenuList.length > 0}">
+											<a ng-if="sub_menu.subMenuList.length == 0" data-search="{{main_menu.title | lowercase}}::{{sub_menu.title | lowercase}}" title="{{sub_menu.title | capitalize}}" class="{{main_menu.title | lowercase | replace:' ':'_' }}_{{sub_menu.title | lowercase | replace:' ':'_' }}" ng-href="#/{{main_menu.title | lowercase | replace:' ':'_'}}/{{sub_menu.title | lowercase | replace:' ':'_' }}">{{sub_menu.title | lowercase}}</a>
+											<a ng-if="sub_menu.subMenuList.length > 0" title="{{sub_menu.title | capitalize}}">{{sub_menu.title | lowercase}}</a>
+											<div class="micro-menu-container" ng-if="sub_menu.subMenuList.length > 0">
+												<ul class="micro-menu reset-margin">
+													<li class="micro-menu-link" ng-repeat="micro_menu in sub_menu.subMenuList">
+														<a title="{{micro_menu.title | capitalize}}" data-search="{{main_menu.title | lowercase}}::{{sub_menu.title | lowercase}}::{{micro_menu.title | lowercase}}" class="{{main_menu.title | lowercase | replace:' ':'_' }}_{{sub_menu.title | lowercase | replace:' ':'_' }}_{{micro_menu.title | lowercase | replace:' ':'_' }}" ng-href="#/{{main_menu.title | lowercase | replace:' ':'_'}}/{{sub_menu.title | lowercase | replace:' ':'_' }}/{{micro_menu.title | lowercase | replace:' ':'_' }}">{{micro_menu.title | lowercase}}</a>
+													</li>
+												</ul>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+						<div class="see-all-categories">
+							<a title="See All Categories" href="#/see_all_categories">see all categories</a>
+						</div>
+					</div>
+				</div>			
+				<div class="secondary-menu" style="display: none;">
+					<span class="headerSecondaryNavLink">
+						<i class="customHeaderIcon" style="background:url(http://i1.sdlcdn.com/img/eventImage/06/EOSS-icon.png) no-repeat"></i>
+						<a href="http://www.snapdeal.com/products/digital-gift-cards?HookID=1">Gift Cards </a>
+					</span>
+					<span class="headerSecondaryNavLink">
+						<i class="customHeaderIcon" style="background:url(http://i3.sdlcdn.com/img/eventImage/06/Exclusive-Store-icon.png) no-repeat"></i>
+						<a href="http://www.snapdeal.com/offers/exclusive-launches?HookID=2">Exclusives Store </a>
+					</span>
+					<span class="headerSecondaryNavLink">
+						<i class="customHeaderIcon" style="background:url(http://i3.sdlcdn.com/img/homepage/10/bigbossicon.png) no-repeat"></i>
+						<a href="http://www.snapdeal.com/offers/bigg-boss?HookID=3">Bigg Boss </a>
+					</span>
+					<span class="headerSecondaryNavLink sellerLink">
+						<i class="customHeaderIcon sd-icon sd-icon-nhandshake color-grey"></i>
+						<a href="http://sellers.snapdeal.com/">Sell On Snapdeal</a>
+					</span>
+					<!-- <span class="headerSecondaryNavLink registerLink hidden"><button class="rippleWhite" onclick="showRegister()">Register</button></span>
+					<span class="headerSecondaryNavLink loginLink hidden"><button class="rippleWhite" onclick="showLogin()">Login</button></span> -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

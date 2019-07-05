@@ -1,0 +1,44 @@
+<div id="accounts" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper accounts-bill-cancellation">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<table class="width-25">
+					<tbody>
+						<tr>
+							<td>RR Number :</td>
+							<td>
+								<input type="text" ng-disabled="disable_rr_no" ng-model="data.rr_no" class="text-input" id="rr_no" ng-enter="getRRnoDetails()" />
+							</td>
+						</tr>
+						<tr>
+							<td>Bill Date :</td>
+							<td>
+								{{data.bill_dt}}
+							</td>
+						</tr>
+						<tr>
+							<td>Bill Number :</td>
+							<td>
+								{{data.bill_no}}
+							</td>
+						</tr>
+						<tr>
+							<td>Remarks :</td>
+							<td>
+								<textarea ng-model="data.remarks" id="remarks" class="text-input text-area mandatory"></textarea>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="width-100 text-center">
+					<button ng-click="clear_entries()">Clear</button>
+					<button ng-click="cancel_bill()">Submit</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

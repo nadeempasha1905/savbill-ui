@@ -1,0 +1,30 @@
+<div id="accounts" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper accounts-regular-penalty">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<div class="pull-left margin-top-5">
+					RR Number : <input type="text" placeholder="Type & Hit Enter" id="regular-penality-rr-number" class="text-input" ng-enter="load_regular_penalty_details($event)" />
+				</div>
+				<div class="pull-left margin-top-5">
+					Serial No : <input type="text" placeholder="Type & Hit Enter" id="regular-penality-serial-number" class="text-input" ng-enter="load_regular_penalty_details($event)" />
+				</div>
+				<div class="pull-left">
+					<button ng-click="load_regular_penalty_details($event)" class="">Show</button>
+				</div>
+				<div class="pull-right">
+					<button ng-click="add_regular_penality()">Add New</button>
+					<button ng-click="regular_penality_clear()" class="regular-penality-clear">Clear</button>
+				</div>
+			</div>
+			<div class="width-100 clear-both padding-top-15">
+				<div id="regular_penalty">
+					<div class="gridStyle" ui-grid="regularPenalityGridOptions" style="width: 100%;height: 440px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

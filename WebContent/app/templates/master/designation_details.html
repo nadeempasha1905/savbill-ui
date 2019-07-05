@@ -1,0 +1,32 @@
+<div id="master" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper designation-details">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<div class="pull-left margin-top-5">
+					Designation Type : 
+					<select type="text" id="designation-type" class="text-input">
+						<option value="">-- Select --</option>
+						<option ng-repeat="type in DesignationTypeList" value="{{type.key}}">{{type.value}}</option>
+					</select>
+				</div>
+				<div class="pull-left">
+					<button ng-click="load_designation_details($event)" class="">Show</button>
+				</div>
+				<div class="pull-right">
+					<button ng-click="add_designation_details()">Add New</button>
+					<button ng-click="designation_details_clear()" class="designation-details-clear">Clear</button>
+				</div>
+			</div>
+			<div class="width-100 clear-both padding-top-15">
+				<div id="designation_details">
+					<div class="gridStyle" ui-grid="designationDetailsGridOptions" style="width: 100%;height: 440px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>

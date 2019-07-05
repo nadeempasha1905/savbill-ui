@@ -1,0 +1,115 @@
+<div id="cash_section" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper cash-section-search-payments">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<table class="width-100">
+					<tbody>
+						<tr>
+							<td>RR No :</td>
+							<td>
+								<input type="text" ng-model="searchPaymentsRRNumber" id="search-payments-rr-number" class="text-input" ng-enter="load_search_payments_details()" />
+							</td>
+							<td>Receipt No :</td>
+							<td>
+								<input type="text" ng-model="searchPaymentsReceiptNumber" id="search-payments-receipt-number" class="text-input" ng-enter="load_search_payments_details()" />
+							</td>
+							<td>Receipt Date :</td>
+							<td>
+								<input type="text" ng-model="searchPaymentsReceiptDate" web-datepicker class="text-input" ng-enter="load_search_payments_details()" />
+							</td>
+							<td>Counter :</td>
+							<td>
+								<select class="text-input text-select" ng-model="searchPaymentsCounter" ng-enter="load_search_payments_details()">
+									<option value="">-- Select --</option>
+									<option ng-repeat="option in $root.customer_master_picklists.CashCounter" value="{{option.key}}">{{option.value}}</option>
+							  	</select>
+							</td>
+						</tr>
+						<tr>
+							<td>Purpose :</td>
+							<td>
+								<select class="text-input text-select" ng-model="searchPaymentsPurpose" ng-enter="load_search_payments_details()">
+									<option value="">-- Select --</option>
+									<option ng-repeat="option in $root.customer_master_picklists.PurposeDetail" value="{{option.key}}">{{option.value}}</option>
+							  	</select>
+							</td>
+							<td>Cheque/DD No :</td>
+							<td>
+								<input type="text" ng-model="searchPaymentsChequeNumber"  id="search-payments-cheque-number" class="text-input" ng-enter="load_search_payments_details()" />
+							</td>
+							<td>Cheque/DD Date :</td>
+							<td>
+								<input type="text" ng-model="searchPaymentsChequeDate" web-datepicker class="text-input" ng-enter="load_search_payments_details()" />
+							</td>
+							<td>Bank Name :</td>
+							<td>
+								<input type="text" ng-model="searchPaymentsBank"  id="search-payments-bank-name" class="text-input" ng-enter="load_search_payments_details()" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="width-100 text-center padding-bottom-15 margin-top-15 margin-bottom-15">
+					<button ng-click="load_search_payments_details()" class="">Show</button>
+					<button ng-click="first()" class="">First</button>
+					<button ng-click="previous()" class="">Previous</button>
+					<button ng-click="next()" class="">Next</button>
+					<button ng-click="last()" class="">Last</button>
+					<button ng-click="search_payments_details_clear()" class="list-bill-details-clear">Clear</button>
+				</div>
+			</div>
+			<div class="width-100 clear-both search-payments">
+				<table class="width-100">
+					<tbody>
+						<tr>
+							<td># :</td><td>{{data.r}}</td>
+							<td>RR No :</td><td>{{data.rr_no}}</td>
+							<td>New RR No :</td><td>{{data.new_rr_no}}</td>
+						</tr>
+						<tr>
+							<td>Receipt No : </td><td>{{data.rcpt_no}}</td>
+							<td>Receipt Date : </td><td>{{data.rcpt_dt}}</td>
+							<td>Counter No : </td><td>{{data.counter_no}}</td>
+						</tr>
+						<tr>
+							<td>Payment Purpose : </td><td>{{data.purpose_description}}</td>
+							<td>Payee Name : </td><td>{{data.payee_name}}</td>
+							<td>Paid Amount : </td><td>{{data.amt_paid}}</td>
+						</tr>
+						<tr>
+							<td>Cheque/DD No : </td><td>{{data.chq_dd_no}}</td>
+							<td>Cheque/DD Date : </td><td>{{data.chq_dd_dt}}</td>
+							<td>Drawee Bank : </td><td>{{data.drawn_bank}}</td>
+						</tr>
+						<tr>
+							<td>Payment Mode : </td><td>{{data.irp_pymnt_mode_description}}</td>
+							<td>Cancel Flag : </td><td>{{data.cancel_flg_description}}</td>
+							<td>Remarks : </td><td>{{data.remarks}}</td>
+						</tr>
+						<tr>
+							<td>RR ApplNo Flag : </td><td>{{data.rrno_applno_flg}}</td>
+							<td>Posted Status : </td><td>{{data.posted_sts_description}}</td>
+							<td>Status : </td><td>{{data.status_description}}</td>
+						</tr>
+						<tr>
+							<td>Receipt Type : </td><td>{{data.rcpt_typ}}</td>
+							<td>Ledger No : </td><td>{{data.ldgr_no}}</td>
+							<td>Folio No : </td><td>{{data.folio_no}}</td>
+						</tr>
+						<tr>
+							<td>Printed Flag : </td><td>{{data.printed_flg_description}}</td>
+						</tr>
+						<tr>
+							<td>User ID : </td><td>{{data.userid}}</td>
+							<td>Time Stamp : </td><td>{{data.tmpstp}}</td>
+							<td>Receipt Count : </td><td>{{collection.length || ''}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

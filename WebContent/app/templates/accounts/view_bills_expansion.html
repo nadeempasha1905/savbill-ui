@@ -1,0 +1,10 @@
+<uib-tabset justified="true" style="width: 100%;" class="view_bills_expansion">
+    <uib-tab heading="Break Up Details" active="true">
+    	<div ui-grid="row.entity.billBreakUpGridOptions" ui-grid-selection ui-grid-auto-resize style="width:98%;height:150px;margin: 6px 1%;"></div>
+    	<div id="billBreakUpSlabGrid" ui-grid="row.entity.billBreakUpSlabGridOptions" ui-grid-auto-resize style="width:98%;height:150px;margin: 0 1%;display: none;"></div>
+    </uib-tab>
+    <uib-tab heading="Receipt Details">
+    	<div ui-grid="row.entity.receiptGridOptions" ui-grid-selection ui-grid-auto-resize style="width:98%;height:150px;margin: 6px 1%;"></div>
+    	<div id="receiptSlabGrid" ui-grid="row.entity.receiptSlabGridOptions" ui-grid-auto-resize style="width:98%;height:150px;margin: 0 1%;display: none;"></div>
+    </uib-tab>
+</uib-tabset>

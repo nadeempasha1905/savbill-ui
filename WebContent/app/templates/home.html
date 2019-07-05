@@ -1,0 +1,445 @@
+  <div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+  <style>
+	.fontbig{font-weight: bolder;}
+	.fontbold{font-weight: bold;}
+	.fontnormal{font-weight: normal;}
+	
+	.card1{text-align: center;border-radius: 3px;}
+	.card1 .topsection{background-color: #ea8703;color:#fff;}	
+	.card1 .bottomsection{/* background-color: #ffd6a0; */background-color: #fff;color:#000;}
+	
+	.card2{text-align: center;border-radius: 3px;}
+	.card2 .topsection{background-color: #d9534f;color:#fff;}	
+	.card2 .bottomsection{/* background-color: #76d4c1; */background-color: #fff;color:#000;}
+	
+	.card3{text-align: center;border-radius: 3px;}
+	.card3 .topsection{background-color: #f94f62;color:#fff;}	
+	.card3 .bottomsection{/* background-color: #f39da6; */background-color: #fff;color:#000;}
+	
+	.card4{text-align: center;border-radius: 3px;}
+	.card4 .topsection{background-color: #f0ad4e;color:#fff;}	
+	.card4 .bottomsection{/* background-color: #d4af5d; */background-color: #fff;color:#000;}
+	
+	.card5{text-align: center;border-radius: 3px;}
+	.card5 .topsection{background-color: #337ab7;color:#fff;}	
+	.card5 .bottomsection{/* background-color: #d4af5d; */background-color: #fff;color:#000;}
+	
+	.card6{text-align: center;border-radius: 3px;}
+	.card6 .topsection{background-color: #5cb85c;color:#fff;}	
+	.card6 .bottomsection{/* background-color: #d4af5d; */background-color: #fff;color:#000;}
+	
+	.card7{text-align: center;border-radius: 3px;}
+	.card7 .topsection{background-color: rgb(130,40,73);color:#fff;}	
+	.card7 .bottomsection{/* background-color: #d4af5d; */background-color: #fff;color:#000;}
+	
+	.card8{text-align: center;border-radius: 3px;}
+	.card8 .topsection{background-color: #81911e;color:#fff;}	
+	.card8 .bottomsection{/* background-color: #d4af5d; */background-color: #fff;color:#000;}
+	
+	.card9{text-align: center;border-radius: 3px;}
+	.card9 .topsection{background-color: #1f4037;color:#fff;}	
+	.card9 .bottomsection{/* background-color: #d4af5d; */background-color: #fff;color:#000;}
+	
+	.card10{text-align: center;border-radius: 3px;}
+	.card10 .topsection{background-color: #4b134f;color:#fff;}	
+	.card10 .bottomsection{/* background-color: #d4af5d; */background-color: #fff;color:#000;}
+	
+	.card11{text-align: center;border-radius: 3px;}
+	.card11 .topsection{background-color: #6D6027;color:#fff;}	
+	.card11 .bottomsection{/* background-color: #d4af5d; */background-color: #fff;color:#000;}
+	
+	.card12{text-align: center;border-radius: 3px;}
+	.card12 .topsection{background-color: #CB356B;color:#fff;}	
+	.card12 .bottomsection{/* background-color: #d4af5d; */background-color: #fff;color:#000;}
+
+	#summaryview a{
+		text-decoration: none;
+		color:#000;
+	}
+	
+	#contentRight {
+		background-color: #eeeeee;
+	}
+	
+	#chartdiv {
+  width: 100%;
+  height: 400px;
+}
+</style>
+    <div id="home">
+
+	<div id="contentWrapper">
+
+		<div id="contentLeft" style="display: block;">
+
+			<div class="row">
+		  		<div class="col-xs-10" style="margin: 10px;">
+		  			<label style="color: white;">Zone</label>
+		  			<select class="form-control" style="height: 30px;"
+			  			ng-model="search.zone"
+			  			ng-options="u as u.ZONE_NAME for u in searchzonelist" ng-change="getcircleList([],null,'search')" 
+						ng-disabled="ZONEUSER || CIRCLEUSER || DIVISIONUSER || SUBDIVISIONUSER || OMSECTIONUSER">
+		  				<option value="">----Choose Zone---</option>
+		  			</select>
+		  		</div>
+		  		
+		  		<div class="col-xs-10" style="margin: 10px;">
+		  			<label style="color: white;">Circle</label>
+		  			<select class="form-control" style="height: 30px;"
+		  			ng-model="search.circle"
+			  			 ng-options="u as u.CIRCLE_NAME for u in searchcirclelist" ng-change="getdivisionList([],null,'search')" 
+			  			ng-disabled="CIRCLEUSER || DIVISIONUSER || SUBDIVISIONUSER || OMSECTIONUSER">
+		  				<option value="">----Choose Circle---</option>
+		  			</select>
+		  		</div>
+		  		<div class="col-xs-10" style="margin: 10px;">
+		  			<label style="color: white;">Division</label>
+		  			<select class="form-control" style="height: 30px;"
+		  			ng-model="search.division"
+					ng-options="u as u.DIVISION_NAME for u in searchdivisionlist" ng-change="getsubdivisionList([],null,'search')" 
+					ng-disabled="DIVISIONUSER || SUBDIVISIONUSER || OMSECTIONUSER"			    >
+		  				<option value="">----Choose Division---</option>
+		  			</select>
+		  		</div>
+		  		<div class="col-xs-10" style="margin: 10px;">
+		  			<label style="color: white;">Sub-Division</label>
+		  			<select class="form-control" style="height: 30px;"
+		  			ng-model="search.subdivision"
+					ng-options="u as u.LOCATION_NAME for u in searchsubdivisionlist" ng-change="getomsectionList([],null,'search');getStationList('search');" 
+					ng-disabled="SUBDIVISIONUSER || OMSECTIONUSER"			    >
+		  				<option value="">----Choose Sub-Division---</option>
+		  			</select>
+		  		</div>
+		  		<div class="col-xs-10" style="margin: 10px;">
+		  			<label style="color: white;">O&M Section</label>
+		  			<select class="form-control" style="height: 30px;"
+		  			ng-model="search.omsection"
+					ng-options="u as u.value for u in searchomsectionlist" 
+					ng-disabled="OMSECTIONUSER" 			    >
+		  				<option value="">----Choose O&M Section---</option>
+		  			</select>
+		  		</div>
+		  		<div class="col-xs-10" style="margin: 10px;">
+		  			<label style="color: white;">Financial Years</label>
+		  			<select class="form-control" style="height: 30px;"
+		  			ng-model="search.financial_years"
+					ng-options="u as u.year for u in FIN_YEARS" >
+		  				<option value="">----Choose Financial Year---</option>
+		  			</select>
+		  		</div>
+		  		<div class="col-xs-10" style="margin: 10px;">
+		  			<button class="btn btn-primary" ng-click="refreshchart_tab1()">Apply Filter</button>
+		  		</div>
+	  		</div>
+		</div>
+
+		<div id="menulistclick_div">
+			<span style="font-size: 30px; cursor: pointer; color: #283c51;"
+				onclick="openNav()">&#9776;</span>
+		</div>
+
+		<div id="contentRight">
+		
+		<div class="row">
+			<div class="col-xs-12">
+				<h3><span class="text-info" >BILLING MONTH </span> <span style="color: red">Jun-2013</span></h3>
+			</div>
+			<br/><br/>
+				<div class="col-xs-3">
+					<div class="wrimagecard wrimagecard-topimage">
+						<a href=""
+							ng-click="activaTab('bill_eff_tab')">
+							<div class="wrimagecard-topimage_title card1 topsection">
+								<div style="float: left; width: 100%;text-align: left;padding:10px;">
+									<span class="h1 text-info">{{maindashboard.tobebilled}}</span> <br>
+									<span class="h4">Total Consumers</span>
+								</div>
+								<!-- <div style="float: right; width: 50%;">
+									<span class="h1">{{bill_eff_card_overall.notbilled}}</span> <br>
+									<span class="h4">Not Billed</span>
+								</div> -->
+
+							</div>
+							<div class="wrimagecard-topimage_header card1 bottomsection">
+								<span class="h3"></span> <br>
+								<span class="h4"></span>
+							</div>
+						</a>
+					</div>
+				</div>
+				
+				<div class="col-xs-3">
+					<div class="wrimagecard wrimagecard-topimage">
+						<a href=""
+							ng-click="activaTab('bill_eff_tab')">
+							<div class="wrimagecard-topimage_title card1 topsection">
+								<div style="float: left; width: 100%;text-align: left;padding:10px;">
+									<span class="h1 text-danger" >{{maindashboard.billed}}</span> <br>
+									<span class="h4">Total Billed Consumers</span>
+								</div>
+								<!-- <div style="float: right; width: 50%;">
+									<span class="h1">{{bill_eff_card_overall.notbilled}}</span> <br>
+									<span class="h4">Not Billed</span>
+								</div> -->
+
+							</div>
+							<div class="wrimagecard-topimage_header card1 bottomsection">
+								<span class="h3"></span> <br>
+								<span class="h4"></span>
+							</div>
+						</a>
+					</div>
+				</div>
+				
+								<div class="col-xs-3">
+					<div class="wrimagecard wrimagecard-topimage">
+						<a href=""
+							ng-click="activaTab('coll_eff_tab')">
+							<div class="wrimagecard-topimage_title card1 topsection">
+								<div style="float: left; width: 100%;text-align: left;padding:10px;">
+									<span class="h1 text-primary">&#8377; {{maindashboard.dmd}}</span> <br>
+									<span class="h4">Total Demand</span>
+								</div>
+								<!-- <div style="float: right; width: 50%;">
+									<span class="h1">{{bill_eff_card_overall.notbilled}}</span> <br>
+									<span class="h4">Not Billed</span>
+								</div> -->
+
+							</div>
+							<div class="wrimagecard-topimage_header card1 bottomsection">
+								<span class="h3"></span> <br>
+								<span class="h4"></span>
+							</div>
+						</a>
+					</div>
+				</div>
+				
+								<div class="col-xs-3">
+					<div class="wrimagecard wrimagecard-topimage">
+						<a href=""
+							ng-click="activaTab('coll_eff_tab')">
+							<div class="wrimagecard-topimage_title card1 topsection">
+								<div style="float: left; width: 100%;text-align: left;padding:10px;">
+									<span class="h1 text-success">&#8377; {{maindashboard.totcol}}</span> <br>
+									<span class="h4">Total Collection</span>
+								</div>
+								<!-- <div style="float: right; width: 50%;">
+									<span class="h1">{{bill_eff_card_overall.notbilled}}</span> <br>
+									<span class="h4">Not Billed</span>
+								</div> -->
+
+							</div>
+							<div class="wrimagecard-topimage_header card1 bottomsection">
+								<span class="h3"></span> <br>
+								<span class="h4"></span>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+			
+			<!-- <div class="row">
+				<div class="col-xs-6">
+					<div id="guage1" style="height: 300px;"></div>
+				</div>
+				<div class="col-xs-6">
+					<div id="guage2" style="height: 300px;"></div>
+				</div>
+			</div> -->
+			
+			<div class="row">
+				<div class="col-xs-12">
+						<div id="chartdiv"></div>
+				</div>
+			</div>
+		<br/>
+		<br/>
+		<br/>
+			
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel with-nav-tabs panel-info">
+                <div class="panel-heading">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#bill_eff_tab" data-toggle="tab"  ng-click="refreshchart_tab1()">Billing Efficiency</a></li>
+                            <li><a href="#coll_eff_tab" data-toggle="tab"  ng-click="refreshchart_tab2()">Collection Efficiency</a></li>
+                            <!-- <li><a href="#tab3info" data-toggle="tab" ng-click="refreshchart_tab3()">DCB</a></li> -->
+                        </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="bill_eff_tab">
+                        	<div class="row">
+                        		<div class="col-xs-2">
+                        			<input type="radio" name="radiotype" ng-click="refreshchart_tab1('TRF')" value="trf-wise" checked="checked">Tariff Wise
+                        		</div>	
+                        		<input type="radio" name="radiotype" ng-click="refreshchart_tab1('SUBTRF')"  value=sub-trf-wise">Sub-Tariff Wise
+                        		<br/>
+                        		<div class="col-xs-12">
+                        			<h3><u>Billing Efficiency for the month (Jun-2013)</u></h3>
+                        		</div>	
+                        		<br/>
+                        		<div class="col-xs-4">
+                        			<div class="wrimagecard wrimagecard-topimage card1">
+										<div  style="text-align: left;"><span class="h4 fontbold">{{bill_eff_card_overall.trf}}</span><br/></div>
+										<a href="" ng-click="fillpie_onclick_card(bill_eff_card_overall.billed,bill_eff_card_overall.notbilled,bill_eff_card_overall.trf)">
+								          <div class="wrimagecard-topimage_title card1 topsection">
+								          	<div style="float: left;width: 50%;">
+									          	<span class="h1">{{bill_eff_card_overall.billed}}</span>
+									          		<br>
+								          		<span class="h4">Billed</span>
+								          	</div>
+								          	<div style="float: right;width: 50%;">
+								          		<span class="h1">{{bill_eff_card_overall.notbilled}}</span>
+								          			<br>
+							          			<span class="h4">Not Billed</span>
+								          	</div>
+								            
+								          </div>
+								          <div class="wrimagecard-topimage_header card1 bottomsection">
+								          		<span class="h3">{{bill_eff_card_overall.tobebilled}}</span>
+								          		<br>
+								          		<span class="h4">To be Read</span>
+								          </div>
+								          </a>
+								     </div>
+                        		</div>
+                        		<div class="col-xs-6">
+                        				<!-- <h4>{{bill_pie_chart_heading}}</h4> -->
+										<div id="billeff_piechart" style="height:175px;"></div>
+										
+
+                        		</div>
+                        	</div>
+                        	<br/>
+                        	<br/>
+                        	<div class="row">
+                        		<div class="col-xs-4" ng-repeat="c in BILL_EFF_CARDS" style="margin-bottom: 30px;">
+                        		<a href="" ng-click="fillpie_onclick_card(c.billed,c.notbilled,c.trf)">
+                        			<div class="wrimagecard wrimagecard-topimage card{{$index+2}}" >
+										<div  style="text-align: left;"><span class="h4 fontbold">{{c.trf}}</span><br/></div>
+								          <div class="wrimagecard-topimage_title card1 topsection">
+								          	<div style="float: left;width: 50%;">
+									          	<span class="h1">{{c.billed}}</span>
+									          		<br>
+								          		<span class="h4">Billed</span>
+								          	</div>
+								          	<div style="float: right;width: 50%;">
+								          		<span class="h1">{{c.notbilled}}</span>
+								          			<br>
+							          			<span class="h4">Not Billed</span>
+								          	</div>
+								            
+								          </div>
+								          <div class="wrimagecard-topimage_header card1 bottomsection">
+								          		<span class="h3">{{c.tobebilled}}</span>
+								          		<br>
+								          		<span class="h4">To be Read</span>
+								          </div>
+								     </div>
+								     </a>
+                        		</div>
+                        	</div>
+	                       <div class="row">
+	                        <div class="col-xs-12">
+	                       		<h3><u>Billing Efficiency Comparision for financial year (2009-2010)</u></h3>
+	                       		<br/>
+	                       		</div>
+		                        <div class="col-xs-12">
+									<div id="linechart" style="height: 400px;"></div>
+								</div>
+	                       </div>
+                        </div>
+                        <div class="tab-pane fade" id="coll_eff_tab">
+							<div class="row">
+								<div class="col-xs-6">
+									<div id="chart1" style="height: 400px;"></div>
+								</div>
+								<div class="col-xs-6">
+									<div id="chart2" style="height: 400px;"></div>
+								</div>
+							</div>
+						</div>
+                        <div class="tab-pane fade" id="tab3info">
+
+							<div class="row">
+								<div class="col-xs-6">
+									<div id="chart3" style="height: 400px;"></div>
+								</div>
+								<div class="col-xs-6">
+									<div id="chart4" style="height: 400px;"></div>
+								</div>
+							</div>
+						</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+	
+	
+		</div>
+	</div>
+
+
+</div>
+		<!-- <div class="cb-wrapper">
+			<div class="home-report-banners">
+				<div class="banners">
+					
+				</div>
+				<div class="controls">
+					<ul class="reset-margin">
+						<li class="active">Report 1</li>
+						<li>Report 2</li>
+						<li>Report 3</li>
+						<li>Report 4</li>
+						<li>Report 5</li>
+					</ul>
+				</div>
+			</div>
+		</div> -->
+
+
+<script>
+
+//for close, opened dropdown.
+$(".nav a").click(function () {
+    if ($(".navbar-collapse").hasClass("in")) {
+        $('[data-toggle="collapse"]').click();
+    }
+});
+
+/* $("#home a").click(function(event){
+	 event.preventDefault();
+	});
+	 */
+	 
+	 $(function() {
+
+			console.log("init");
+		    var verticalNavigation = new SSDSystem.VerticalNavigation();
+		    verticalNavigation.init();
+
+		});
+
+		$( "a" ).click(function( event ) {
+			  event.preventDefault();
+			  $( "<div>" )
+			    .append( "default " + event.type + " prevented" )
+			    .appendTo( "#log" );
+			});
+			
+		function openNav(){
+			 document.getElementById("contentLeft").style.display = "block";
+		}
+
+
+		  $('#contentRight').click(function(evt) {
+			    if($(evt.target).parents('#contentLeft').length==0) {
+			        $('#contentLeft').hide();
+			    }
+			});
+		  
+		  $('#contentLeft').hide();
+</script>

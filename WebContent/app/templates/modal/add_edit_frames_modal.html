@@ -1,0 +1,39 @@
+<form name="addEditFramesForm" class="addEditFramesModal {{header | lowercase | replace:' ':'_'}}" id="addEditFramesModal" novalidate>
+	<div class="modal-header">
+	    <h3 class="modal-title">{{header}}</h3>
+	</div>
+	<div class="modal-body">
+		<div class="frames" ng-repeat="frame in frames">
+	    	<div class="frames-header">{{frame.header}}</div>
+	    	<div class="frames-content width-100">
+    			<div ng-repeat="fieldSet in frame.config" class="width-50 inline-block" ng-class="{'relative-pos': fieldSet.options }">
+    				<label>{{fieldSet.displayName}} : </label>
+    				<input class="text-input" ng-if="!fieldSet.options && fieldSet.type !== 'date' && fieldSet.type !== 'checkbox'" type="text" name="{{fieldSet.field}}" ng-model="data[fieldSet.field]" ng-disabled="fieldSet.readOnly" min-limit="{{fieldSet.minLimit}}" max-limit="{{fieldSet.maxLimit}}" ng-class="{ 'web-required': fieldSet.required, 'web-numeric': fieldSet.numeric, 'web-alpha': fieldSet.alpha, 'web-alphanumeric': fieldSet.alphanumeric, 'web-trim': fieldSet.trim, 'web-email': fieldSet.email, 'web-limit': fieldSet.limit, 'web-float': fieldSet.float  }" 
+							tooltip-placement="top-right" 
+							uib-tooltip="This field is required"
+							tooltip-class="error"
+							tooltip-trigger="show" />
+					<select class="text-input text-select" ng-if="fieldSet.options && fieldSet.type !== 'date' && fieldSet.type !== 'checkbox'" name="{{fieldSet.field_key}}" ng-model="data[fieldSet.field_key]" ng-disabled="fieldSet.readOnly" ng-class="{ 'web-required': fieldSet.required }"
+							tooltip-placement="top-right" 
+							uib-tooltip="This field is required"
+							tooltip-class="error tooltip-select"
+							tooltip-trigger="show">
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in fieldSet.options" value="{{option.key}}">{{option.value}}</option>
+					</select>
+					<input class="text-input" ng-if="fieldSet.type === 'date' && !fieldSet.readOnly" type="text" name="{{fieldSet.field}}" ng-model="data[fieldSet.field]" web-datepicker max-date="+0D" ng-class="{ 'web-required': fieldSet.required }" 
+							tooltip-placement="top-right" 
+							uib-tooltip="This field is required"
+							tooltip-class="error"
+							tooltip-trigger="show" />
+					<input class="text-input" ng-if="fieldSet.type === 'date' && fieldSet.readOnly" type="text" name="{{fieldSet.field}}" ng-model="data[fieldSet.field]" ng-disabled="fieldSet.readOnly" />
+					<input ng-if="fieldSet.type === 'checkbox'" type="checkbox" name="{{fieldSet.field}}" ng-model="data[fieldSet.field]" ng-disabled="fieldSet.readOnly" />
+    			</div>
+	    	</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+	    <button class="btn btn-primary" type="button" ng-click="ok()">{{ok_text}}</button>
+	    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+	</div>
+</form>

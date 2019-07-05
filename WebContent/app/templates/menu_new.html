@@ -1,0 +1,191 @@
+	<nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"> -->
+            <button type="button" class="navbar-toggle" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand cb-company" href="#/">SAV-Bill</a>
+          </div>
+          <!-- <div id="navbar" class="navbar-collapse collapse"> -->
+         <div class="navbar-collapse" ng-class="{collapse: isCollapsed}">
+            <ul class="nav navbar-nav">
+              <li><a href="#/">Home</a></li>
+             <!--  <li class="dropdown"> -->
+             <li class="dropdown" ng-class="{ open : dd1 }" ng-init="dd1 = false" ng-click="dd1 = !dd1;dd2=false;dd3=false;dd4=false;dd5=false;dd6=false;dd7=false;dd8=false;dd9=false;dd10=false;dd11=false;">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+               	 Master <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a ng-href="#/master/code_master">{{'CODE MASTER' | capitalize}}</a></li>
+                  <li><a ng-href="#/master/bill_config">{{'BILL CONFIGURATION' | capitalize}}</a></li>
+                  <li><a ng-href="#/master/bill_parameter">{{'BILL PARAMETER' | capitalize}}</a></li>
+                  <li><a ng-href="#/master/form_master">{{'FORM MASTER' | capitalize}}</a></li>
+                  <li><a ng-href="#/master/form_previleges">{{'FORM PREVILEGES' | capitalize}}</a></li>
+                  <li><a ng-href="#/master/posting_priority">{{'POSTING PRIORITY' | capitalize}}</a></li>
+                  <li><a ng-href="#/master/tariff_master">{{'TARIFF MASTER' | capitalize}}</a></li>
+                  <li><a ng-href="#/master/rebate_master">{{'REBATE MASTER' | capitalize}}</a></li>
+                  <li><a ng-href="#/master/bank_details">{{'BANK DETAILS' | capitalize}}</a></li>
+                  <li><a ng-href="#/master/cheque_dis_penalty">{{'CHEQUE DISHONOUR PENALTY' | capitalize}}</a></li>
+                  <li><a ng-href="#/master/appeal_amount">{{'APPEAL AMOUNT' | capitalize}}</a></li>
+                  <li><a ng-href="#/master/sub_division_details">{{'SUB DIVISION DETAILS' | capitalize}}</a></li>
+                  <li><a ng-href="#/master/designation_details">{{'DESIGNATION DETAILS' | capitalize}}</a></li>
+                  <li><a ng-href="#/master/contractor_master">{{'CONTRACTOR MASTER' | capitalize}}</a></li>
+                  <li><a ng-href="#/master/meter_reader_master">{{'METER READER MASTER' | capitalize}}</a></li>
+                  <li><a ng-href="#/master/pre_dominant_master">{{'PRE-DOMINANT MASTER' | capitalize}}</a></li>
+                  <li><a ng-href="#/master/hhd_down_and_upload_view">{{'HHD Down and Upload View'}}</a></li>
+                </ul>
+              </li>
+              
+              <li class="dropdown" ng-class="{ open : dd2 }" ng-init="dd2 = false" ng-click="dd2 = !dd2;dd1=false;dd3=false;dd4=false;dd5=false;dd6=false;dd7=false;dd8=false;dd9=false;dd10=false;dd11=false;">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+               	 Customer <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a ng-href="#/customer/customer_master">{{'CUSTOMER MASTER' | capitalize}}</a></li>
+                  <li><a ng-href="#/customer/customer_history">{{'CUSTOMER HISTORY' | capitalize}}</a></li>
+                  <li><a ng-href="#/customer/customer_search">{{'CUSTOMER SEARCH' | capitalize}}</a></li>
+                  <li><a ng-href="#/customer/customer_details">{{'CUSTOMER DETAILS' | capitalize}}</a></li>
+                  <li><a ng-href="#/customer/customer_region_mapping">{{'CUSTOMER REGION MAPPING' | capitalize}}</a></li>
+                  <li><a ng-href="#/customer/add_customer_updations">{{'ADD CUSTOMER UPDATIONS' | capitalize}}</a></li>
+                  <li><a ng-href="#/customer/verify_customer_updations">{{'VERIFY CUSTOMER UPDATIONS' | capitalize}}</a></li>
+                  <li><a ng-href="#/customer/approve_customer_updations">{{'APPROVE CUSTOMER UPDATIONS' | capitalize}}</a></li>
+                  <!-- <li><a ng-href="#/customer/customer_master">{{'CUSTOMER UPDATE REPORT' | capitalize}}</a></li> -->
+                </ul>
+              </li>
+              
+               <li class="dropdown" ng-class="{ open : dd3 }" ng-init="dd3 = false" ng-click="dd3 = !dd3;dd1=false;dd2=false;dd4=false;dd5=false;dd6=false;dd7=false;dd8=false;dd9=false;dd10=false;dd11=false;">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+               	 Deposits <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a ng-href="#/deposits/customer_deposits">{{'CUSTOMER DEPOSITS' | capitalize}}</a></li>
+                  <li><a ng-href="#/deposits/generate_add_mmd_and_deposits_intrest">{{'Generate Add MMD and Deposit Interest'}}</a></li>
+                  <li><a ng-href="#/deposits/deposit_interest_approval">{{'DEPOSIT INTEREST APPROVAL' | capitalize}}</a></li>
+                  <!-- <li><a ng-href="#/customer/customer_mastergenerate_add_mmd_and_deposits_intrest">{{'CUSTOMER UPDATE REPORT' | capitalize}}</a></li> -->
+                </ul>
+              </li>
+              
+              
+              <li class="dropdown" ng-class="{ open : dd4 }" ng-init="dd4 = false" ng-click="dd4 = !dd4;dd1=false;dd2=false;dd3=false;dd5=false;dd6=false;dd7=false;dd8=false;dd9=false;dd10=false;dd11=false;">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+               	 Cash Section <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a ng-href="#/cash_section/search_payments">{{'SEARCH PAYMENTS' | capitalize}}</a></li>
+                  <li><a ng-href="#/cash_section/list_of_payment">{{'LIST OF PAYMENT' | capitalize}}</a></li>
+                  <!-- <li><a ng-href="#/cash_section/customer_deposits">{{'RECEIPTS UPLOAD' | capitalize}}</a></li> -->
+                  <li><a ng-href="#/cash_section/receipts_posting">{{'RECEIPTS POSTING' | capitalize}}</a></li>
+                  <li><a ng-href="#/cash_section/receipts_generation">{{'RECEIPTS GENERATION' | capitalize}}</a></li>
+                </ul>
+              </li>
+              
+              <li class="dropdown" ng-class="{ open : dd9 }" ng-init="dd9 = false" ng-click="dd9 = !dd9;dd1=false;dd2=false;dd3=false;dd4=false;dd5=false;dd6=false;dd7=false;dd8=false;dd10=false;dd11=false;">
+					<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+					 Main <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+					  <li><a ng-href="#/main/bill_generation">{{'BILL GENERATION' | capitalize}}</a></li>
+					  <li><a ng-href="#/main/bill_print">{{'BILL PRINT' | capitalize}}</a></li>
+					  <li><a ng-href="#/main/reconciliation">{{'RECONCILIATION' | capitalize}}</a></li>
+					  <li><a ng-href="#/main/transfer">{{'TRANSFER' | capitalize}}</a></li>
+					</ul>
+				</li>
+				
+             <li class="dropdown" ng-class="{ open : dd5 }" ng-init="dd5 = false" ng-click="dd5 = !dd5;dd1=false;dd2=false;dd3=false;dd4=false;dd6=false;dd7=false;dd8=false;dd9=false;dd10=false;dd11=false;">
+				<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				 Accounts <span class="caret"></span></a>
+				<ul class="dropdown-menu">
+				  <li><a ng-href="#/accounts/view_bills">{{'VIEW BILLS' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/list_bill_details">{{'LIST BILL DETAILS' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/bill_cancellation">{{'BILL CANCELLATION' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/meter_reading/reading_entry">{{'READING ENTRY' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/meter_reading/meter_details">{{'METER DETAILS' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/meter_reading/meter_rating_detail">{{'METER RATING DETAILS' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/debits/debit_details">{{'DEBIT DETAILS' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/debits/debits_approve">{{'DEBITS APPROVAL' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/credits/credit_details">{{'CREDIT DETAILS' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/credits/credits_approval">{{'CREDITS APPROVAL' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/credits/bulk_credits_approval">{{'BULK CREDITS APPROVAL' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/withdrawal/withdrawal_details">{{'WITHDRAWAL DETAILS' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/withdrawal/withdrawal_approval">{{'WITHDRAWAL APPROVAL' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/fl_sanction">{{'FREE LIGHTING SANCTION' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/rebate_details">{{'REBATE DETAILS' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/regular_penalty">{{'REGULAR PENALTY' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/ecs_details">{{'ECS Details'}}</a></li>
+				  <li><a ng-href="#/accounts/cheque_dishonour">{{'CHEQUE DISHONOUR' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/other_cheque_dishonour">{{'OTHER CHEQUE DISHONOUR' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/adjustments">{{'ADJUSTMENTS' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/disconnection">{{'DISCONNECTION' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/reconnection">{{'RECONNECTION' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/spot_folio_regeneration">{{'SPOT FOLIO REGENERATION' | capitalize}}</a></li>
+				  <li><a ng-href="#/accounts/manual_average_unit_fixation">{{'MANUAL AVERAGE UNIT FIXATION' | capitalize}}</a></li>
+				</ul>
+			</li>	
+              
+            <li class="dropdown" ng-class="{ open : dd6 }" ng-init="dd6 = false" ng-click="dd6 = !dd6;dd1=false;dd2=false;dd3=false;dd4=false;dd5=false;dd7=false;dd8=false;dd9=false;dd10=false;dd11=false;">
+				<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				 Infrastructure<span class="caret"></span></a>
+				<ul class="dropdown-menu">
+				  <li><a ng-href="#/infrastructure/station_details">{{'STATION DETAILS' | capitalize}}</a></li>
+				  <li><a ng-href="#/infrastructure/feeder_details">{{'FEEDER DETAILS' | capitalize}}</a></li>
+				  <li><a ng-href="#/infrastructure/transformer_details">{{'TRANSFORMER DETAILS' | capitalize}}</a></li>
+				  <li><a ng-href="#/infrastructure/o&m_details">{{'Operating and Maintenance Details'}}</a></li>
+				  <li><a ng-href="#/infrastructure/transformer_transfer">{{'TRANSFER OF TRANSFORMER' | capitalize}}</a></li>
+				  <li><a ng-href="#/infrastructure/transformer_town_mapping">{{'TRANSFORMER TOWN MAPPING' | capitalize}}</a></li>
+				</ul>
+			</li>  
+            
+            <li class="dropdown" ng-class="{ open : dd7 }" ng-init="dd7 = false" ng-click="dd7 = !dd7;dd1=false;dd2=false;dd3=false;dd4=false;dd5=false;dd6=false;dd8=false;dd9=false;dd10=false;dd11=false;">
+				<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				 Energy Audit <span class="caret"></span></a>
+				<ul class="dropdown-menu">
+				  <li><a ng-href="#/energy_audit/transformer_meter_master">{{'TRANSFORMER METER MASTER' | capitalize}}</a></li>
+				  <li><a ng-href="#/energy_audit/transformer_meter_reading">{{'TRANSFORMER METER READING' | capitalize}}</a></li>
+				  <li><a ng-href="#/energy_audit/feeder_energy_audit">{{'FEEDER ENERGY AUDIT' | capitalize}}</a></li>
+				</ul>
+			</li> 
+			
+			<li class="dropdown" ng-class="{ open : dd8 }" ng-init="dd8 = false" ng-click="dd8 = !dd8;dd1=false;dd2=false;dd3=false;dd4=false;dd5=false;dd6=false;dd7=false;dd9=false;dd10=false;dd11=false;">
+				<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				 User <span class="caret"></span></a>
+				<ul class="dropdown-menu">
+				  <li><a ng-href="#/user/user_roles">{{'USER ROLES' | capitalize}}</a></li>
+				  <li><a ng-href="#/user/user_master">{{'USER MASTER' | capitalize}}</a></li>
+				  <li><a ng-href="#/user/user_session_details">{{'USER SESSION DETAILS' | capitalize}}</a></li>
+				  <li><a ng-href="#/user/change_password">{{'CHANGE PASSWORD' | capitalize}}</a></li>
+				  <li><a ng-href="#/reports/billingefficiency">{{'DELEGATE USER' | capitalize}}</a></li>
+				</ul>
+			</li> 
+            
+              			
+			<li class="dropdown" ng-class="{ open : dd11 }" ng-init="dd11 = false" ng-click="dd11 = !dd11;dd1=false;dd2=false;dd3=false;dd4=false;dd5=false;dd6=false;dd7=false;dd9=false;dd8=false;dd10=false;">
+				<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				 Reports <span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<li><a ng-href="#/reports/reports">{{'Reports' | capitalize}}</a></li>
+				  <!-- <li><a ng-href="#/reports/billing_efficiency">{{'Billing Efficiency' | capitalize}}</a></li> -->
+				</ul>
+			</li> 
+            
+              
+              
+              
+            </ul>
+            
+            
+            <ul class="nav navbar-nav navbar-right">
+               <li class="dropdown" ng-class="{ open : dd10 }" ng-init="dd10 = false" ng-click="dd10 = !dd10;dd1=false;dd2=false;dd3=false;dd4=false;dd5=false;dd6=false;dd7=false;dd9=false;dd8=false;dd11=false;">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+               	 <!-- {{user.name}} -->
+               	 	<img src="app/img/profile.png" height="25" width="25">
+               	 	               	  <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li>
+                  	<a style="background-color: navy;color: white;">{{user.name}} </a>
+                  <br/>
+                  <a ng-click="logout();">Log Out</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>

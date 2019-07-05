@@ -1,0 +1,135 @@
+<div id="customer" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper customer-search">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="width-100 clear-both padding-top-15">
+				<div class="change-types">
+					<div class="width-100" ng-repeat="changeType in customer_change_types" param="{{changeType.key}}" ng-click="load_customer_updation_template($event)">{{changeType.value}}</div>
+				</div>
+				<div class="change-types-content">
+					<div class="action width-100 padding-top-15 text-center">
+						RR Number: <input type="text" id="customer_updation_rr_number" ng-model="rr_number" class="text-input" ng-enter="load_customer_information()" />
+						<button ng-click="load_customer_information()">Load</button>
+					</div>
+					<table class="width-100 pull-left margin-top-15 margin-bottom-15">
+						<tbody>
+							<tr>
+								<td></td>
+								<td>Old Values</td>
+								<td>New Values</td>
+							</tr>
+						</tbody>
+					</table>
+					<table ng-show="selectedChange === '1'" class="width-100">
+						<tbody>
+							
+							<tr>
+								<td>Load Sanctioned KW</td>
+								<td>{{data.ld_sanct_kw}}</td>
+								<td><input type="text" class="text-input" ng-model="data.LoadKW" /></td>
+							</tr>
+							<tr>
+								<td>Load Sanctioned HP</td>
+								<td>{{data.ld_sanct_hp}}</td>
+								<td><input type="text" class="text-input" ng-model="data.LoadHP" /></td>
+							</tr>
+							<tr>
+								<td>Load Sanctioned KVA</td>
+								<td>{{data.ld_sanct_kva}}</td>
+								<td><input type="text" class="text-input" ng-model="data.LoadKVA" /></td>
+							</tr>
+						</tbody>
+					</table>
+					<table ng-show="selectedChange === '2'" class="width-100">
+						<tbody>
+							<tr>
+								<td>Tariff Category</td>
+								<td>{{data.trf_catg_description}}</td>
+								<td><select class="text-input text-select" ng-model="data.trfCatg">
+									<option value="">-- Select --</option>
+									<option ng-repeat="option in $root.customer_master_picklists.TariffCode"
+											value="{{option.key}}">{{option.value}}</option>
+								</select></td>
+							</tr>
+						</tbody>
+					</table>
+					<table ng-show="selectedChange === '3'" class="width-100">
+						<tbody>
+							<tr>
+								<td>Customer Name</td>
+								<td>{{data.customer_name}}</td>
+								<td><input type="text" class="text-input" ng-model="data.customerName" /></td>
+							</tr>
+						</tbody>
+					</table>
+					<table ng-show="selectedChange === '4'" class="width-100">
+						<tbody>
+							<tr>
+								<td>Customer Status</td>
+								<td>{{data.customer_sts_description}}</td>
+								<td><select class="text-input text-select" ng-model="data.customerStatus">
+								<option value="">-- Select --</option>
+								<option ng-repeat="option in $root.customer_master_picklists.CustomerStatus"
+										value="{{option.key}}">{{option.value}}</option>
+								</select></td>
+							</tr>
+						</tbody>
+					</table>
+					<table ng-show="selectedChange === '5'" class="width-100">
+						<tbody>
+							<tr>
+								<td>Premises Address</td>
+								<td>{{data.premise_addr1}}</td>
+								<td><input type="text" class="text-input" ng-model="data.pemisesAddess" /></td>
+							</tr>
+							<tr>
+								<td>Address1</td>
+								<td>{{data.premise_addr2}}</td>
+								<td><input type="text" class="text-input" ng-model="data.pemisesAddess1" /></td>
+							</tr>
+							<tr>
+								<td>Address2</td>
+								<td>{{data.premise_addr3}}</td>
+								<td><input type="text" class="text-input" ng-model="data.pemisesAddess2" /></td>
+							</tr>
+						</tbody>
+					</table>
+					<table ng-show="selectedChange === '6'" class="width-100">
+						<tbody>
+							<tr>
+								<td>Corresponding Address</td>
+								<td>{{data.corres_addr1}}</td>
+								<td><input type="text" class="text-input" ng-model="data.correspondingAddress" /></td>
+							</tr>
+							<tr>
+								<td>Address1</td>
+								<td>{{data.corres_addr2}}</td>
+								<td><input type="text" class="text-input" ng-model="data.correspondingAddress1" /></td>
+							</tr>
+							<tr>
+								<td>Address2</td>
+								<td>{{data.corres_addr3}}</td>
+								<td><input type="text" class="text-input" ng-model="data.correspondingAddress2" /></td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="width-100 remarks">
+						<tbody>
+							<tr>
+								<td class="padding-top-15">Remarks</td>
+								<td colspan="2"><textarea type="text" class="text-input text-area" ng-model="data.remarks" /></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="action width-100 text-center padding-top-15">
+						<button ng-click="update_customer_information()">Update</button>
+						<button ng-click="clear_customer_information()">Clear</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

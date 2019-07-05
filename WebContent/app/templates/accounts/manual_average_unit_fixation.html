@@ -1,0 +1,27 @@
+<div id="accounts" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper accounts-manual-average-unit-fixation">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<div class="pull-left margin-top-5">
+					RR Number : <input type="text" placeholder="Type & Hit Enter" id="manual-average-unit-fixation-rr-number"  tooltip-placement="right" uib-tooltip-html="manulAverageFixationRRNoTooltipHtml" class="text-input manual-average-unit-fixation-rr-number" ng-enter="load_manual_average_unit_fixation($event)" ng-disabled="manual_average_fixation_disable_rr_no">
+				</div>
+				<div class="pull-left">
+					<button ng-click="load_manual_average_unit_fixation($event)" class="">Show</button>
+				</div>
+				<div class="pull-right">
+					<button ng-click="add_manual_average_unit_fixation()">Add New</button>
+					<button ng-click="manual_average_unit_fixation_clear()" class="manual-average-unit-fixation-clear">Clear</button>
+				</div>
+			</div>
+			<div class="width-100 clear-both padding-top-15">
+				<div id="manual_average_unit_fixation_details">
+					<div class="gridStyle" ui-grid="manualAverageUnitFixationDetailsGridOptions" style="width: 100%;height: 440px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

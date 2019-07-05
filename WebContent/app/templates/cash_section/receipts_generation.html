@@ -1,0 +1,231 @@
+<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper" id="receipts-generation">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+	<!-- <div class="row">
+		<div class="col-md-12 text-md-centery>
+			<h3>Receipts Generation</h3>
+			<hr class="mb-1">
+		</div>
+	</div> -->
+
+<style>
+#summarytable{
+
+}
+</style>
+
+	
+	<div class="row">
+		<div class="col-xs-7">
+			<div class="panel panel-primary">
+			  <div class="panel-heading">
+			    <h3 class="panel-title" style="font-size: 20px;"><i>Receipts Entry</i></h3>
+			  </div>
+			  <div class="panel-body">
+				  <div class="row">
+					  <div class="form-inline form-compact col-xs-3">
+						<label for="dfromdate" class="labelchange">Receipt Date</label>
+						<div class=' form-inline input-group input-append date receiptdate'
+							data-provide="datepicker">
+							<input type='text' class="form-control" id="receiptdate"
+								readonly="readonly" name="receiptdate" ng-model="receipts_entry.receiptdate"
+								> <span
+								class="input-group-addon datepicker"> <span
+								class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
+					 </div>
+					 <div class="col-xs-4">
+					 	<label>Payment Purpose</label>
+					 	<select class="form-control"  style="height: 30px;" ng-model="receipts_entry.paymentpurpose">
+			  				<option value="">----Choose Payment Purpose---</option>
+			  				<option ng-repeat="option in paymentpurposelist" value="{{option.key}}">{{option.value}}</option>
+			  			</select>
+					 </div>
+ 					 <div class="col-xs-4">
+					 	<label>Payment Mode</label>
+					 	<select class="form-control"  style="height: 30px;" ng-model="receipts_entry.paymentmode">
+			  				<option value="">----Choose Payment Mode---</option>
+			  				<option ng-repeat="option in paymentmodelist" value="{{option.key}}">{{option.value}}</option>
+			  			</select>
+					 </div>
+				  </div>
+				  <br/>
+				  <div class="row">
+			  		<div class="form-inline form-compact col-xs-3">
+						<label for="dfromdate" class="labelchange">Cheque Date</label>
+						<div class=' form-inline input-group input-append date chequedate'
+							data-provide="datepicker">
+							<input type='text' class="form-control" id="chequedate"
+								readonly="readonly" name="receiptdate" ng-model="receipts_entry.chequedate"
+								 ng-disabled="receipts_entry.paymentmode === 'cash'"
+								> <span
+								class="input-group-addon datepicker"> <span
+								class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
+					 </div>
+					  <div class="col-xs-3">
+					 	<label>Cheque Number</label>
+						 	<input type="text" class="form-control" ng-model="receipts_entry.chequenumber" ng-disabled="receipts_entry.paymentmode === 'cash'" alphabetsnumbers-only>
+					 </div>
+					 <div class="col-xs-3">
+					 	<label>Cheque Amount</label>
+						 	<input type="text" class="form-control" ng-model="receipts_entry.chequeamount" ng-disabled="receipts_entry.paymentmode === 'cash'" numbers-only>
+					 </div>
+					 <div class="col-xs-3">
+					 	<label>Drawee Bank</label>
+						 	<input type="text" class="form-control" ng-model="receipts_entry.draweebank" ng-disabled="receipts_entry.paymentmode === 'cash'" alphabets-only>
+					 </div>
+				  </div>
+			  </div>
+			</div>
+		</div>
+		
+		<div class="col-xs-5" id="summarytable">
+			<div class="panel panel-primary">
+			  <div class="panel-heading">
+			    <h3 class="panel-title" style="font-size: 20px;"><i>Summary</i> <span class="pull-right">Receipt Number :- <strong>{{summarydetails.receipt_numbers}}</strong></span></h3>
+			    
+			  </div>
+			  <div class="panel-body">
+			    <div class="row">
+			    	<div class="col-xs-4"><span>First Receipt Number</span></div>
+			    	<div class="col-xs-2">{{summarydetails.first_receipt_number}}</div>
+			    	<div class="col-xs-4"><span>Last Receipt Number</span></div>
+			    	<div class="col-xs-2">{{summarydetails.last_receipt_number}}</div>
+			    </div>
+			    <div class="row">
+			    	<div class="col-xs-4"><span>Cash Receipts</span></div>
+			    	<div class="col-xs-2">{{summarydetails.cash_receipts}}</div>
+			    	<div class="col-xs-4"><span>Cash Amount</span></div>
+			    	<div class="col-xs-2">{{summarydetails.cash_amount}}</div>
+			    </div>
+			    <div class="row">
+			    	<div class="col-xs-4"><span>Cheque/DD Receipts</span></div>
+			    	<div class="col-xs-2">{{summarydetails.cheque_receipts}}</div>
+			    	<div class="col-xs-4"><span>Cheque/DD Amount</span></div>
+			    	<div class="col-xs-2">{{summarydetails.cheque_amount}}</div>
+			    </div>
+			    <div class="row">
+			    	<div class="col-xs-4"><span>Other Receipts</span></div>
+			    	<div class="col-xs-2">{{summarydetails.other_recipts}}</div>
+			    	<div class="col-xs-4"><span>Other Amount</span></div>
+			    	<div class="col-xs-2">{{summarydetails.other_amount}}</div>
+			    </div>
+			    <div class="row">
+			    	<div class="col-xs-4"><span>Cancelled Receipts</span></div>
+			    	<div class="col-xs-2">{{summarydetails.cancelled_recipts}}</div>
+			    	<div class="col-xs-4"><span>Cancelled Amount</span></div>
+			    	<div class="col-xs-2">{{summarydetails.cancelled_amount}}</div>
+			    </div>
+			  </div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-xs-7">
+			<div class="panel panel-primary">
+			  <div class="panel-heading">
+			    <h3 class="panel-title" style="font-size: 20px;"><i>Bill Details</i></h3>
+			  </div>
+			  <div class="panel-body">
+			  	<div class="row">
+			  		<div class="col-xs-4">
+			    		<label>Account Id or RR Number</label>
+			    		<input type="text" class="form-control" id="billdetails_rrnumber" 
+			    		ng-model="billdetails.rrnumber"class="form-control" placeholder="Type & press Enter"
+			    		ng-enter="getBillDetailsbyrrno()">
+			    	</div>
+			    	<div class="col-xs-4">
+			    		<label>Bill Amount</label>
+			    		<input type="text" class="form-control" ng-model="billdetails.billamount">
+			    	</div>
+			  	</div>
+			    <div class="row">
+			  		<div class="col-xs-12">
+			  			<label>Consumer Name</label>	
+			  			<input type="text" class="form-control" ng-model="billdetails.consumername">
+			  		</div>
+			  	</div>	
+			  	<br/>
+			  	<div class="row">
+			  		<div class="col-xs-2">
+			  			<input type="button" class="btn btn-primary btn-block" value="Add" 
+			  			id="add_button" ng-click="addreceipttotable()">
+			  		</div>
+			  		<div class="col-xs-2">
+			  			<input type="button" class="btn btn-primary btn-info" value="Clear" ng-click="receipts_generation_clear()">
+			  		</div>
+			  	</div>
+			  </div>
+			</div>
+		</div>
+		
+		<div class="col-xs-5">
+			<div class="panel panel-primary">
+			  <div class="panel-heading">
+			    <h3 class="panel-title" style="font-size: 20px;"><i>Receipt Added Details</i></h3>
+			  </div>
+			  <div class="panel-body">
+			    	<table class="table table-sm table-hover table-striped table-primary" style="height: 130px;overflow: scroll;">
+			    		<thead class="thead-light">
+						    <tr>
+						      <th>#</th>
+						      <th>Customer Id</th>
+						      <th>RR Number</th>
+						      <th>Consumer Name</th>
+						      <th>Amount Paid</th>
+						    </tr>
+						  </thead>
+						  <tbody >
+						    <tr ng-repeat="receipt in receipt_details">
+						      <th>{{$index + 1}}</th>
+						      <th>{{receipt.customerid}}</th>
+						      <td>{{receipt.newrrno.substr(7)}}</td>
+						      <td>{{receipt.name}}</td>
+						      <td>{{receipt.amount}}</td>
+						    </tr>
+						  </tbody>
+						  <tfoot ng-show="total_bill_amount > 0">
+						  		<tr>
+						  			<td colspan="4" align="right"><h5>Total :</h5></td>
+						  			<td><h5> <strong>{{total_bill_amount}}</strong></h5></td>
+						  		</tr>
+						  </tfoot>	
+			    	</table>
+			    	
+		    	<div class="row">
+			  		<div class="col-xs-2">
+			  			<input type="button" class="btn btn-primary btn-block" value="Save" ng-click="SaveAndPrintReceipts()">
+			  		</div>
+			  		<div class="col-xs-2">
+			  			<input type="button" class="btn btn-primary btn-info" value="Clear"  ng-click="receipts_generation_clear()">
+			  		</div>
+			  	</div>
+			  </div>
+			</div>
+		</div>
+	</div>
+</div>	
+</div>
+
+<script type="text/javascript">
+$('.receiptdate').datetimepicker({
+	format : 'dd/mm/yyyy',
+	minView : 2,
+	autoclose : 1,
+	//startDate : new Date(new Date().setDate(new Date().getDate() - 15)),
+	endDate : new Date()
+});
+
+$('.chequedate').datetimepicker({
+	format : 'dd/mm/yyyy',
+	minView : 2,
+	autoclose : 1,
+	//startDate : new Date(new Date().setDate(new Date().getDate() - 15)),
+	endDate : new Date()
+});
+</script>

@@ -1,0 +1,29 @@
+<div id="master" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper pre-dominant-master">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<div class="pull-left margin-top-5">
+					Select Month : <input type="text" ng-model="preDominantMasterMonthYear" web-datepicker class="text-input pre-dominant-master-details" ng-enter="load_pre_diminant_master_details($event)" />
+				</div>
+				<div class="pull-left ">
+					<button ng-click="load_pre_diminant_master_details($event)" class="">Show</button>
+				</div>
+				<div class="pull-right">
+					<button ng-click="save_pre_diminant_master()">Save</button>
+					<button ng-click="pre_dominant_master_clear()" class="pre-dominant-master-clear">Clear</button>
+				</div>
+			</div>
+			
+			<div class="width-100 clear-both padding-top-15">
+				<form name="preDominantMasterDetailsForm" novalidate>
+					<div class="gridStyle" id="preDominantMasterDetailsGrid" ui-grid="preDominantMasterDetailsGridOptions" style="width: 100%;height: 440px;"></div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+</div>

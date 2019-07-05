@@ -1,0 +1,57 @@
+<div id="deposits" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper deposits-customer-deposits">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<table class="width-75 pull-left">
+					<tbody>
+						<tr>
+							<td>RR Number : </td>
+							<td><input type="text" id="customer-deposits-rr-number" class="text-input" ng-enter="load_deposit_details()" /></td>
+							<td>Ledger Number : </td>
+							<td><input type="text" id="customer-deposits-ledger-number" class="text-input" ng-enter="load_deposit_details()"/></td>
+							<td>Folio Number : </td>
+							<td><input type="text" id="customer-deposits-ledger-folio-number" class="text-input" ng-enter="load_deposit_details()"/></td>
+						</tr>
+						<tr>
+							<td>O&M Code : </td>
+							<td>
+								<select id="customer-master-details-om-code" class="text-input text-select" ng-model="om_code" ng-change="get_meter_reader_info()" ng-enter="load_customer_details($event)" >
+									<option value="">-- Select --</option>
+									<option ng-repeat="option in om_list" value="{{option.key}}">{{option.value}}</option>
+								</select>
+							</td>
+							<td>MR Code : </td>
+							<td>
+								<select id="customer-deposits-details-mr-code" class="text-input text-select" ng-model="mr_code" ng-change="get_reading_day_info()" ng-enter="load_deposit_details($event)">
+									<option value="">-- Select --</option>
+									<option ng-repeat="option in MeterReaderCode" value="{{option.key}}">{{option.value}}</option>
+								</select>
+							</td>
+							<td>Reading Day : </td>
+							<td>
+								<select id="customer-deposits-details-rdg-day" class="text-input text-select" ng-enter="load_deposit_details($event)">
+									<option value="">-- Select --</option>
+									<option ng-repeat="option in MeterReadingDay" value="{{option.key}}">{{option.value}}</option>
+								</select>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="width-25 pull-right padding-top-10">
+					<button ng-click="load_deposit_details($event)" class="">Show</button>
+					<button ng-click="add_customer_deposit_details()">Add New</button>
+					<button ng-click="customer_deposits_clear()" class="customer-deposits-clear">Clear</button>
+				</div>
+			</div>
+			<div class="width-100 clear-both padding-top-5">
+				<div id="customer_deposits">
+					<div class="gridStyle" ui-grid="customerDepositsGridOptions" ui-grid-pinning ui-grid-expandable style="width: 100%;height: 470px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

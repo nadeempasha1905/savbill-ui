@@ -1,0 +1,37 @@
+<div id="customer" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper verify_customer-updations-details"">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			
+			<div class="action width-100">
+				
+				<div class="pull-left margin-top-5">
+					Change Type : 
+					<select type="text" id="customer-change-types" class="text-input" ng-enter="load_customer_changes($event)">
+						<option value="">-- Select --</option>
+						<option ng-repeat="type in customer_change_types" value="{{type.key}}">{{type.value}}</option>
+					</select>
+				</div>
+				<div class="pull-left">
+					<button ng-click="load_customer_changes($event)" class="">Show</button>
+				</div>
+				
+				<div class="pull-right">
+					<button ng-click="verify_customer_updations_verify()" class="verify-customer-updations-verify">Verify</button>
+					<button ng-click="verify_customer_updations_reject()" class="verify-customer-updations-reject">Reject</button>
+					<button ng-click="verify_customer_updations_clear()" class="verify-customer-updations-clear">Clear</button>
+				</div>
+			</div>
+			
+			<div class="width-100 clear-both padding-top-15">
+				<div id="verify_customer_updations_details">
+					<div class="gridStyle" ui-grid="verifyCustomerUpdationsDetailsGridOptions" ui-grid-selection style="width: 100%;height: 440px;"></div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>

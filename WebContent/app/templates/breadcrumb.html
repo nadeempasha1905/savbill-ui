@@ -1,0 +1,5 @@
+<div class="pull-left"><a class="link" href="{{$root.baseURL}}#/home">Home</a></div>
+<div class="pull-left" ng-repeat="item in items">
+	<i class="fa fa-angle-right"></i>
+	<a class="not-link">{{item | replace:'_':' ' | capitalize}}</a>
+</div>

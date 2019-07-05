@@ -1,0 +1,35 @@
+<div id="cash_section" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper cash-section-receipts-posting-details">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<div class="pull-left margin-top-5">
+					Receipt Date : <input type="text" ng-model="receiptsPostingReceiptDate" web-datepicker class="text-input" ng-enter="load_receipt_details_for_posting($event)" />
+				</div>
+				<div class="pull-left margin-top-5">
+					Cash Counter : 
+					<select type="text" id="receipt-posting-cash-counter-number" ng-model="receiptsPostingCounter" class="text-input" ng-enter="load_receipt_details_for_posting($event)">
+						<option value="">-- Select --</option>
+						<option ng-repeat="type in cashCountersList" value="{{type.key}}">{{type.value}}</option>
+					</select>
+				</div>
+				
+				
+				<div class="pull-right  margin-top-5">
+					<button ng-click="load_receipt_details_for_posting($event)">Show</button>
+					<button ng-click="receipts_posting_details_post()" class="receipts-posting-details-post">Post</button>
+					<button ng-click="receipts_posting_details_re_post()" class="receipts-posting-details-re-post">Re-Post</button>
+					<button ng-click="receipts_posting_details_clear()" class="receipts-posting-details-clear">Clear</button>
+				</div>
+			</div>
+			<div class="width-100 clear-both padding-top-15">
+				<div id="receipts_posting_details">
+					<div class="gridStyle" ui-grid="receiptsPostingDetailsGridOptions" style="width: 100%;height: 440px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

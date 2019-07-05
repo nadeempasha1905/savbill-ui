@@ -1,0 +1,34 @@
+<div id="accounts" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper accounts-rebate-details">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<div class="pull-left margin-top-5">
+					RR Number : <input type="text" placeholder="Type & Hit Enter" tooltip-placement="bottom-right" uib-tooltip-html="rebateDetailsRRNoTooltipHtml" id="rebate-details-rr-number" class="text-input" ng-enter="load_rebate_details($event)" />
+				</div>
+				<div class="pull-left margin-top-5">
+					Rebate Type : 
+					<select type="text" id="rebate-details-rebate-type" class="text-input" ng-enter="load_rebate_details($event)">
+						<option value="">-- Select --</option>
+						<option ng-repeat="type in RebateList" value="{{type.key}}">{{type.value}}</option>
+					</select>
+				</div>
+				<div class="pull-left">
+					<button ng-click="load_rebate_details($event)" class="">Show</button>
+				</div>
+				<div class="pull-right">
+					<button ng-click="add_rebate_details()">Add New</button>
+					<button ng-click="rebate_details_clear()" class="rebate-details-clear">Clear</button>
+				</div>
+			</div>
+			<div class="width-100 clear-both padding-top-15">
+				<div id="rebate_details">
+					<div class="gridStyle" ui-grid="rebateDetailsGridOptions" style="width: 100%;height: 440px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

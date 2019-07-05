@@ -1,0 +1,278 @@
+<div id="login">
+	<div class="camera_container">
+		<div id="slider_wrap" class="camera_yellow_skin">
+			<div title="slide-1" data-thumb="/savbill-ui/app/img/slider/1.jpg"  data-src="/savbill-ui/app/img/slider/1.jpg">
+				<div class="fadeIn container camera_effected">The text of your html element</div>
+			</div>
+			<div title="slide-2" data-thumb="/savbill-ui/app/img/slider/2.jpg"  data-src="/savbill-ui/app/img/slider/2.jpg"></div>
+			<div title="slide-3" data-thumb="/savbill-ui/app/img/slider/3.jpg"  data-src="/savbill-ui/app/img/slider/3.jpg">
+				<div class="fadeIn container camera_effected">The text of your html element</div>
+			</div>
+			<div title="slide-4" data-thumb="/savbill-ui/app/img/slider/4.jpg"  data-src="/savbill-ui/app/img/slider/4.jpg"></div>
+			<div title="slide-5" data-thumb="/savbill-ui/app/img/slider/5.jpg"  data-src="/savbill-ui/app/img/slider/5.jpg"></div>
+		</div>
+	</div>
+	<div id="header">
+		<div class="container">
+			<div class="logo pull-left"></div>
+			<ul class="menu pull-right">
+				<li>
+					<a>Help</a>
+				</li>
+				<li>
+					<a>FAQs</a>
+				</li>
+				<li>
+					<a>Support</a>
+				</li>
+			</ul>
+		</div>	
+	</div>
+	<div class="login-details">
+		<div class="icon fa fa-user"></div>
+		<p>SAV-BILL ACCOUNT LOGIN</p>
+		<ul ng-if="$root.password_mode">
+			<li>Name : {{$root.user.name}} ( {{$root.user.user_id}} )<span ng-click="notMe()" class="not-me" title="Click here to re-login with different ID">Not Me..?</span></li>
+			<li>Role : {{$root.user.role}}</li>
+			<li>Sub Divison : {{$root.user.subDivision}}</li>
+			<li>Divison : {{$root.user.division}}</li>
+		</ul>
+		<form id="setLogin" ng-submit="submitLogin($event)">
+			<input id="userID" type="text" placeholder="USER ID" ng-hide="$root.password_mode" />
+			<input id="password" type="password" placeholder="PASSWORD"  ng-show="$root.password_mode" />
+			<a class="continue fa fa-sign-out" ng-click="submitLogin($event)">Get started now!</a>
+			<input type="submit" style="display:none;"/>
+		</form>
+	</div>
+	<div class="banner">
+		<div class="container">
+			<span>Welcome to EC-BILL</span><br>
+			Application is specially designed to manage Electricity Supply System. Data is fully protected with us.
+		</div>
+	</div>
+	<div class="container" id="features">        
+       	<div class="header text-center">
+            <h3>Our Best Features</h3>
+            <p>Cleaness provides your complete web service solution</p>
+            <div class="header-border"></div>
+		</div>
+           
+        <div class="row">
+           	<div class="col-md-4"> <!-- 1 -->
+               	<div class="widget">
+                   	<div class="feature">
+                       	<i class="fa fa-cogs"></i>
+                           <h4>CGI/Database</h4>
+                           <p>Sed tristique rhoncus dolor a porta nunc suscipit condimentum ultrices fusce non arcu urna uis iaculis tellus id felis fringilla commodo aliquam facilisis diam quis nibh euismod et varius enim gravida.</p>
+					</div>
+				</div>
+			</div>
+               
+            <div class="col-md-4"> <!-- 2 -->
+               	<div class="widget">
+                   	<div class="feature">
+                       	<i class="fa fa-print"></i>
+                           <h4>Site Promotion</h4>
+                           <p>Sed tristique rhoncus dolor a porta nunc suscipit condimentum ultrices fusce non arcu urna uis iaculis tellus id felis fringilla commodo aliquam facilisis diam quis nibh euismod et varius enim gravida.</p>
+					</div>
+				</div>
+			</div>
+               
+            <div class="col-md-4"> <!-- 3 -->
+               	<div class="widget">
+                   	<div class="feature">
+                       	<i class="fa fa-download"></i>
+                           <h4>Free Website Scripts</h4>
+                           <p>Sed tristique rhoncus dolor a porta nunc suscipit condimentum ultrices fusce non arcu urna uis iaculis tellus id felis fringilla commodo aliquam facilisis diam quis nibh euismod et varius enim gravida.</p>
+					</div>
+				</div>
+			</div>
+		</div> <!-- End row-fluid -->
+           
+        <div class="row">
+           	<div class="col-md-4"> <!-- 4 -->
+               	<div class="widget">
+                   	<div class="feature">
+                       	<i class="fa fa-laptop"></i>
+                           <h4>Well Docummented</h4>
+                           <p>Sed tristique rhoncus dolor a porta nunc suscipit condimentum ultrices fusce non arcu urna uis iaculis tellus id felis fringilla commodo aliquam facilisis diam quis nibh euismod et varius enim gravida.</p>
+					</div>
+				</div>
+			</div>
+               
+            <div class="col-md-4"> <!-- 5 -->
+               	<div class="widget">
+                   	<div class="feature">
+                       	<i class="fa fa-globe"></i>
+                           <h4>Forwarding E-mail Accounts</h4>
+                           <p>Sed tristique rhoncus dolor a porta nunc suscipit condimentum ultrices fusce non arcu urna uis iaculis tellus id felis fringilla commodo aliquam facilisis diam quis nibh euismod et varius enim gravida.</p>
+					</div>
+				</div>
+			</div>
+               
+            <div class="col-md-4"> <!-- 6 -->
+               	<div class="widget">
+                   	<div class="feature">
+                       	<i class="fa fa-calendar"></i>
+                           <h4>Unlimited Domain Hosting</h4>
+                           <p>Sed tristique rhoncus dolor a porta nunc suscipit condimentum ultrices fusce non arcu urna uis iaculis tellus id felis fringilla commodo aliquam facilisis diam quis nibh euismod et varius enim gravida.</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<div id="contact">
+    	<div class="top-icon"><i class="fa fa-comments-o"></i></div> <!-- icon -->
+    	<div class="container">
+            <h4><span>Send us a message or feedback</span>to keep in touch with us!</h4>
+            <div class="header-border"></div>
+            <form id="contact-form" method="post" action="#">
+            	<div class="row">
+                	<div class="col-md-5 col-md-offset-1">
+                    	<input type="text" name="email" maxlength="255" placeholder="Email (required)">
+                        <input type="text" name="name" maxlength="80" placeholder="Your Name">
+                        <input type="text" name="subject" maxlength="255" placeholder="Message Subject">
+					</div>
+                    <div class="col-md-5">
+                    	<textarea name="message" placeholder="Message Text (required)"></textarea>
+                        <input type="submit" name="submit" value="Send a Message">
+					</div>
+                </div> <!-- End row -->
+                
+                <div class="row">
+                    <div class="span10 offset1">
+                    	<div class="data-status"></div> <!-- data submit status -->
+                    </div>
+				</div> <!-- End row -->
+			</form>
+        </div> <!-- End container -->
+    </div>
+    <div id="buynow" class="text-center">
+    	<div class="container">
+        	<h2>Start your free, <strong>no risk</strong>, Cloud Bill account!</h2>
+            <p>Send your information now and background check will take minimum 24hrs!</p>
+            <div class="btn-section">
+            	<a href="#" class="btn"><i class="fa fa-send"></i> Request an Account</a>
+			</div>
+		</div>
+		<svg id="curveUpColor" xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100" viewBox="0 0 100 100" preserveAspectRatio="none">
+		    <path d="M0 100 C 20 0 50 0 100 100 Z"/>
+		</svg>
+	</div>
+	<div id="partners">
+		<div class="header text-center">
+			<h3 class="color-white">Our Partners</h2>
+			<p>Some Greatest Thoughts Behind</p>
+			<div class="header-border"></div>
+		</div>
+		<div id="partner_wrap" class="camera_yellow_skin">
+			<div title="KPTCL" data-src="/savbill-ui/app/img/partners/KPTCL_logo.jpg">
+				<div class="fadeIn partner-details">
+					<div class="partner-logo">
+						<img alt="KPTCL" src="/savbill-ui/app/img/partners/KPTCL_logo.jpg" width="100%" height="100%" />
+					</div>
+					<div class="partner-caption">
+						<blockquote>
+						    <p>Vel metus scelerisque gravida sit amet. Nibh libero nulla cras an dulla </p>
+						    <footer>Albert Franco, <em>Marketing Head</em></footer>
+						</blockquote>
+					</div>
+				</div>
+			</div>
+			<div title="MESCOM" data-src="/savbill-ui/app/img/partners/MESCOM_logo.jpg">
+				<div class="fadeIn partner-details">
+					<div class="partner-logo">
+						<img alt="MESCOM" src="/savbill-ui/app/img/partners/MESCOM_logo.jpg" width="100%" height="100%" />
+					</div>
+					<div class="partner-caption">
+						<blockquote>
+						    <p>Qytiwry uuyqe wu . Nibh libero nulla cras an dulla </p>
+						    <footer>Albert Franco, <em>Marketing Head</em></footer>
+						</blockquote>
+					</div>
+				</div>
+			</div>
+			<div title="BESCOM" data-src="/savbill-ui/app/img/partners/BESCOM_logo.jpg">
+				<div class="fadeIn partner-details">
+					<div class="partner-logo">
+						<img alt="BESCOM" src="/savbill-ui/app/img/partners/BESCOM_logo.jpg" width="100%" height="100%" />
+					</div>
+					<div class="partner-caption">
+						<blockquote>
+						    <p>BESCOM uuyqe wu . Nibh libero nulla cras an dulla </p>
+						    <footer>Albert Franco, <em>Marketing Head</em></footer>
+						</blockquote>
+					</div>
+				</div>
+			</div>
+			<div title="HESCOM" data-src="/savbill-ui/app/img/partners/HESCOM_logo.jpg">
+				<div class="fadeIn partner-details">
+					<div class="partner-logo">
+						<img alt="HESCOM" src="/savbill-ui/app/img/partners/HESCOM_logo.jpg" width="100%" height="100%" />
+					</div>
+					<div class="partner-caption">
+						<blockquote>
+						    <p>HESCOM uuyqe wu . Nibh libero nulla cras an dulla </p>
+						    <footer>Albert Franco, <em>Marketing Head</em></footer>
+						</blockquote>
+					</div>
+				</div>
+			</div>
+			<div title="CESCOM" data-src="/savbill-ui/app/img/partners/CESCOM_logo.jpg">
+				<div class="fadeIn partner-details">
+					<div class="partner-logo">
+						<img alt="CESCOM" src="/savbill-ui/app/img/partners/CESCOM_logo.jpg" width="100%" height="100%" />
+					</div>
+					<div class="partner-caption">
+						<blockquote>
+						    <p>CESCOM uuyqe wu . Nibh libero nulla cras an dulla </p>
+						    <footer>Albert Franco, <em>Marketing Head</em></footer>
+						</blockquote>
+					</div>
+				</div>
+			</div>
+			<div title="GESCOM" data-src="/savbill-ui/app/img/partners/GESCOM_logo.jpg">
+				<div class="fadeIn partner-details">
+					<div class="partner-logo">
+						<img alt="GESCOM" src="/savbill-ui/app/img/partners/GESCOM_logo.jpg" width="100%" height="100%" />
+					</div>
+					<div class="partner-caption">
+						<blockquote>
+						    <p>GESCOM uuyqe wu . Nibh libero nulla cras an dulla </p>
+						    <footer>Albert Franco, <em>Marketing Head</em></footer>
+						</blockquote>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="footer">
+		<svg id="curveDownColor" xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100" viewBox="0 0 100 100" preserveAspectRatio="none">
+		  <path d="M0 0 C 50 100 80 100 100 0 Z"/>
+		</svg>
+		<div class="container">
+			<div class="row-fluid">
+			  
+			  <!-- COPYRIGHT -->
+			  <div class="pull-left">
+				  <p class="copyright">SAV-Bill &copy; 2015 | Powered by <a href="http://www.savwolke.in" target="_blank">SAV Wolke Technologies</a></p>
+			  </div>
+			  <!-- END COPYRIGHT -->
+			  
+			  <!-- SOCIAL ICON -->
+			  <div class="pull-right">
+				<div class="social">
+				  <a href="#"><i class="fa fa-linkedin" data-class="linkedin"></i></a>
+				  <a href="#"><i class="fa fa-facebook" data-class="facebook"></i></a>
+				  <a href="#"><i class="fa fa-twitter" data-class="twitter"></i></a>
+				  <a href="#"><i class="fa fa-google-plus" data-class="google-plus"></i></a>
+				</div>
+			  </div>
+			  <!-- END SOCIAL ICON -->
+			  
+		    </div>
+	    </div>
+	</div>	
+</div>

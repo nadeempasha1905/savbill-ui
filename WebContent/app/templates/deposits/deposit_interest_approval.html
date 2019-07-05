@@ -1,0 +1,47 @@
+<div id="deposits" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper deposit-interest-approval">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+			
+				<div class="pull-left margin-top-5">
+					Approve Int for the Year: 
+					<select id="deposit-interest-approval-year" class="text-input text-select" ng-model="year"  web-required tooltip-placement="left">
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in YearList" value="{{option.key}}">{{option.value}}</option>
+					</select>
+				</div>
+				<div class="pull-left margin-top-5">
+					MR Code: 
+					<select id="deposit-interest-approval-mr-code" class="text-input text-select" ng-model="mr_code" ng-change="get_reading_day_info()" tooltip-placement="left">
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in MeterReaderCode" value="{{option.key}}">{{option.value}}</option>
+					</select>
+				</div>
+				<div class="pull-left margin-top-5">
+					Reading Day: 
+					<select id="deposit-interest-approval-rdg-day" ng-model="rdg_day" class="text-input text-select" web-required tooltip-placement="left">
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in MeterReadingDay" value="{{option.key}}">{{option.value}}</option>
+					</select>
+				</div>
+				<div class="pull-left">
+					<button ng-click="load_deposit_interest_approval_details()" class="">Show</button>
+				</div>
+				<div class="pull-right">
+					<button ng-click="approve_deposit_interest_details()">Approve</button>
+					<button ng-click="refresh_deposit_interest_details()">Refresh</button>
+					<button ng-click="clear_deposit_interest_details()">Clear</button>
+				</div>
+			</div>
+			<div class="width-100 clear-both padding-top-15">
+				<form name="newSpotFolioForm" novalidate>
+					<div class="gridStyle" id="depositInterestDetailsGrid" ui-grid="depositInterestDetailsGridOptions" ui-grid-selection style="width: 100%;height: 480px;"></div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

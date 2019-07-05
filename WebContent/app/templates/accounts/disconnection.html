@@ -1,0 +1,55 @@
+<div id="accounts" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper accounts-disconnection">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<table class="width-60 pull-left">
+					<tbody>
+						<tr>
+							<td>From Date : </td>
+							<td><input type="text" ng-model="disconnectionFromDate" web-datepicker class="text-input mandatory" ng-enter="load_withdrawal_details($event)" /></td>
+							<td>To Date : </td>
+							<td><input type="text" ng-model="disconnectionToDate"  web-datepicker class="text-input mandatory" ng-enter="load_withdrawal_details($event)" /></td>
+						</tr>
+						<tr>	
+							<td>From Amount : </td>
+							<td><input type="text" ng-model="fromAmount" id="disconnection-from-amount"  class="text-input mandatory disconnection-from-amount"></td>
+							<td>To Amount : </td>
+							<td><input type="text" ng-model="toAmount" id="disconnection-to-amount"  class="text-input mandatory disconnection-to-amount"></td>
+						</tr>
+						<tr>
+							<td>O&M Code : </td>
+							<td><select id="disconnection-om-code" class="text-input text-select" ng-model="om_code" ng-change="get_meter_reader_info()" ng-enter="load_disconnection_details($event)" >
+								<option value="">-- Select --</option>
+								<option ng-repeat="option in om_list" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+								</select>
+							</td>
+							<td>MR Code : </td>
+							<td><select id="disconnection-mr-code" class="text-input text-select" ng-enter="load_disconnection_details($event)">
+								<option value="">-- Select --</option>
+								<option ng-repeat="option in MeterReaderCode" value="{{option.key}}" >{{option.value}}</option>
+								</select>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<table class="width-40 pull-left">
+					<tbody>
+						<tr>
+							<td class="padding-top-15"><button ng-click="load_disconnection_details($event)" class="">Show</button></td>
+							<td class="padding-top-15"><button ng-click="disconnection_clear()" class="disconnection-clear">Clear</button></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="width-100 clear-both padding-top-15">
+				<div id="disconnection_details">
+					<div class="gridStyle" ui-grid="disconnectionDetailsGridOptions" style="width: 100%;height: 440px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

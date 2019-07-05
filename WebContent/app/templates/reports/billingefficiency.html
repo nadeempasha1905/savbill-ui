@@ -1,0 +1,126 @@
+<div id="reports" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper reports-billing-efficiency">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+			
+				<div class="row">
+				
+					<div class="col-xs-2"></div>
+					<div class="col-xs-8">
+					
+					<div class="jumbotron">
+						<div class="row">
+							<div class="col-xs-12" style="text-align: center;">
+								<span><h2>Billing Efficiency Report</h2></span>
+							</div>
+						</div>
+  						<div class="row">
+							<fieldset style="color: #000099;">
+								<legend>Report Type</legend>
+									<div class="row">
+										<div class="col-xs-2">
+											<input type="radio" name="billingeff-reporttype" ng-model="billeff.reporttype" 
+											value="reading_day_wise" checked="checked" ng-change="manageui()" ng-click="selected_reporttype = 'reading_day_wise';manageui()">&nbsp;&nbsp;<span>Reading-Day Wise</span>
+										</div>
+										<div class="col-xs-2">
+											<input type="radio" name="billingeff-reporttype"ng-model="billeff.reporttype"  
+											value="mr_tariff_wise" ng-change="manageui()" ng-click="selected_reporttype = 'mr_tariff_wise';manageui()">&nbsp;&nbsp;<span>MR-Tariff Wise</span>
+										</div>
+										<div class="col-xs-2">
+											<input type="radio" name="billingeff-reporttype" ng-model="billeff.reporttype"  
+											value="om_wise" ng-change="manageui()" ng-click="selected_reporttype = 'om_wise';manageui()">&nbsp;&nbsp;<span>OM Wise</span>
+										</div>
+										<div class="col-xs-2">
+											<input type="radio" name="billingeff-reporttype" ng-model="billeff.reporttype"  
+											value="tariff_wise" ng-change="manageui()" ng-click="selected_reporttype = 'tariff_wise';manageui()">&nbsp;&nbsp;<span>Tariff  Wise</span>
+										</div>
+										<div class="col-xs-2">
+											<input type="radio" name="billingeff-reporttype" ng-model="billeff.reporttype"  
+											value="mr_wise" ng-change="manageui()" ng-click="selected_reporttype = 'mr_wise';manageui()">&nbsp;&nbsp;<span>MR Wise</span>
+										</div>
+									</div>
+							</fieldset>
+						</div>
+						<br/>
+						<div class="row">
+								<fieldset style="color: #000099;">
+									<legend>Date Option</legend>
+										<div class="row">
+											<div class="col-xs-2">
+												<input type="radio" name="billingeff-dateoption" ng-model="billeff.dateoption1"  
+												value="datewise" ng-click="selected_dateoption = 'datewise'" 
+												ng-checked="datewise_checked"
+												ng-disabled="!(selected_reporttype === 'reading_day_wise' || selected_reporttype === 'mr_tariff_wise')">&nbsp;&nbsp;<span>Datewise</span>
+											</div>
+											<div class="col-xs-2">
+												<input type="radio" name="billingeff-dateoption" ng-model="billeff.dateoption2"  
+												value="monthwise" ng-click="selected_dateoption = 'monthwise'"  
+												ng-checked="monthwise_checked"
+												ng-disabled="(selected_reporttype === 'reading_day_wise' || selected_reporttype === 'mr_tariff_wise')"/>&nbsp;&nbsp;<span>Monthwise</span>
+											</div>
+										</div>
+										<br/>
+										<div class="row" ng-show="selected_dateoption === 'datewise'">
+											<div class="col-xs-4">
+												<label>From Date</label>
+												<input type="text" id="fromdate" ng-model="fromdate"  ng-model="billeff.fromdate" web-datepicker max-date="+0D" class="text-input" />
+											</div>
+											<div class="col-xs-4">
+												<label>To Date</label>
+												<input type="text" id="todate" ng-model="todate"  ng-model="billeff.todate" web-datepicker max-date="+0D" class="text-input" />
+											</div>
+										</div>
+										<div class="row" ng-show="selected_dateoption === 'monthwise'" >
+											<div class="col-xs-3">
+												<label>Month</label>
+												<select class="text-input"   ng-model="billeff.month">
+													<option value="-1">---Select---</option>
+												</select>
+											</div>
+											<div class="col-xs-3">
+												<label>Year</label>
+												<input type="text" id="year" ng-model="year"  class="text-input"   ng-model="billeff.year"/>
+											</div>
+										</div>
+								</fieldset>	
+						</div>
+						<br/><br/>
+						<div class="row">
+							<div class="col-xs-3">
+								<label>MR Code</label>
+								<select id="spot-folio-regeneration-mr-code" class="text-input text-select" ng-model="mr_code" 
+										ng-change="get_reading_day_info()" tooltip-placement="left" ng-disabled="disable_mrcode">
+									<option value="">-- Select --</option>
+									<option ng-repeat="option in MeterReaderCode" value="{{option.key}}">{{option.value}}</option>
+								</select>
+							</div>
+							
+							<div class="col-xs-9" ng-hide="disable_tariffcode">
+								<label>Tariff</label>
+								<div class="width-100 tariff-selection" >
+									<div class="width-20 pull-left" ng-repeat="tariff in tariff_list" ng-class="{'selected' : selected}" 
+										ng-click="selected = !selected" param="{{tariff.key}}"  >
+										<span class="fa" ng-class="{'fa-circle': selected, 'fa-circle-o': !selected }"></span>{{tariff.value}}
+									</div>
+								</div>
+							</div>
+				
+						</div>
+						<br/>
+						<br/>
+						<div class="row">
+							<div class="col-xs-2">
+								<button class="btn btn-primary btn-sm" ng-click="genereatereport()">Generate Report</button>
+							</div> 
+						</div>
+						</div>
+					</div>
+				<div class="col-xs-2"></div>
+			</div>
+		</div>
+	</div>
+</div>

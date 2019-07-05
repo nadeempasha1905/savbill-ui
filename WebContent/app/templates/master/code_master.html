@@ -1,0 +1,30 @@
+  <div id="master" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	
+	<div class="container-fluid content">
+		<div class="cb-wrapper code-master">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<div class="pull-left padding-top-5">
+					Code Type: {{selected_code_type}}
+				</div>
+				<div class="pull-right">
+					<button ng-click="add_code_master_detail()">Add New</button>
+				</div>
+			</div>
+			<div class="width-100 clear-both padding-top-15">
+				<div id="code_master_details">
+					<div class="gridStyle pull-right" ui-grid="codeMasterDetailsGridOptions" style="width: 80%;height: 480px;"></div>
+					<div class="pull-left header text-center">Code Types</div>
+					<div class="pull-left search"><input ng-model="codeTypeSearch" placeholder="Type here to search"/></div>
+					<div class="pull-left code-types">
+						<div class="width-100" ng-repeat="codeType in codeTypes | filter:codeTypeSearch" param="{{codeType.key}}" ng-click="load_code_details($event)">{{codeType.value}}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

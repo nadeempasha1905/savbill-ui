@@ -1,0 +1,34 @@
+<form name="addEditForm" class="addEditModal {{header | lowercase | replace:' ':'_'}}" id="addEditModal" novalidate>
+	<div class="modal-header">
+	    <h3 class="modal-title">{{header}}</h3>
+	</div>
+	<div class="modal-body">
+	    <div class="form-group {{config.field}}" ng-repeat="config in configs" ng-if="!config.hide" ng-class="{'relative-pos': config.options }">
+	    	<label>{{config.displayName}}</label>
+			<input ng-if="!config.options && config.type !== 'date' && config.type !== 'checkbox'" class="form-control" type="text" name="{{config.field}}" ng-model="data[config.field]" ng-disabled="config.readOnly" min-limit="{{config.minLimit}}" max-limit="{{config.maxLimit}}" ng-class="{ 'web-required': config.required, 'web-numeric': config.numeric, 'web-alpha': config.alpha, 'web-alphanumeric': config.alphanumeric, 'web-trim': config.trim, 'web-email': config.email, 'web-limit': config.limit, 'web-float': config.float  }" 
+					tooltip-placement="top-right" 
+					uib-tooltip="This field is required"
+					tooltip-class="error"
+					tooltip-trigger="show" />
+			<select ng-if="config.options && config.type !== 'date' && config.type !== 'checkbox'" class="form-control" name="{{config.field_key}}" ng-model="data[config.field_key]" ng-disabled="config.readOnly" ng-class="{ 'web-required': config.required }"
+					tooltip-placement="top-right" 
+					uib-tooltip="This field is required"
+					tooltip-class="error tooltip-select"
+					tooltip-trigger="show">
+				<option value="">-- Select --</option>
+				<option ng-repeat="option in config.options" value="{{option.key}}">{{option.value}}</option>
+			</select> 
+			<input ng-if="config.type === 'date' && !config.readOnly" class="form-control" type="text" name="{{config.field}}" ng-model="data[config.field]" web-datepicker max-date="+0D" ng-class="{ 'web-required': config.required }" 
+					tooltip-placement="top-right" 
+					uib-tooltip="This field is required"
+					tooltip-class="error"
+					tooltip-trigger="show" />
+			<input ng-if="config.type === 'date' && config.readOnly" class="form-control" type="text" name="{{config.field}}" ng-model="data[config.field]" ng-disabled="config.readOnly" />
+			<input ng-if="config.type === 'checkbox'" class="form-control" type="checkbox" name="{{config.field}}" ng-model="data[config.field]" ng-disabled="config.readOnly" />
+		</div>
+	</div>
+	<div class="modal-footer">
+	    <button ng-show="ok_text" class="btn btn-primary" type="button" ng-click="ok()">{{ok_text}}</button>
+	    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+	</div>
+</form>

@@ -1,0 +1,37 @@
+<div id="master" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper contractor-master">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<div class="pull-left margin-top-5">
+					Licensee Number: 
+					<input type="text" id="contractor-licsence-number" tooltip-placement="right" uib-tooltip-html="contractorLicenseNumberTooltipHtml" class="text-input" ng-enter="load_contractor_details($event)"  />
+				</div>
+				
+				<div class="pull-left margin-top-5">
+					Contractor Name: 
+					<input type="text" id="contractor-name" tooltip-placement="right" uib-tooltip-html="contractorNameTooltipHtml" class="text-input" ng-enter="load_contractor_details($event)"  />
+				</div>
+				
+				<div class="pull-left">
+					<button ng-click="load_contractor_details($event)" class="">Show
+					</button>
+				</div>
+				
+				<div class="pull-right">
+					<button ng-click="add_contractor_master_details()">Add New</button>
+					<button ng-click="contractor_master_clear()" class="contractor-master-clear">Clear</button>
+				</div>
+				
+			</div>
+			<div class="width-100 clear-both padding-top-15">
+				<div id="contractor_master_details">
+					<div class="gridStyle" ui-grid="contractorMasterDetailsGridOptions" style="width: 100%;height: 440px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

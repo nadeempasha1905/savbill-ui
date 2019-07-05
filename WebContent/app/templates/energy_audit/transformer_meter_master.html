@@ -1,0 +1,52 @@
+<div id="energy_audit" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper energy-audit-transformer-meter-master-details">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<div class="pull-left margin-top-5">
+					O&M Code :
+					<select id="transformer-meter-master-om-code" class="text-input text-select" ng-model="om_code"  ng-change="get_transformer_info()" ng-enter="load_transformer_meter_master_details($event)" >
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in om_list" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+					</select>
+				</div>
+				<div class="pull-left margin-top-5">
+					 Station :
+					<select id="transformer-meter-master-station-code" class="text-input text-select" ng-model="StationCode" ng-change="get_feeder_info()" ng-enter="load_transformer_meter_master_details($event)" >
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in StationCodeList" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+					</select>
+				</div>
+										
+				<div class="pull-left margin-top-5">
+					Feeder : 
+					<select id="transformer-meter-master-feeder-code" class="text-input text-select" ng-model="FeederCode" ng-change="get_transformer_info()" ng-enter="load_transformer_meter_master_details($event)">
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in FeederCodeList" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+					</select>
+				</div>
+				
+				<div class="pull-left margin-top-5">
+					Transformer : 
+					<select id="transformer-meter-master-transformer-code" class="text-input text-select" ng-model="DTCCode" ng-enter="load_transformer_meter_master_details($event)">
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in TransformerCodeList" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+					</select>
+				</div>
+				<div class="pull-right margin-top-5">
+					<button ng-click="load_transformer_meter_master_details($event)" class="">Show</button>
+					<button ng-click="add_transformer_meter_master_details()" class="transformer-meter-master-details-save">Add New</button>
+					<button ng-click="transformer_meter_master_details_clear()" class="transformer-meter-master-details-clear">Clear</button>
+				</div>
+			</div>
+			<div class="width-100 clear-both padding-top-15">
+				<div id="transformer_details">
+					<div class="gridStyle" ui-grid="transformerMeterMasterDetailsGridOptions" style="width: 100%;height: 440px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>	

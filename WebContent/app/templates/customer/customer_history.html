@@ -1,0 +1,36 @@
+<div id="customer" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper customer-history">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<web-tabs>
+				<ul class="reset-margin width-100 tabs customer-history-tabs">
+					<li class="active">Customer Details</li>
+					<li class="customer-history-ledger-details-tab">Ledger Details</li>
+					<li class="customer-history-power-details-tab">Power Details</li>
+					<li class="customer-history-place-details-tab">Place Details</li>
+					<li class="customer-history-dtc-details-tab">DTC Details</li>
+				</ul>
+				<div class="action width-100">
+					<div class="pull-left">
+						RR No: <input type="text" class="text-input get-customer-history-details" ng-disabled="customer_history_disable_rr_no" />
+					</div>
+					<div class="pull-right">
+						<button ng-click="customer_history_clear()">Clear</button>
+					</div>
+				</div>
+				<div class="width-100 tabs-content">
+					<div id="customer_history" class="tab-active">
+						<div class="gridStyle" ui-grid="customerDetailsGridOptions" style="width: 96%;height: 375px;"></div>
+					</div>
+					<div id="ledger_details" class="tab-right"></div>
+					<div id="power_details" class="tab-right"></div>
+					<div id="place_details" class="tab-right"></div>
+					<div id="dtc_details" class="tab-right"></div> 
+				</div>
+			</web-tabs>
+		</div>
+	</div>
+</div>

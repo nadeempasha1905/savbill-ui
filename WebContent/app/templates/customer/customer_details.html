@@ -1,0 +1,76 @@
+<div id="customer" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper customer-details"">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<table class="width-100 pull-left">
+					<tbody>
+						<tr>
+							<td>RR Number : </td>
+							<td><input type="text" ng-model="rrNumber" id="customer-details-rr-number" class="text-input" ng-enter="load_customer_details($event)"></td>
+							<td>O&M Unit : </td>
+							<td><select id="customer-details-om-code" class="text-input text-select" ng-model="om_code" ng-change="get_meter_reader_info()" ng-enter="load_customer_details($event)" >
+								<option value="">-- Select --</option>
+								<option ng-repeat="option in om_list" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+								</select>
+							</td>
+							<td>Station : </td>
+							<td><select id="customer-details-station-code" class="text-input text-select" ng-model="StationCode" ng-change="get_feeder_info()" ng-enter="load_customer_details($event)" >
+								<option value="">-- Select --</option>
+								<option ng-repeat="option in StationCodeList" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+								</select>
+							</td>
+							<td>Feeder : </td>
+							<td><select id="customer-details-feeder-code" class="text-input text-select" ng-model="FeederCode" ng-change="get_transformer_info()" ng-enter="load_customer_details($event)">
+								<option value="">-- Select --</option>
+								<option ng-repeat="option in FeederCodeList" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>Transformer : </td>
+							<td>
+								<select ng-model="transformerCode" id="customer-details-transformer-code" class="text-input text-select" ng-enter="load_customer_details($event)">
+								<option value="">-- Select --</option>
+								<option ng-repeat="option in TransformerCodeList" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+								</select>
+							</td>
+							<td>MR Code : </td>
+							<td>
+								<select id="customer-details-mr-code" class="text-input text-select" ng-model="mr_code" ng-change="get_reading_day_info()" ng-enter="load_customer_details($event)">
+								<option value="">-- Select --</option>
+								<option ng-repeat="option in MeterReaderCode" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+								</select>
+							</td>
+							<td>Reading Day : </td>
+							<td>
+								<select ng-model="readingDay" id="customer-details-rdg-day" class="text-input text-select" ng-enter="load_customer_details($event)">
+								<option value="">-- Select --</option>
+								<option ng-repeat="option in MeterReadingDay" value="{{option.key}}" ng-selected="$index == 0">{{option.value}}</option>
+								</select>	
+							</td>
+							<td>Spot Folio : </td>
+							<td><input type="text" ng-model="spotFolio" id="customer-details-spot-folio" class="text-input" ng-enter="load_customer_details($event)">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="width-100 text-center pull-right padding-top-10">
+					<button ng-click="load_customer_details($event)" class="">Show</button>
+					<button ng-click="customer_details_count()" class="customer-details-count">Count</button>
+					<button ng-click="customer_details_save()" class="customer-details-save">Save</button>
+					<button ng-click="customer_details_clear()" class="customer-details-clear">Clear</button>
+				</div>
+			</div>
+			
+			<div class="width-100 clear-both padding-top-15">
+				<div id="customer_master_details">
+					<div class="gridStyle" ui-grid="customeDetailsGridOptions" style="width: 100%;height: 440px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

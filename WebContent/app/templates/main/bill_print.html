@@ -1,0 +1,39 @@
+<div id="main" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper main-bill-print">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<table class="width-25">
+					<tbody>
+						<tr>
+							<td>MR Code :</td>
+							<td>
+								<select class="text-input text-select" ng-model="mrCode">
+									<option value="">-- Select --</option>
+									<option ng-repeat="option in MeterReaderCode" value="{{option.key}}">{{option.value}}</option>
+							  	</select>
+							</td>
+						</tr>
+						<tr>
+							<td>Bill Date :</td>
+							<td>
+								<input type="text" ng-model="billDate" web-datepicker max-date="+0D" class="text-input" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<button ng-click="clear_bills()">Clear</button>
+							</td>
+							<td>
+								<button ng-click="print_bills()">Print</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

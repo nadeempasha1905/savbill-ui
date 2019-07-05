@@ -1,0 +1,41 @@
+<div id="master" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper meter-reader-master">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<div class="pull-left margin-top-5">
+					O&M Code:
+					<select id="meter-readed-master-om-code" class="text-input text-select" ng-model="om_code" ng-change="get_meter_reader_info()" ng-enter="load_meter_reader_details($event)" >
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in om_list" value="{{option.key}}" >{{option.value}}</option>
+					</select>
+				</div>
+										
+				<div class="pull-left margin-top-5">
+					Meter Reader Code: 
+					<select id="meter-readed-master-mr-code" class="text-input text-select" ng-model="mr_code" ng-enter="load_meter_reader_details($event)">
+						<option value="">-- Select --</option>
+						<option ng-repeat="option in MeterReaderCode" value="{{option.key}}" >{{option.value}}</option>
+					</select>
+				</div>
+				
+				<div class="pull-left">
+					<button ng-click="load_meter_reader_details()" class="">Show</button>
+				</div>
+				<div class="pull-right">
+					<button ng-click="add_meter_reader_master_details()">Add New</button>
+					<button ng-click="meter_reader_master_clear()" class="meter-reader-master-clear">Clear</button>
+				</div>
+			</div>
+			<div class="width-100 clear-both padding-top-15">
+				<div id="meter_reader_master_details">
+					<div class="gridStyle" ui-grid="meterReaderMasterDetailsGridOptions" style="width: 100%;height: 440px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>

@@ -1,0 +1,20 @@
+<div id="master" class="theme">
+	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
+	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
+	<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper cloudbill-parameter">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			<div class="action width-100">
+				<div class="pull-right">
+					<button ng-click="add_cloudbill_parameter()">Add New</button>
+				</div>
+			</div>
+			<div class="width-100 clear-both padding-top-5">
+				<div id="cloudbill_parameter_details">
+					<div class="gridStyle" ui-grid="cloudBillParameterDetailsGridOptions" style="width: 100%;height: 500px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
