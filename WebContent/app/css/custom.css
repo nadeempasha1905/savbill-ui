@@ -99,7 +99,12 @@ input.mandatory, select.mandatory, textarea.mandatory, div.mandatory{/*:not([dis
     border: 1px solid #C7BC2E;
 }
 
-
+/*custom  */
+.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus {
+    text-decoration: none;
+    color: #262626;
+    background-color: #bfe7ff;
+}
 /* Web Datepicker
 ==============================================*/
 img.ui-datepicker-trigger {
