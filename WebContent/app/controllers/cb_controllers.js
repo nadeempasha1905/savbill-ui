@@ -253,8 +253,20 @@ $scope.grouptype = null;
 		if($scope.search.subdivision != undefined || $scope.search.subdivision != null){subdivision = $scope.search.subdivision.key; search_location = $scope.search.subdivision.LOCATION_CODES;}
 		if($scope.search.omsection != undefined || $scope.search.omsection != null){omsection = $scope.search.omsection.key; search_location = $scope.search.omsection.key;}
 		
+		var request = {
+				"Location_Code": $rootScope.user.location_code,
+				"Conn_Type": $rootScope.user.connection_type,
+				//"financial_year" : $scope.search.financial_years.year,
+				"financial_year" : '2009-2010',
+				"search_location" : search_location,
+				/*"displaywise":'TRF',*/
+				"displaywise":$scope.grouptype,
+				"inputtype":'LINE'
+			};
+		
 		remote.load("dashboard_billingefficiency_comparision", function(response){
 				console.log("response",response);
+				
 				$scope.BILLING_EFFICIENCY_DASHBOARD = response.BILLING_EFFICIENCY_DASHBOARD;
 				
 				chart_dashboardlist = c3.generate({
@@ -312,16 +324,7 @@ $scope.grouptype = null;
 				$scope.filldatatochart();
 				$scope.createdashboardcards();
 				
-		},{
-			"Location_Code": $rootScope.user.location_code,
-			"Conn_Type": $rootScope.user.connection_type,
-			//"financial_year" : $scope.search.financial_years.year,
-			"financial_year" : '2009-2010',
-			"search_location" : search_location,
-			/*"displaywise":'TRF',*/
-			"displaywise":$scope.grouptype,
-			"inputtype":'LINE'
-		}, 'POST');
+		},request, 'POST');
 		
     	billeff_piechart = c3.generate({
     		bindto: '#billeff_piechart',
@@ -417,7 +420,7 @@ $scope.grouptype = null;
     			"displaywise":$scope.grouptype ,
     			"inputtype":'CARD'
 			};
-    	$scope.grouptypex
+
     	remote.load("dashboard_billingefficiency_comparision", function(response){
 			console.log(response);
 			
@@ -530,7 +533,7 @@ $scope.grouptype = null;
         	      ]
         	    }
         	});
-    	}, 200);
+    	}, 1000);
     	
     	var chart2 = c3.generate({
     		bindto: '#chart2',
@@ -637,9 +640,13 @@ $scope.grouptype = null;
     	console.log(tab);
     	  $('.nav-tabs a[href="#' + tab + '"]').tab('show');
     	  if(tab === 'bill_eff_tab'){
-    		  $scope.refreshchart_tab1();
+    		  setTimeout(function () {
+    		    	$scope.refreshchart_tab1('TRF');
+    		    }, 500);
     	  }else if(tab === 'coll_eff_tab'){
-    		  $scope.refreshchart_tab2();
+    		  setTimeout(function () {
+    			  $scope.refreshchart_tab2();
+  		    }, 500);
     	  }
     	};
     	

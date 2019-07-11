@@ -57,7 +57,8 @@ var templates = {
 		'search_payments' : baseURL +'app/templates/cash_section/search_payments.html',
 		'list_of_payment' : baseURL +'app/templates/cash_section/list_of_payment.html',
 		'receipts_posting' : baseURL +'app/templates/cash_section/receipts_posting.html',
-		'receipts_generation' : baseURL +'app/templates/cash_section/receipts_generation.html'
+		'receipts_generation' : baseURL +'app/templates/cash_section/receipts_generation.html',
+		'manual_receipts_generation' : baseURL +'app/templates/cash_section/manual_receipts_generation.html'
 	},
 	'accounts' : {
 		'debits' : {

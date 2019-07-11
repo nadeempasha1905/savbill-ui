@@ -176,7 +176,8 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 			columnDefs: [
 	             {field: 'row_num', displayName: '#', width : '4%'},
 	             {field: 'rr_no', displayName: 'RR Number', width : '10%'},
-	             {field: 'new_purpose_key', displayName: 'New RR Number', width : '10%'},
+	             {field: 'new_purpose_key', displayName: 'New RR Number', width : '10%',enableCellEdit: true,
+	              cellTemplate: '<div class="ui-grid-cell-contents"><input type="text" class="text-input" ng-model="row.entity[col.field]" ng-disabled="grid.appScope.disablefieldsonpostedstatus(row.entity)"/></div>'},
 	             {field: 'purpose_descr', displayName: 'Payment Purpose', width : '11%'},
 	             {field: 'amt_paid', displayName: 'Paid Amount', width : '8%'},
 	             {field: 'rcpt_no', displayName: 'Receipt Number', width : '10%'},
@@ -208,6 +209,11 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 	         data: []
 		};
 		
+		$scope.disablefieldsonpostedstatus = function(row){
+			console.log(row);
+			return (row.status ===  '2')   ? false : true ;
+		};
+		
 		$scope.receipts_posting_details_clear = function(e){
 			$scope.receipts_posting_details = [];
 			$scope.receiptsPostingDetailsGridOptions.data = [];
@@ -222,7 +228,7 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 			$scope.receipts_posting_details = [];
 			
 			var request = {
-					conn_type : "LT",
+					"conn_type": $rootScope.user.connection_type,
 					location_code :  $rootScope.user.location_code,
 					user_id  : $rootScope.user.user_id,
 					"receipt_date": $scope.receiptsPostingReceiptDate,
@@ -234,9 +240,32 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 					console.log(response.receipts_list);
 					$scope.receiptsPostingDetailsGridOptions.data = $scope.receipts_posting_details;*/
 					
-					setTimeout(function () {
-						$scope.load_receipt_details_for_posting();
-					},1000);
+					if(response.status1 === 'fail'){
+						setTimeout(function () {
+							$scope.load_receipt_details_for_posting();
+						},500);
+					}
+					
+					
+				}, request , 'POST');
+			
+		};
+		
+		$scope.receipts_posting_details_re_post = function(){
+			
+			var request = {
+					"conn_type": $rootScope.user.connection_type,
+					"location_code": $rootScope.user.location_code,
+					"user_id": $rootScope.user.user_id,
+					"receipt_date": $scope.receiptsPostingReceiptDate,
+					"counter_number": (($scope.receiptsPostingCounter) ? $scope.receiptsPostingCounter : ''),
+					"receipts_list" : $scope.receipts_posting_details
+				}
+				console.log(request);
+				remote.load("doreceiptreposting", function(response){
+					$scope.receipts_posting_details = response.receipts_list;
+					console.log(response.receipts_list);
+					$scope.receiptsPostingDetailsGridOptions.data = $scope.receipts_posting_details;
 				}, request , 'POST');
 			
 		};
@@ -309,7 +338,7 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 			}
 			
 			var request = {
-					"conn_type":'LT',
+					"conn_type": $rootScope.user.connection_type,
 					"rrno" :   $rootScope.user.location_code +$scope.billdetails.rrnumber
 			};
 			
@@ -369,7 +398,7 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 		$scope.getSummaryDetails = function(){
 			
 			var request = {
-					"conn_type":'LT',
+					"conn_type": $rootScope.user.connection_type,
 					"receipt_date" : ($scope.receipts_entry.receiptdate === undefined ? '' : $scope.receipts_entry.receiptdate),
 					"counter_number" : ($scope.cash_counter === undefined ? '' : $scope.cash_counter)
 			};
@@ -426,7 +455,7 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 			}
 			
 			request =  {
-					"conn_type":'LT',
+					"conn_type": $rootScope.user.connection_type,
 					cash_counter : ($scope.cash_counter === undefined ? '' : $scope.cash_counter) ,
 					location :  $rootScope.user.location_code,
 					user_id  : $rootScope.user.user_id,
@@ -456,5 +485,281 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 		$scope.receipts_generation_clear();
 	}
 	
+	// receipts generation starts
+	if(cash_section_flow === 'manual_receipts_generation'){
+		
+		$scope.manual_receipts_entry = {};
+		$scope.billdetails = {};
+		
+		$scope.paymentpurposelist = [
+			{key:'1',value:'Revenue'}
+		];
+		
+		$scope.paymentmodelist = [
+			{key:'cash',value:'Cash'},
+			{key:'cheque',value:'Cheque'}
+		];
+		
+		$scope.receipts_generation_clear = function(){
+			
+			$scope.manual_receipts_entry = {};
+			$scope.billdetails    = {};
+			
+			$scope.manual_receipts_entry.paymentmode = 'cash';
+			$scope.manual_receipts_entry.paymentpurpose = '1';
+			$scope.manual_receipts_entry.chequenumber = '' ;
+			$scope.manual_receipts_entry.chequeamount = '' ;
+			$scope.manual_receipts_entry.draweebank   = '' ;
+			$scope.loadreceiptdate();
+			$scope.loadchequedate();
+			$scope.billdetails.rrnumber = '' ;
+			$scope.billdetails.billamount = '' ;
+			$scope.billdetails.consumername = '' ;
+			$scope.receipt_details = [];
+			$scope.total_bill_amount = 0;
+			//$scope.cash_counter = "10000001";
+			$scope.manual_receipts_entry.cashcounter = $rootScope.user.location_code +"1";
+			
+			$('#billdetails_receiptnumber').focus();
+			
+			$scope.getSummaryDetails();
+			
+	//		$("#receipt_info_table").height($('#bill_details_div').height() -125);
+			
+			$scope.load_cashcounters();
+			
+		};
+		
+		$scope.loadreceiptdate = function(){
+			$scope.manual_receipts_entry.receiptdate = '';
+			$scope.manual_receipts_entry.receiptdate =  $filter('date')(new Date(), 'dd/MM/yyyy');
+			
+			
+		};
+		
+		$scope.loadchequedate = function(){
+			
+			$scope.manual_receipts_entry.chequedate = '';
+			$scope.manual_receipts_entry.chequedate =  $filter('date')(new Date(), 'dd/MM/yyyy');
+			
+		};
+		
+		$scope.getBillDetailsbyrrno = function(){
+			
+			if(!$scope.billdetails.rrnumber){
+				notify.warn("Please enter the shop number");
+				$scope.billdetails.rrnumber.focus();
+				$scope.billdetails.billamount = '';
+				$scope.billdetails.consumername = '';
+				return;
+			}
+			
+			var request = {
+					"conn_type": $rootScope.user.connection_type,
+					"rrno" :   $rootScope.user.location_code +$scope.billdetails.rrnumber
+			};
+			
+			console.log("request",request);
+			remote.load("getbilldetailsinreceiptgen", function(response){
+				console.log("getbilldetailsinreceiptgen",response);
+				$scope.billdetails.billamount = response.amount_paid;
+				$scope.billdetails.consumername = response.consumer_name;
+				$scope.billdetails.customerid = response.ivrs_id;
+				$scope.billdetails.newrrno = response.cd_rr_no;
+				$('#add_button').focus();
+			}, request , 'POST');
+			
+		};
+		
+		$scope.addreceipttotable = function(){
+			
+			if(parseInt($scope.billdetails.billamount) <= 0){
+				notify.error("Please enter valid bill amount !!!");
+				return;
+			}
+			
+			var addobj = {
+				
+					"manualreceiptnumber" : $scope.billdetails.receiptnumber,
+					"rrno":  $rootScope.user.location_code +$scope.billdetails.rrnumber,
+					"name":$scope.billdetails.consumername,
+					"amount":$scope.billdetails.billamount,
+					"customerid":$scope.billdetails.customerid,
+					"newrrno":$scope.billdetails.newrrno
+			};
+			
+			$scope.receipt_details.push(addobj);
+			$scope.calculatetotalamount();
+			
+			$scope.billdetails.rrnumber = '' ;
+			$scope.billdetails.consumername = '' ;
+			$scope.billdetails.billamount = '' ;
+			$('#billdetails_rrnumber').focus();
+		};
+
+		$scope.calculatetotalamount = function(){
+			
+			$scope.total_bill_amount = 0;
+			amount = 0 ;
+			
+			$.each($scope.receipt_details, function(index,jsonObject){
+			    $.each(jsonObject, function(key,val){
+			        if(key === "amount"){
+			        	console.log(val);
+			        	amount = amount + parseInt(val);
+			        }
+			    });
+			});
+			$scope.total_bill_amount = amount ;
+		};
+		
+		$scope.getSummaryDetails = function(){
+			
+			var request = {
+					"conn_type": $rootScope.user.connection_type,
+					"receipt_date" : ($scope.manual_receipts_entry.receiptdate === undefined ? '' : $scope.manual_receipts_entry.receiptdate),
+					"counter_number" : ($scope.manual_receipts_entry.cashcounter === undefined ? '' : $scope.manual_receipts_entry.cashcounter)
+			};
+			
+			console.log("request",request);
+			remote.load("getreceiptsummarydetails", function(response){
+				console.log("getreceiptsummarydetails",response);
+				$scope.summarydetails = response.summarydetails[0];
+			}, request , 'POST');
+		};
+		
+		$scope.SaveAndPrintReceipts = function(){
+			
+			var request = {} ;
+			
+			if($scope.manual_receipts_entry.paymentmode === 'cash'){
+			
+				if(!$scope.manual_receipts_entry.receiptdate){
+					notify.warn("Please Select The Receipt Date");
+					return;
+				}else if(!$scope.manual_receipts_entry.paymentmode){
+					notify.warn("Please Select The payment mode");
+					return;
+				}else if($scope.receipt_details.length == 0){
+					notify.error("No Receipts Generated !!!");
+					return;
+				} 
+			}else if($scope.manual_receipts_entry.paymentmode === 'cheque'){
+				
+				if(!$scope.manual_receipts_entry.receiptdate){
+					notify.warn("Please Select The Receipt Date");
+					return;
+				}else if(!$scope.manual_receipts_entry.chequedate){
+					notify.warn("Please Select The Cheque Date");
+					return;
+				}else if(!$scope.manual_receipts_entry.chequenumber){
+					notify.warn("Please enter The Cheque Number");
+					return;
+				}else if(!$scope.manual_receipts_entry.chequeamount){
+					notify.warn("Please enter The Cheque Amount");
+					return;
+				}else if(!$scope.manual_receipts_entry.draweebank){
+					notify.warn("Please enter the drawee bank");
+					return;
+				}else if($scope.receipt_details.length == 0){
+					notify.error("No Receipts Found !!!");
+					return;
+				}
+				
+				if($scope.total_bill_amount != $scope.manual_receipts_entry.chequeamount ){
+					notify.error("Bill Amount Should Match Cheque Amount !!!");
+					return;
+				}
+			}
+			
+			request =  {
+					"conn_type": $rootScope.user.connection_type,
+					cash_counter : ($scope.manual_receipts_entry.cashcounter === undefined ? '' : $scope.manual_receipts_entry.cashcounter) ,
+					location :  $rootScope.user.location_code,
+					user_id  : $rootScope.user.user_id,
+					receipt_date: ($scope.manual_receipts_entry.receiptdate === undefined ? '' : $scope.manual_receipts_entry.receiptdate),
+					payment_mode : (($scope.manual_receipts_entry.paymentmode === 'cash') ? 'C' : (($scope.manual_receipts_entry.paymentmode === 'cheque') ? 'CHQ' : '') ),
+					payment_purpose : ($scope.manual_receipts_entry.paymentpurpose === undefined ? '' : $scope.manual_receipts_entry.paymentpurpose),
+					cheque_date : ($scope.manual_receipts_entry.chequedate === undefined ? '' : $scope.manual_receipts_entry.chequedate),
+					cheque_number : ($scope.manual_receipts_entry.chequenumber === undefined ? '' : $scope.manual_receipts_entry.chequenumber) ,
+					cheque_amount : ($scope.manual_receipts_entry.chequeamount === undefined ? '' : $scope.manual_receipts_entry.chequeamount),
+					drawee_bank : ($scope.manual_receipts_entry.draweebank === undefined ? '' : $scope.manual_receipts_entry.draweebank),
+					remarks : '',
+					receipt_details : $scope.receipt_details
+			};
+			
+			console.log(request);
+			
+			remote.load("savereceiptdetailsmanualreceipts", function(response){
+				console.log("savereceiptdetailsmanualreceipts",response);
+				console.log(response);
+				//$scope.printPdf(response.filepath);
+				
+				$scope.receipts_generation_clear();
+				
+			}, request , 'POST');
+		};
+		
+		
+		$scope.verifyReceiptNumber = function(){
+			
+			if(!$scope.billdetails.receiptnumber){
+				notify.warn("Please enter the receipt number");
+				('#billdetails_receiptnumber').focus();
+				$scope.billdetails_rrnumber = '';
+				$scope.billdetails.billamount = '';
+				$scope.billdetails.consumername = '';
+				return;
+			}
+			
+			var request = {
+					"receiptno" :  $scope.billdetails.receiptnumber,
+					"receiptdate" : $scope.manual_receipts_entry.receiptdate,
+					"counterno" : $scope.manual_receipts_entry.paymentpurpose,
+					"conn_type": $rootScope.user.connection_type,
+			};
+			
+			console.log("request",request);
+			remote.load("verifyreceiptnumber", function(response){
+				console.log("verifyreceiptnumber",response);
+				
+				if(response.receipts_count == -1 || response.receipts_count == 0){
+					$scope.billdetails_rrnumber = '';
+					$scope.billdetails.billamount = '';
+					$scope.billdetails.consumername = '';
+					//$scope.receiptgen_rrnumber.focus();
+					$('#billdetails_rrnumber').focus();
+					
+				}else{
+					notify.error("Receipt Number : "+$scope.receiptgen_manualreceiptnumber+" Already Exists. Kindly enter new receipt number .");
+					$scope.receiptgen_manualreceiptnumber = '';
+					//$scope.receiptgen_manualreceiptnumber.focus();
+					$scope.billdetails_rrnumber = '';
+					$scope.billdetails.billamount = '';
+					$scope.billdetails.consumername = '';
+					
+					$('#billdetails_receiptnumber').focus();
+				}
+				
+				//$scope.receiptgen_shopname = response.shop_name;
+				//$scope.receiptgen_billamount = response.amount_paid;
+			}, request , 'POST');
+			
+		};
+		
+		
+		$scope.load_cashcounters = function(){
+			var request = {
+					"location_code": $rootScope.user.location_code,
+					"conn_type": $rootScope.user.connection_type
+			}
+			remote.load("cashcounterlist", function(response){
+				$scope.cashCountersList = response.cash_counters_list;
+			}, request , 'POST');
+		}
+		
+		$scope.receipts_generation_clear();
+		
+	}
 	
 }]);
