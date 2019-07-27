@@ -406,6 +406,154 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 						
 					}, request , 'POST', false, false, true);
 				}
+			}else if($scope.selected_report_type === 'main_dcb'){
+				
+/*				if($scope.dfromdate === null || $scope.dfromdate === undefined ){
+					notify.warn("Please select from date");
+					return;
+				}
+				
+				
+				if($scope.dtodate === null || $scope.dtodate === undefined ){
+					notify.warn("Please select to date");
+					return;
+				}*/
+				
+				if($scope.dmonthyear === null || $scope.dmonthyear === undefined ){
+					notify.warn("Please select Month year");
+					return;
+				}
+				
+				var $selected_tariffs = $('#reports').find('.tariffs').find('.tariff-selection').find('.selected');
+				console.log($selected_tariffs);
+				var request_tariffs ='';
+				$selected_tariffs.each(function(key, tariff){
+					//request_tariffs.push("'"+$(tariff).attr('param')+"'");
+					request_tariffs = request_tariffs + "'"+$(tariff).attr('param')+"'" +"," ;
+				});
+				
+				if(request_tariffs.length > 1){
+					request_tariffs = request_tariffs.substr(0,request_tariffs.length-1);
+				}
+				
+				var request = {
+						"conn_type": $rootScope.user.connection_type,
+						"report_type":'MAIN_DCB',
+						"Location_Code": $rootScope.user.location_code,
+						"selected_location":search_location,
+						"month_year": (($scope.dmonthyear != null || $scope.dmonthyear != undefined )? $scope.dmonthyear : '') ,
+						"tariffcodes":request_tariffs,
+						"station_code": '',
+						"feeder_code":'',
+						"transformer_code":'',
+						"metercode": ($scope.search.metercode != null || $scope.search.metercode != undefined ? $scope.search.metercode : '') ,
+						"gps":'',
+						"header": true
+					}
+				
+				console.log("request",request);
+				
+				if(exportpdf){
+					
+					$('#loading').show();
+					$http.get($rootScope.serviceURL+'downloadreport?conn_type='+$rootScope.user.connection_type
+							+"&report_type=MAIN_DCB"
+							+"&Location_Code="+$rootScope.user.location_code
+							+"&selected_location="+search_location
+							+"&month_year="+ (($scope.dmonthyear != null || $scope.dmonthyear != undefined )? $scope.dmonthyear : '')
+							+"&tariffcodes="+request_tariffs
+							+"&station_code="+''
+							+"&feeder_code="+''
+							+"&transformer_code="+''
+							+"&metercode="+($scope.search.metercode != null || $scope.search.metercode != undefined ? $scope.search.metercode : '')
+							+"&gps="+''
+							+"&header=false"
+							+"&username="+$rootScope.user.user_id
+							
+							,{ responseType : 'arraybuffer'}).then(handleResponse)
+					
+					
+				}else{
+					remote.load("getdcb", function(response){
+						console.log(response);
+						
+						var data = response.DCBDATA;
+						$scope.DCBDATA = response.DCBDATA;
+						$('.collapse').collapse("hide");
+						
+					}, request , 'POST', false, false, true);
+				}
+			}else if($scope.selected_report_type === 'sbd_mr_wise'){
+				
+				if($scope.dfromdate === null || $scope.dfromdate === undefined ){
+					notify.warn("Please select from date");
+					return;
+				}
+				
+				
+				if($scope.dtodate === null || $scope.dtodate === undefined ){
+					notify.warn("Please select to date");
+					return;
+				}
+				
+				/*if($scope.dmonthyear === null || $scope.dmonthyear === undefined ){
+					notify.warn("Please select Month year");
+					return;
+				}*/
+				
+				var $selected_tariffs = $('#reports').find('.tariffs').find('.tariff-selection').find('.selected');
+				console.log($selected_tariffs);
+				var request_tariffs ='';
+				$selected_tariffs.each(function(key, tariff){
+					//request_tariffs.push("'"+$(tariff).attr('param')+"'");
+					request_tariffs = request_tariffs + "'"+$(tariff).attr('param')+"'" +"," ;
+				});
+				
+				if(request_tariffs.length > 1){
+					request_tariffs = request_tariffs.substr(0,request_tariffs.length-1);
+				}
+				
+				var request = {
+						"conn_type": $rootScope.user.connection_type,
+						"report_type":'MR',
+						"Location_Code": $rootScope.user.location_code,
+						"selected_location":search_location,
+						"metercode": ($scope.search.metercode != null || $scope.search.metercode != undefined ? $scope.search.metercode : '') ,
+						"tariffcodes":request_tariffs,
+						"fromdate":(($scope.dfromdate != null || $scope.dfromdate != undefined )? $scope.dfromdate : ''), 
+						"todate": (($scope.dtodate != null || $scope.dtodate != undefined) ? $scope.dtodate : ''),
+						"header": true
+					}
+				
+				console.log("request",request);
+				
+				if(exportpdf){
+					
+					$('#loading').show();
+					$http.get($rootScope.serviceURL+'downloadreport?conn_type='+$rootScope.user.connection_type
+							+"&report_type=MR"
+							+"&Location_Code="+$rootScope.user.location_code
+							+"&selected_location="+search_location
+							+"&metercode="+($scope.search.metercode != null || $scope.search.metercode != undefined ? $scope.search.metercode : '')
+							+"&tariffcodes="+request_tariffs
+							+"&fromdate="+(($scope.dfromdate != null || $scope.dfromdate != undefined )? $scope.dfromdate : '') 
+							+"&todate="+ (($scope.dtodate != null || $scope.dtodate != undefined) ? $scope.dtodate : '')
+							+"&header=false"
+							+"&username="+$rootScope.user.user_id
+							
+							,{ responseType : 'arraybuffer'}).then(handleResponse)
+					
+					
+				}else{
+					remote.load("getsbdreports", function(response){
+						console.log(response);
+						
+						var data = response.SBDDATA;
+						$scope.SBDDATA = response.SBDDATA;
+						$('.collapse').collapse("hide");
+						
+					}, request , 'POST', false, false, true);
+				}
 			}
 			
 			else if($scope.selected_report_type === 'collection_efficiency'){

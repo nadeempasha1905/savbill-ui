@@ -86,6 +86,18 @@
         <ul>
          <li> <a href="#"><i class="fa fa-angle-right leftNavIcon"></i> Disconnection List</a> </li>
         </ul>
+      </li>
+      
+      <li > <a href="#"><i class="fa fa-bar-chart leftNavIcon"></i> DCB</a>
+        <ul>
+          <li> <a href="#" ng-click="selected_report_type='main_dcb'"><i class="fa fa-angle-right leftNavIcon"></i> Main DCB</a> </li>
+        </ul>
+      </li> 
+      
+      <li > <a href="#" ng-click="selected_report_type='sbd_mr_wise'"><i class="fa fa-bar-chart leftNavIcon"></i> Spot Billing Efficiency</a>
+        <!-- <ul>
+          <li> <a href="#" ng-click="selected_report_type='main_dcb'"><i class="fa fa-angle-right leftNavIcon"></i> Main DCB</a> </li>
+        </ul> -->
       </li> 
 
     </ul>
@@ -230,9 +242,9 @@
   </div>
 </div>
 		  	
-		  	<div style="height: 500px;" ng-hide="BILLING_EFFICIENCY.length > 0">
-		  	
-		  	</div>
+	  	<div style="height: 500px;" ng-hide="BILLING_EFFICIENCY.length > 0 || DCBDATA.length > 0 || SBDDATA.length > 0">
+	  	
+	  	</div>
 		  	
 	  	<div class="row" ng-show="BILLING_EFFICIENCY.length > 0">
 		  	<div class="col-xs-3">
@@ -329,6 +341,198 @@
 	</div>
 </div>
 <!-- Table design - billing-eff ends here  -->
+
+	  	<!-- <div style="height: 500px;" ng-hide="DCBDATA.length > 0">
+	  	
+	  	</div> -->
+		  	
+	  	<div class="row" ng-show="DCBDATA.length > 0">
+		  	<div class="col-xs-3">
+				<button class="btn btn-success btn-md" ng-click="exporttoexcel('maindcbtable','DCB')"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; Export Excel</button>
+				<button class="btn btn-danger btn-md" ng-click="genereatereport(true)"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Print PDF</button>
+			</div>
+	  	</div>
+	  	<br/>
+
+<!-- Table design - main dcb starts here  -->
+	<div class="row" ng-show="DCBDATA.length > 0 && selected_report_type==='main_dcb'">
+	
+	 <div class="col-xs-12" style="width: 100%;overflow-x: scroll">
+	
+	<table id="maindcbtable" class="table table-hover table-striped modal_fixed_header_column thalign" style="width: 100%;">
+		<thead style="background-color: #aed9ff">
+						<tr>
+							<th rowspan="3" valign="middle">Sl. No.</th>
+							<th colspan="2">ACCOUNT CODE</th>
+							<th rowspan="3" valign="middle">Voltage Class</th>
+							<th rowspan="3" valign="middle">Tariff Description</th>
+							<th rowspan="3" valign="middle">Tariff Category</th>
+							<th colspan="3">Connected Load</th>
+							<th rowspan="3" valign="middle">Total No of Instl</th>
+							<th rowspan="3" valign="middle">No of Live Instl</th>
+							<th rowspan="3" valign="middle">No of Instl To Be Billed</th>
+							<th rowspan="3" valign="middle">No of Instl Actually Billed</th>
+							<th colspan="4">Consumption</th>
+							<th colspan="4">Opening Balance</th>
+							<th colspan="4">Demand</th>
+							<th colspan="4">Opening Balance+Demand</th>
+							<th colspan="10">Collection</th>
+							<th colspan="4">Closing Balance</th>
+						</tr>
+						<tr >
+							<th rowspan="2">Revenue Demand</th>
+							<th rowspan="2">Balance</th>
+							<th rowspan="2">KW</th>
+							<th rowspan="2">HP</th>
+							<th rowspan="2">KVA</th>
+							<th rowspan="2">Metered Units</th>
+							<th rowspan="2">Assessed Constn</th>
+							<th rowspan="2">Wheeled Energy</th>
+							<th rowspan="2">Total</th>
+							<th rowspan="2">Revenue</th>
+							<th rowspan="2">Interest</th>
+							<th rowspan="2">Tax</th>
+							<th rowspan="2">Total</th>
+							<th rowspan="2">Revenue</th>
+							<th rowspan="2">Interest</th>
+							<th rowspan="2">Tax</th>
+							<th rowspan="2">Total</th>
+							<th rowspan="2">Revenue</th>
+							<th rowspan="2">Interest</th>
+							<th rowspan="2">Tax</th>
+							<th rowspan="2">Total</th>
+							<th colspan="3">Revenue</th>
+							<th colspan="3">Interest</th>
+							<th colspan="3">Tax</th>
+							<th rowspan="2">Coll Total</th>
+							<th rowspan="2">Revenue</th>
+							<th rowspan="2">Interest</th>
+							<th rowspan="2">Tax</th>
+							<th rowspan="2">Total</th>
+						</tr>
+						<tr>
+							<th>Chq/Cash</th>
+							<th>Adj</th>
+							<th>Total</th>
+							<th>Chq/Cash</th>
+							<th>Adj</th>
+							<th>Total</th>
+							<th>Chq/Cash</th>
+							<th>Adj</th>
+							<th>Total</th>
+						</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="data in DCBDATA">
+							<td align="center">{{data.row_no}}</td>
+							<td align="center">{{data.acccd_dmd}}</td>
+							<td align="center">{{data.acccd_bal}}</td>
+							<td align="center">{{data.vc}}</td>
+							<td align="left">{{data.trf_desc}}</td>
+							<td align="left">{{data.trf}}</td>
+							<td align="right">{{data.kw}}</td>
+							<td align="right">{{data.hp}}</td>
+							<td align="right">{{data.kva}}</td>
+							<td align="right">{{data.tot_insts}}</td>
+							<td align="right">{{data.active_insts}}</td>
+							<td align="right">{{data.tobe_billed}}</td>
+							<td align="right">{{data.billed_insts}}</td>
+							<td align="right">{{data.mtr_units}}</td>
+							<td align="right">{{data.assd_units}}</td>
+							<td align="right">{{data.wheeled_units}}</td>
+							<td align="right">{{data.consmptot}}</td>
+							<td align="right">{{data.rev_ob}}</td>
+							<td align="right">{{data.int_ob}}</td>
+							<td align="right">{{data.tax_ob}}</td>
+							<td align="right">{{data.obtot}}</td>
+							<td align="right">{{data.rev_dmd}}</td>
+							<td align="right">{{data.int_dmd}}</td>
+							<td align="right">{{data.tax_dmd}}</td>
+							<td align="right">{{data.dmdtot}}</td>
+							<td align="right">{{data.obdmdrev}}</td>
+							<td align="right">{{data.obdmdint}}</td>
+							<td align="right">{{data.obdmdtax}}</td>
+							<td align="right">{{data.obdmdtot}}</td>
+							<td align="right">{{data.ccrev_coll}}</td>
+							<td align="right">{{data.adjrev_coll}}</td>
+							<td align="right">{{data.collrevtot}}</td>
+							<td align="right">{{data.ccint_coll}}</td>
+							<td align="right">{{data.adjint_coll}}</td>
+							<td align="right">{{data.collinttot}}</td>
+							<td align="right">{{data.cctax_coll}}</td>
+							<td align="right">{{data.adjtax_coll}}</td>
+							<td align="right">{{data.colltaxtot}}</td>
+							<td align="right">{{data.colltot}}</td>
+							<td align="right">{{data.rev_cb}}</td>
+							<td align="right">{{data.int_cb}}</td>
+							<td align="right">{{data.tax_cb}}</td>
+							<td align="right">{{data.cb_total}}</td>
+						</tr>
+						
+		</tbody>
+	</table>
+	</div>
+</div>
+<!-- Table design - main dcb ends here  -->
+
+
+<!-- Table design - sbd mr wise starts here  -->
+
+	<!-- <div style="height: 500px;" ng-hide="SBDDATA.length > 0">
+		  	
+  	</div> -->
+		  	
+  	<div class="row" ng-show="SBDDATA.length > 0">
+	  	<div class="col-xs-3">
+			<button class="btn btn-success btn-md" ng-click="exporttoexcel('sbdmrwisetable','Spot Billing Efficiency Report')"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; Export Excel</button>
+			<button class="btn btn-danger btn-md" ng-click="genereatereport(true)"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Export PDF</button>
+		</div>
+  	</div>
+  	<br/>
+	  	
+	  	<!-- Table design - billing-eff starts here  -->
+	<div class="row" ng-show="SBDDATA.length > 0 && selected_report_type==='sbd_mr_wise'">
+	
+	 <div class="col-xs-12" style="width: 100%;overflow-x: scroll">
+	
+	<table id="sbdmrwisetable" class="table table-hover table-striped modal_fixed_header_column thalign" style="width: 100%;">
+		<thead style="background-color: #aed9ff">
+			<tr>
+				<th rowspan="2" valign="middle">Sl. No.</th>
+				<th rowspan="2">Meter Reader Code</th>
+				<th rowspan="2">No. of Installation</th>
+				<th rowspan="2">Billed</th>
+				<th rowspan="2">Not Read</th>
+				<th rowspan="2">Billing Efficiency in %</th>
+				<th colspan="5">Billing Status</th>	
+			</tr>
+			<tr >
+				<th >Normal</th>
+				<th >Door Lock</th>
+				<th >MNR</th>
+				<th >Direct Connection</th>
+				<th >Vacant</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="data in SBDDATA">
+				<td align="center">{{data.row_no}}</td>
+				<td align="left">{{data.mrcode}}</td>
+				<td align="right">{{data.tobebilled}}</td>
+				<td align="right">{{data.billed}}</td>
+				<td align="right">{{data.notbilled}}</td>
+				<td align="right">{{data.bill_eff}}</td>
+				<td align="right">{{data.nor}}</td>
+				<td align="right">{{data.dl}}</td>
+				<td align="right">{{data.mnr}}</td>
+				<td align="right">{{data.dc}}</td>
+				<td align="right">{{data.vacant}}</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+</div>
+<!-- Table design - sbd mr wise ends here  -->
 
 
     </div>
