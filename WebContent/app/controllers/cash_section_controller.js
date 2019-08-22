@@ -527,6 +527,9 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 	//		$("#receipt_info_table").height($('#bill_details_div').height() -125);
 			
 			$scope.load_cashcounters();
+			$scope.getfirstreceiptnumber();
+			
+			$scope.MANUAL_RECEIPT_NUMBER = 0;
 			
 		};
 		
@@ -542,6 +545,10 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 			$scope.manual_receipts_entry.chequedate = '';
 			$scope.manual_receipts_entry.chequedate =  $filter('date')(new Date(), 'dd/MM/yyyy');
 			
+		};
+		
+		$scope.focustofield = function(field_id){
+			$('#'+field_id).focus().select();
 		};
 		
 		$scope.getBillDetailsbyrrno = function(){
@@ -566,7 +573,9 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 				$scope.billdetails.consumername = response.consumer_name;
 				$scope.billdetails.customerid = response.ivrs_id;
 				$scope.billdetails.newrrno = response.cd_rr_no;
-				$('#add_button').focus();
+				$scope.focustofield('billdetails_billamount');
+				//$('#billdetails_billamount').focus();
+				//$('#add_button').focus();
 			}, request , 'POST');
 			
 		};
@@ -595,6 +604,10 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 			$scope.billdetails.consumername = '' ;
 			$scope.billdetails.billamount = '' ;
 			$('#billdetails_rrnumber').focus();
+			
+			$scope.MANUAL_RECEIPT_NUMBER = parseInt($scope.billdetails.receiptnumber) + 1;
+			$scope.billdetails.receiptnumber = $scope.MANUAL_RECEIPT_NUMBER;
+			
 		};
 
 		$scope.calculatetotalamount = function(){
@@ -715,7 +728,7 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 			var request = {
 					"receiptno" :  $scope.billdetails.receiptnumber,
 					"receiptdate" : $scope.manual_receipts_entry.receiptdate,
-					"counterno" : $scope.manual_receipts_entry.paymentpurpose,
+					"counterno" :$scope.manual_receipts_entry.cashcounter,
 					"conn_type": $rootScope.user.connection_type,
 			};
 			
@@ -729,20 +742,47 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 					$scope.billdetails.consumername = '';
 					//$scope.receiptgen_rrnumber.focus();
 					$('#billdetails_rrnumber').focus();
+					notify.success("Receipt Number : "+$scope.billdetails.receiptnumber+" Not Exists. You may continue.");
+					
 					
 				}else{
-					notify.error("Receipt Number : "+$scope.receiptgen_manualreceiptnumber+" Already Exists. Kindly enter new receipt number .");
+					notify.error("Receipt Number : "+$scope.billdetails.receiptnumber+" Already Exists. Kindly enter new receipt number");
 					$scope.receiptgen_manualreceiptnumber = '';
 					//$scope.receiptgen_manualreceiptnumber.focus();
 					$scope.billdetails_rrnumber = '';
 					$scope.billdetails.billamount = '';
 					$scope.billdetails.consumername = '';
 					
+					$scope.billdetails.error_message = "Receipt Number : "+$scope.billdetails.receiptnumber+" Already Exists. Kindly enter new receipt number ." ; 
+					
+					$timeout(function(){
+						$scope.billdetails.error_message = null;
+					},5000);
+					
 					$('#billdetails_receiptnumber').focus();
 				}
 				
 				//$scope.receiptgen_shopname = response.shop_name;
 				//$scope.receiptgen_billamount = response.amount_paid;
+			}, request , 'POST');
+			
+		};
+		
+		$scope.getfirstreceiptnumber = function(){
+			
+			var request = {
+					"receiptdate" : $scope.manual_receipts_entry.receiptdate,
+					"counterno" :$scope.manual_receipts_entry.cashcounter,
+					"conn_type": $rootScope.user.connection_type,
+			};
+			
+			remote.load("getfirstreceiptnumber", function(response){
+				console.log("getfirstreceiptnumber",response);
+				
+				$scope.billdetails.receiptnumber = response.NEW_RECEIPT_NUMBER;
+				$('#billdetails_rrnumber').focus();
+				$scope.MANUAL_RECEIPT_NUMBER = response.NEW_RECEIPT_NUMBER;
+				
 			}, request , 'POST');
 			
 		};
