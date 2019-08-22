@@ -406,6 +406,132 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 						
 					}, request , 'POST', false, false, true);
 				}
+			}else if ($scope.selected_report_type === 'collection_efficiency'){
+				
+				if($scope.dfromdate === null || $scope.dfromdate === undefined ){
+					notify.warn("Please select from date");
+					return;
+				}
+				
+				
+				if($scope.dtodate === null || $scope.dtodate === undefined ){
+					notify.warn("Please select to date");
+					return;
+				}
+				
+				var $selected_tariffs = $('#reports').find('.tariffs').find('.tariff-selection').find('.selected');
+				console.log($selected_tariffs);
+				var request_tariffs ='';
+				$selected_tariffs.each(function(key, tariff){
+					//request_tariffs.push("'"+$(tariff).attr('param')+"'");
+					request_tariffs = request_tariffs + "'"+$(tariff).attr('param')+"'" +"," ;
+				});
+				
+				if(request_tariffs.length > 1){
+					request_tariffs = request_tariffs.substr(0,request_tariffs.length-1);
+				}
+				
+				var request = {
+						"conn_type": $rootScope.user.connection_type,
+						"Location_Code": $rootScope.user.location_code,
+						"report_type":'TRF',
+						"selected_location":search_location,
+						"metercode": ($scope.search.metercode != null || $scope.search.metercode != undefined ? $scope.search.metercode : '') ,
+						"tariffcodes":request_tariffs,
+						"fromdate": (($scope.dfromdate != null || $scope.dfromdate != undefined )? $scope.dfromdate : '') ,
+						"todate":  (($scope.dtodate != null || $scope.dtodate != undefined) ? $scope.dtodate : '') ,
+						"header": false
+					}
+				
+				console.log("request",request);
+				
+				if(exportpdf){
+					
+					$('#loading').show();
+					$http.get($rootScope.serviceURL+'downloadreport?conn_type='+$rootScope.user.connection_type
+							+"&Location_Code="+$rootScope.user.location_code
+							+"&report_type=TRF"
+							+"&selected_location="+search_location
+							+"&metercode="+($scope.search.metercode != null || $scope.search.metercode != undefined ? $scope.search.metercode : '')
+							+"&tariffcodes="+request_tariffs
+							+"&fromdate="+(($scope.dfromdate != null || $scope.dfromdate != undefined )? $scope.dfromdate : '') 
+							+"&todate="+ (($scope.dtodate != null || $scope.dtodate != undefined) ? $scope.dtodate : '')
+							+"&header=false"
+							+"&username="+$rootScope.user.user_id
+							,{ responseType : 'arraybuffer'}).then(handleResponse)
+					
+					
+				}else{
+					remote.load("generateCollectionEfficiency", function(response){
+						console.log(response);
+						
+						var data = response.COLLECTION_EFFICIENCY;
+						$scope.COLLECTION_EFFICIENCY = response.COLLECTION_EFFICIENCY;
+						$('.collapse').collapse("hide");
+						
+					}, request , 'POST', false, false, true);
+				}
+			}else if ($scope.selected_report_type === 'payment_purpose_wise'){
+				
+				if($scope.dfromdate === null || $scope.dfromdate === undefined ){
+					notify.warn("Please select from date");
+					return;
+				}
+				
+				
+				if($scope.dtodate === null || $scope.dtodate === undefined ){
+					notify.warn("Please select to date");
+					return;
+				}
+				
+				var $selected_tariffs = $('#reports').find('.tariffs').find('.tariff-selection').find('.selected');
+				console.log($selected_tariffs);
+				var request_tariffs ='';
+				$selected_tariffs.each(function(key, tariff){
+					//request_tariffs.push("'"+$(tariff).attr('param')+"'");
+					request_tariffs = request_tariffs + "'"+$(tariff).attr('param')+"'" +"," ;
+				});
+				
+				if(request_tariffs.length > 1){
+					request_tariffs = request_tariffs.substr(0,request_tariffs.length-1);
+				}
+				
+				var request = {
+						"conn_type": $rootScope.user.connection_type,
+						"Location_Code": $rootScope.user.location_code,
+						"selected_location":search_location,
+						"cashcounternumber":'',
+						"fromdate": (($scope.dfromdate != null || $scope.dfromdate != undefined )? $scope.dfromdate : '') ,
+						"todate":  (($scope.dtodate != null || $scope.dtodate != undefined) ? $scope.dtodate : '') ,
+						"header": true
+					}
+				
+				console.log("request",request);
+				
+				if(exportpdf){
+					
+					$('#loading').show();
+					$http.get($rootScope.serviceURL+'downloadreport?conn_type='+$rootScope.user.connection_type
+							+"&Location_Code="+$rootScope.user.location_code
+							+"&selected_location="+search_location
+							+"&cashcounternumber="+"''"
+							+"&fromdate="+(($scope.dfromdate != null || $scope.dfromdate != undefined )? $scope.dfromdate : '') 
+							+"&todate="+ (($scope.dtodate != null || $scope.dtodate != undefined) ? $scope.dtodate : '')
+							+"&header=false"
+							+"&username="+$rootScope.user.user_id
+							,{ responseType : 'arraybuffer'}).then(handleResponse)
+					
+					
+				}else{
+					remote.load("getPaymentPurposewiseReport", function(response){
+						console.log(response);
+						
+						var data = response.PURPOSEWISE;
+						$scope.PURPOSEWISE = response.PURPOSEWISE;
+						$('.collapse').collapse("hide");
+						
+					}, request , 'POST', false, false, true);
+				}
 			}else if($scope.selected_report_type === 'main_dcb'){
 				
 /*				if($scope.dfromdate === null || $scope.dfromdate === undefined ){
@@ -556,9 +682,8 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 				}
 			}
 			
-			else if($scope.selected_report_type === 'collection_efficiency'){
-				
-			}
+			
+			
 		};
 		
         $scope.exporttoexcel = function(tableid,filename){

@@ -79,8 +79,10 @@
       </li>
       <li> <a href="#"><i class="fa fa-line-chart leftNavIcon"></i> Collection</a>
         <ul>
-         <li> <a href="#"><i class="fa fa-angle-right leftNavIcon" ng-click="selected_report_type='collection_efficiency'"></i> Collection Efficiency</a> </li>
+         <li> <a href="#" ng-click="selected_report_type='collection_efficiency'"><i class="fa fa-angle-right leftNavIcon"></i> Collection Efficiency</a> </li>
+         <li> <a href="#" ng-click="selected_report_type='payment_purpose_wise'"><i class="fa fa-angle-right leftNavIcon"></i> Collection Purposewise Report</a> </li>
         </ul>
+        
       </li> 
       <li> <a href="#"><i class="fa fa-cogs leftNavIcon"></i> Disconnection</a>
         <ul>
@@ -255,7 +257,7 @@
 	  	<br/>
 	  	
 	  	<!-- Table design - billing-eff starts here  -->
-	<div class="row" ng-show="BILLING_EFFICIENCY.length > 0 && selected_report_type==='billing_efficiency'">
+	<div class="row" ng-show="(BILLING_EFFICIENCY.length > 0 || COLLECTION_EFFICIENCY.length > 0 )  && selected_report_type==='billing_efficiency'">
 	
 	 <div class="col-xs-12" style="width: 100%;overflow-x: scroll">
 	
@@ -298,61 +300,85 @@
 </div>
 <!-- Table design - billing-eff ends here  -->
 
-  	<!-- Table design - billing-eff starts here  -->
-	<div class="row" ng-show="BILLING_EFFICIENCY.length > 0 && selected_report_type==='collection_efficiency'">
+  	<!-- Table design - Collection-eff starts here  -->
+	<div class="row" ng-show="(BILLING_EFFICIENCY.length > 0 || COLLECTION_EFFICIENCY.length > 0 ) && selected_report_type==='collection_efficiency'">
 	
 	 <div class="col-xs-12" style="width: 100%;overflow-x: scroll">
 	
-	<table id="billingefficiencytable" class="table table-hover table-striped modal_fixed_header_column thalign" style="width: 100%;">
+	<table id="collectionefficiencytable" class="table table-hover table-striped modal_fixed_header_column thalign" style="width: 100%;">
 		<thead style="background-color: #aed9ff">
 						<tr>
 							<th rowspan="2" valign="middle">Sl. No.</th>
 							<th rowspan="2">Tariff</th>
-							<th rowspan="2">No. of Installation</th>
-							<th rowspan="2">Billed</th>
-							<th rowspan="2">Not Read</th>
-							<th rowspan="2">Billing Efficiency in %</th>
-							<th colspan="5">Billing Status</th>	
+							<th rowspan="2">Units</th>
+							<th rowspan="2">Demand</th>
+							<th colspan="2">Collection</th>
+							<th rowspan="2">Collection Efficiency in %</th>
+							<th colspan="2">ARR</th>	
 						</tr>
 						<tr >
-							<th >Normal</th>
-							<th >Door Lock</th>
-							<th >MNR</th>
-							<th >Direct Connection</th>
-							<th >Vacant</th>
+							<th >Cash</th>
+							<th >Credit</th>
+							<th >Demand</th>
+							<th >Collection</th>
 						</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="data in BILLING_EFFICIENCY">
+			<tr ng-repeat="data in COLLECTION_EFFICIENCY">
 							<td align="center">{{data.row_no}}</td>
 							<td align="left">{{data.trf}}</td>
-							<td align="right">{{data.tobebilled}}</td>
-							<td align="right">{{data.billed}}</td>
-							<td align="right">{{data.notbilled}}</td>
-							<td align="right">{{data.billeff}}</td>
-							<td align="right">{{data.nor}}</td>
-							<td align="right">{{data.dl}}</td>
-							<td align="right">{{data.mnr}}</td>
-							<td align="right">{{data.dc}}</td>
-							<td align="right">{{data.vacant}}</td>
+							<td align="right">{{data.consmp}}</td>
+							<td align="right">{{data.dmd}}</td>
+							<td align="right">{{data.col}}</td>
+							<td align="right">{{data.crdt}}</td>
+							<td align="right">{{data.col_eff}}</td>
+							<td align="right">{{data.dmdarr}}</td>
+							<td align="right">{{data.colarr}}</td>
 						</tr>
 		</tbody>
 	</table>
 	</div>
 </div>
-<!-- Table design - billing-eff ends here  -->
+<!-- Table design - collection-eff ends here  -->
 
-	  	<!-- <div style="height: 500px;" ng-hide="DCBDATA.length > 0">
+<!-- Table design - payment Purpose Wise starts here  -->
+	<div class="row" ng-show="PURPOSEWISE.length > 0 && selected_report_type==='payment_purpose_wise'">
+	
+	 <div class="col-xs-12" style="width: 100%;overflow-x: scroll">
+	
+	<table id="collectionefficiencytable" class="table table-hover table-striped modal_fixed_header_column thalign" style="width: 100%;">
+		<thead style="background-color: #aed9ff">
+						<tr>
+							<th valign="middle">Sl. No.</th>
+							<th >Account Code</th>
+							<th >Payment Purpose</th>
+							<th >Amount</th>
+						</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="data in PURPOSEWISE">
+							<td align="center">{{data.row_no}}</td>
+							<td align="center">{{data.account_code}}</td>
+							<td align="left">{{data.pymnt_purpose}}</td>
+							<td align="right">{{data.amount}}</td>
+						</tr>
+		</tbody>
+	</table>
+	</div>
+</div>
+<!-- Table design -  payment Purpose Wise ends here  -->
+
+  	<!-- <div style="height: 500px;" ng-hide="DCBDATA.length > 0">
+  	
+  	</div> -->
 	  	
-	  	</div> -->
-		  	
-	  	<div class="row" ng-show="DCBDATA.length > 0">
-		  	<div class="col-xs-3">
-				<button class="btn btn-success btn-md" ng-click="exporttoexcel('maindcbtable','DCB')"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; Export Excel</button>
-				<button class="btn btn-danger btn-md" ng-click="genereatereport(true)"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Print PDF</button>
-			</div>
-	  	</div>
-	  	<br/>
+  	<div class="row" ng-show="DCBDATA.length > 0">
+	  	<div class="col-xs-3">
+			<button class="btn btn-success btn-md" ng-click="exporttoexcel('maindcbtable','DCB')"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; Export Excel</button>
+			<button class="btn btn-danger btn-md" ng-click="genereatereport(true)"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Print PDF</button>
+		</div>
+  	</div>
+  	<br/>
 
 <!-- Table design - main dcb starts here  -->
 	<div class="row" ng-show="DCBDATA.length > 0 && selected_report_type==='main_dcb'">
