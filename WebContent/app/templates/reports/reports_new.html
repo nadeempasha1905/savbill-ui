@@ -96,12 +96,9 @@
         </ul>
       </li> 
       
-      <li > <a href="#" ng-click="selected_report_type='sbd_mr_wise'"><i class="fa fa-bar-chart leftNavIcon"></i> Spot Billing Efficiency</a>
-        <!-- <ul>
-          <li> <a href="#" ng-click="selected_report_type='main_dcb'"><i class="fa fa-angle-right leftNavIcon"></i> Main DCB</a> </li>
-        </ul> -->
+     <!--  <li > <a href="#" ng-click="selected_report_type='sbd_mr_wise'"><i class="fa fa-bar-chart leftNavIcon"></i> Spot Billing Efficiency</a>
       </li> 
-
+ -->
     </ul>
   </div>
   
@@ -566,6 +563,7 @@
 
 <script>
 
+
 $('.dsfromdate').datetimepicker({
 	format : 'dd/mm/yyyy',
 	minView : 2,
@@ -588,13 +586,16 @@ $('.dmonthyear').datetimepicker({
 		autoclose : 1,
 });
 
+
 $(function() {
+	
 
 	console.log("init");
     var verticalNavigation = new SSDSystem.VerticalNavigation();
     verticalNavigation.init();
 
 });
+
 
 $( "a" ).click(function( event ) {
 	  event.preventDefault();
@@ -613,4 +614,7 @@ function openNav(){
 	        $('#contentLeft').hide();
 	    }
 	});
+
+  
+
 </script>
