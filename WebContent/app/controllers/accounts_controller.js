@@ -1,6 +1,7 @@
 var accounts_controller = angular.module('accounts_controller',[]);
 
-accounts_controller.controller('accounts_controller',['$scope','$rootScope','remote','$timeout','$compile','$uibModal','uiGridConstants','$sce','notify','$filter','webValidations',function($scope,$rootScope,remote,$timeout,$compile,$uibModal,uiGridConstants,$sce,notify,$filter,webValidations){
+accounts_controller.controller('accounts_controller',['$scope','$rootScope','remote','$timeout','$compile','$uibModal','uiGridConstants','$sce','notify','$filter','webValidations','$http','$window',
+	                                          function($scope,$rootScope,remote,$timeout,$compile,$uibModal,uiGridConstants,$sce,notify,$filter,webValidations,$http,$window){
 	
 	var accounts_flow = $rootScope.breadcrumb[$rootScope.breadcrumb.length-1];
 	
@@ -318,18 +319,69 @@ accounts_controller.controller('accounts_controller',['$scope','$rootScope','rem
 					"location_code" : $rootScope.user.location_code,					
 					"rr_number": (($rr_no.val().trim()) ? $rootScope.user.location_code + $rr_no.val().trim() : ''),
 					"no_of_months" : (($no_of_months.val().trim()) ?  $no_of_months.val().trim() : ''),
-					"from_date": (($scope.listBillsFromDate) ? $scope.listBillsFromDate : ''),
-					"to_date": (($scope.listBillsToDate) ? $scope.listBillsToDate : ''),
+					"fromdate": (($scope.listBillsFromDate) ? $scope.listBillsFromDate : ''),
+					"todate": (($scope.listBillsToDate) ? $scope.listBillsToDate : ''),
 					"om_code": '',
-					"tariff_codes": '',
-					"mr_code": '',
+					"tariffs": '',
+					"mrcode": '',
 					"reading_day": '',
 					"conn_type" : $rootScope.user.connection_type
 				}
 				remote.load("getbillslist", function(response){
 					$scope.list_bills = response.bills_list;
+					console.log(response.bills_list);
 					$scope.listBillDetailsGridOptions.data = $scope.list_bills;
 				}, request , 'POST');
+			
+			
+		};
+		
+		$scope.print_list_bill_details = function($event){
+			
+			if(!$rr_no.val()){
+				notify.warn('Please Enter RR Number...!');
+				$('#list-bill-rr-number').focus();
+				return;
+			}
+			
+			$('#loading').show();
+			
+			/*var request = {
+					"selected_location" : $rootScope.user.location_code,					
+					"rr_number": (($rr_no.val().trim()) ? $rootScope.user.location_code + $rr_no.val().trim() : ''),
+					"no_of_months" : (($no_of_months.val().trim()) ?  $no_of_months.val().trim() : ''),
+					"fromdate": (($scope.listBillsFromDate) ? $scope.listBillsFromDate : ''),
+					"todate": (($scope.listBillsToDate) ? $scope.listBillsToDate : ''),
+					"om_code": '',
+					"tariffs": '',
+					"mrcode": '',
+					"reading_day": '',
+					"conn_type" : $rootScope.user.connection_type
+				}
+				remote.load("getbillslist", function(response){
+					$scope.list_bills = response.bills_list;
+					console.log(response.bills_list);
+					$scope.listBillDetailsGridOptions.data = $scope.list_bills;
+				}, request , 'POST');*/
+			
+			
+			$http.get($rootScope.serviceURL+'downloadreport?conn_type='+$rootScope.user.connection_type
+					+"&report_type=LIST_BILLS"
+					+"&Location_Code="+$rootScope.user.location_code
+					+"&selected_location="+$rootScope.user.location_code
+					+"&rr_number="+ (($rr_no.val().trim()) ? $rootScope.user.location_code + $rr_no.val().trim() : '')
+					+"&no_of_months="+ (($no_of_months.val().trim()) ?  $no_of_months.val().trim() : '')
+					+"&fromdate="+ (($scope.listBillsFromDate) ? $scope.listBillsFromDate : '')
+					+"&todate="+ (($scope.listBillsToDate) ? $scope.listBillsToDate : '')
+					+"&om_code="+''
+					+"&tariffs="+''
+					+"&metercode="+''
+					+"&reading_day="+''
+					+"&username="+$rootScope.user.user_id
+					
+					,{ responseType : 'arraybuffer'}).then(handleResponse)
+			
+			
 		};
 		
 		$scope.listBillDetailsGridOptions = {
@@ -369,6 +421,13 @@ accounts_controller.controller('accounts_controller',['$scope','$rootScope','rem
 			$scope.listBillDetailsGridOptions.data = [];
 		};
 	}
+	
+	function handleResponse(response){
+       	var pdfFile = new Blob([response.data], { type : 'application/pdf' });	
+       	var downloadURL = URL.createObjectURL(pdfFile);
+       	$('#loading').hide();
+       		$window.open(downloadURL);
+     };
 	
 		
 	// Free lighting Details grid starts
