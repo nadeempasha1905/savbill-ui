@@ -1,0 +1,67 @@
+<style>
+
+.colleffclass table {position: relative;overflow: hidden;border-collapse: collapse;table-layout:fixed;}
+.colleffclass thead {position: relative;display: block;overflow: visible;}
+.colleffclass tbody {position: relative; display: block;height: 500px;overflow: scroll;}
+.colleffclass thead th {min-width: 95px;width: 95px;color: #000000;border-color: #6ea1cc !important;text-align: center;
+										height: 35px;word-wrap:break-word;}
+.colleffclass tbody td {min-width: 95px;width: 95px;color: #353535;word-break: break-all;height: 35px;
+										word-wrap:break-word;}
+.colleffclass th,.colleffclass td {border: 1px solid #337ab7;}
+
+.colleffclass thead tr th {vertical-align: middle;border-top: 1px solid #6ea1cc !important;font-weight: 600;
+    font-size: 16px;}
+
+</style>
+
+<div class="row" >
+	<div class="col-xs-9" style="text-align: center;font-size: 20px;">
+		<span><strong>{{report_heading}}</strong></span>
+	</div>
+ 	<div class="col-xs-3">
+		<button class="btn btn-success btn-sm" ng-click="exporttoexcel('collectionefficiencytable','Collection Efficiency Report')">
+			<i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; Export Excel</button>
+		<button class="btn btn-danger btn-sm" ng-click="genereatereport(true)">
+			<i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Export PDF</button>
+	</div>
+</div>
+ <br/>	
+<div class="row" >
+	
+	 <div class="col-xs-12" style="width: 100%;overflow-x: scroll">
+	
+	<table id="collectionefficiencytable" class="table table-hover table-striped colleffclass thalign" style="width: 100%;">
+		<thead style="background-color: #aed9ff">
+		<tr ng-show="false"><td colspan="11"><div style="text-align: center;font-size: 16px;"><span><strong>{{report_heading}}</strong></span></div></td></tr>
+						<tr>
+							<th rowspan="2" valign="middle">Sl. No.</th>
+							<th rowspan="2">Tariff</th>
+							<th rowspan="2">Units</th>
+							<th rowspan="2">Demand</th>
+							<th colspan="2">Collection</th>
+							<th rowspan="2">Collection Efficiency in %</th>
+							<th colspan="2">ARR</th>	
+						</tr>
+						<tr >
+							<th >Cash</th>
+							<th >Credit</th>
+							<th >Demand</th>
+							<th >Collection</th>
+						</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="data in COLLECTION_EFFICIENCY">
+							<td align="center">{{data.row_no}}</td>
+							<td align="left">{{data.trf}}</td>
+							<td align="right">{{data.consmp}}</td>
+							<td align="right">{{data.dmd}}</td>
+							<td align="right">{{data.col}}</td>
+							<td align="right">{{data.crdt}}</td>
+							<td align="right">{{data.col_eff}}</td>
+							<td align="right">{{data.dmdarr}}</td>
+							<td align="right">{{data.colarr}}</td>
+						</tr>
+		</tbody>
+	</table>
+	</div>
+</div>

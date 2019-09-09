@@ -142,7 +142,7 @@
 		
 		<div class="row">
 			<div class="col-xs-12">
-				<h3><span class="text-info" >BILLING MONTH </span> <span style="color: red">Jun-2013</span></h3>
+				<h3><span class="text-info" >BILLING MONTH </span> <span style="color: red">{{dmonthyear}}</span></h3>
 			</div>
 			<br/><br/>
 				<div class="col-xs-3">
@@ -276,7 +276,7 @@
                         		<input type="radio" name="radiotype" ng-click="refreshchart_tab1('SUBTRF')"  value=sub-trf-wise">Sub-Tariff Wise
                         		<br/>
                         		<div class="col-xs-12">
-                        			<h3><u>Billing Efficiency for the month (Jun-2013)</u></h3>
+                        			<h3><u>Billing Efficiency for the month ({{dmonthyear}})</u></h3>
                         		</div>	
                         		<br/>
                         		<div class="col-xs-4">
@@ -315,7 +315,7 @@
                         	<br/>
                         	<div class="row">
                         		<div class="col-xs-4" ng-repeat="c in BILL_EFF_CARDS" style="margin-bottom: 30px;">
-                        		<a href="" ng-click="fillpie_onclick_card(c.billed,c.notbilled,c.trf)">
+                        		<a href="" ng-click="fillpie_onclick_card(c.billed,c.notbilled,c.trf)"> 
                         			<div class="wrimagecard wrimagecard-topimage card{{$index+2}}" >
 										<div  style="text-align: left;"><span class="h4 fontbold">{{c.trf}}</span><br/></div>
 								          <div class="wrimagecard-topimage_title card1 topsection">

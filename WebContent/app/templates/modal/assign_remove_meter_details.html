@@ -41,7 +41,7 @@
 					<tr>
 						<td>Meter Type</td>
 						<td>
-							<select id="meter-detail-meter-type" class="text-input text-select" ng-model="data.mtr_type"  >
+							<select id="meter-detail-meter-type" class="text-input text-select" ng-model="data.mtr_type" ng-disabled="true">
 								<option value="">-- Select --</option>
 								<option ng-repeat="option in MeterTypeList" value="{{option.key}}" >{{option.value}}</option>
 							</select>
@@ -71,21 +71,21 @@
 					<tr>
 						<td colspan="2"  style="text-align: center;    background-color: darkgray;"><h4>Final Reading</h4></td>
 					</tr>
-					<tr>
+					<tr ng-hide="data.mtr_type === '3' || data.mtr_type === '6'">
 						<td>Present Reading (BKWH)</td>
 						<td><input type="text" ng-model="data.mtr_meter_bkwh" id="assign-remove-meter-bkwh" class="text-input" /></td>
 					</tr>
 					<tr ng-show="data.mtr_type === '3' || data.mtr_type === '6'">
 						<td>CKWH</td>
-						<td><input type="text" ng-model="data.mtr_meter_ckwh" id="assign-remove-meter-ckwh" class="text-input" /></td>
+						<td><input type="text" ng-model="data.mtr_meter_ckwh" id="assign-remove-meter-ckwh" class="text-input" ng-disabled="!data.mra_release_dt"/></td>
 					</tr>
 					<tr ng-show="data.mtr_type === '3' || data.mtr_type === '6'">
 						<td>BMD</td>
-						<td><input type="text" ng-model="data.mtr_meter_bmd" id="assign-remove-meter-bmd" class="text-input" /></td>
+						<td><input type="text" ng-model="data.mtr_meter_bmd" id="assign-remove-meter-bmd" class="text-input"  ng-disabled="!data.mra_release_dt"/></td>
 					</tr>
 					<tr ng-show="data.mtr_type === '3' || data.mtr_type === '6'">
 						<td>BPF</td>
-						<td><input type="text" ng-model="data.mtr_meter_bpf" id="assign-remove-meter-bpf" class="text-input" /></td>
+						<td><input type="text" ng-model="data.mtr_meter_bpf" id="assign-remove-meter-bpf" class="text-input"  ng-disabled="!data.mra_release_dt"/></td>
 					</tr>
 					<tr>
 						<td colspan="2" style="text-align: left;padding-left: 10px;">Remarks
@@ -148,9 +148,9 @@
 					<tr>
 						<td colspan="2"  style="text-align: center;    background-color: darkgray;"><h4>Initial Reading</h4></td>
 					</tr>
-					<tr>
+					<tr ng-hide="fixedmeter.mtr_type === '3' || fixedmeter.mtr_type === '6'">
 						<td>Present Reading (BKWH)</td>
-						<td><input type="text" ng-model="fixedmeter.mtr_sl_no" id="assign-remove-meter-bkwh" class="text-input" /></td>
+						<td><input type="text" ng-model="fixedmeter.mtr_sl_no" id="assign-remove-meter-bkwh" class="text-input"/></td>
 					</tr>
 					<tr ng-show="fixedmeter.mtr_type === '3' || fixedmeter.mtr_type === '6'">
 						<td>CKWH</td>

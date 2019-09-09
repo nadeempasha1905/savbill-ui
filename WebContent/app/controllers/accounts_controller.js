@@ -1248,6 +1248,8 @@ accounts_controller.controller('accounts_controller',['$scope','$rootScope','rem
 	//Cheque Dishoner Details Grid starts
 	if(accounts_flow === 'cheque_dishonour'){
 		
+		$scope.chqdis = {};
+		
 		var $rr_no = $('#cheque-dishonour-rr-number');
 		var $chq_no = $('#cheque-dishonour-cheque-number');
 		var $bank_name = $('#cheque-dishonour-bank-name');
@@ -1274,7 +1276,7 @@ accounts_controller.controller('accounts_controller',['$scope','$rootScope','rem
 				gridFooterHeight: 20,
 				columnDefs: [
 		             {field: 'row_num', displayName: '#',width : '4%'},
-		             {field: 'chq_dd_no', displayName: 'Cheque Number',width : '15%'},
+		             {field: 'chq_dd_no', displayName: 'Cheque Number',width : '15%',cellTemplate:'<div><a ng-click="grid.appScope.addchequedishonourdetails(row.entity)">{{row.entity[col.field]}}</a></div>'},
 		             {field: 'chq_dd_dt', displayName: 'Cheque Date',width : '15%'},
 		             {field: 'drawn_bank', displayName: 'Bank Name',width : '25%'},
 		             {field: 'chq_dd_amt', displayName: 'Cheque Amount',width : '15%'},
@@ -1291,6 +1293,86 @@ accounts_controller.controller('accounts_controller',['$scope','$rootScope','rem
 			$scope.receiptDate = '';
 			$scope.chequeDate = '';
 			$bank_name.val('');
+		};
+		
+		$scope.setmessagefordishonour = null;
+		
+		$scope.addchequedishonourdetails = function(row){
+			
+			console.log(row);
+			$scope.setmessagefordishonour = null;
+			
+			var request = {
+					"conn_type" : $rootScope.user.connection_type,
+					"location_code": $rootScope.user.location_code,
+					"cheque_number": row.chq_dd_no,
+					"cheque_date": row.chq_dd_dt,
+					"bank":row.drawn_bank 
+			};
+			
+			remote.load("getreceiptdetailsforchequedisno", function(response){
+				$scope.receipt_details_cheque_dishonour_details = response.receipt_cheque_details;
+				
+				$scope.chqdis.chequeno = $scope.receipt_details_cheque_dishonour_details[0].chq_dd_no;
+				$scope.chqdis.chequedate = $scope.receipt_details_cheque_dishonour_details[0].chq_dd_dt;
+				$scope.chqdis.chequeamount =  $scope.receipt_details_cheque_dishonour_details[0].chq_dd_amt;
+				$scope.chqdis.drawnbank = $scope.receipt_details_cheque_dishonour_details[0].drawn_bank;
+				$scope.chqdis.penaltyamount = $scope.receipt_details_cheque_dishonour_details[0].chq_dis_penalty;
+				$scope.chqdis.bankcharges = 0 ;
+				
+				$scope.chqdis.chequedisdate = moment(new Date()).format("DD/MM/YYYY").toString();
+				
+				$scope.temp_debit_to_bill = $scope.receipt_details_cheque_dishonour_details[0].debit_amount;
+				
+				if($scope.receipt_details_cheque_dishonour_details[0].chq_dis_flag === 'Y'){
+					$scope.setmessagefordishonour = "This Cheque Is Already Dishonoured.";
+				}
+				
+			}, request , 'POST');
+			
+			$('#myModal').modal('toggle');
+			
+		};
+		
+		$scope.calculatedebitamount = function(){
+			
+			if(!$scope.chqdis.bankcharges){
+				$scope.receipt_details_cheque_dishonour_details[0].debit_amount = $scope.temp_debit_to_bill ;
+				$scope.chqdis.bankcharges = 0 ;
+				return;
+			}
+			
+			console.log($scope.chqdis.bankcharges);
+			console.log($scope.chqdis.penaltyamount);
+			console.log($scope.receipt_details_cheque_dishonour_details[0].rcpt_amount);
+			var amount = parseInt($scope.chqdis.bankcharges) + parseInt($scope.chqdis.penaltyamount) + parseInt($scope.receipt_details_cheque_dishonour_details[0].rcpt_amount);
+			console.log(amount);
+			
+			$scope.receipt_details_cheque_dishonour_details[0].debit_amount = amount;
+			
+		}
+		
+		$scope.save_cheque_dishonour = function(){
+			
+			if(!$scope.chqdis.remarks){notify.warn("Please enter remarks !!!");return;}
+			
+			var request = {
+					"conn_type" : $rootScope.user.connection_type,
+					"location": $rootScope.user.location_code,
+					"cheque_number": $scope.chqdis.chequeno,
+					"cheque_date": $scope.chqdis.chequedate,
+					"bank":$scope.chqdis.drawnbank ,
+					"userid": $rootScope.user.user_id,
+					"remarks": $scope.chqdis.remarks,
+					"cheque_dis_date": $scope.chqdis.chequedisdate,
+					"penalty_amount": $scope.chqdis.penaltyamount,
+					"bank_charges": $scope.chqdis.bankcharges
+			};
+			
+			remote.load("dochequedishonour", function(response){
+				
+			}, request , 'POST');
+			
 		};
 	}
 	
@@ -1341,6 +1423,8 @@ accounts_controller.controller('accounts_controller',['$scope','$rootScope','rem
 			$scope.chequeDate = '';
 			$bank_name.val('');
 		};
+		
+		
 	}
 	
 	//Other Cheque Dishoner Details Grid starts
@@ -1617,6 +1701,31 @@ accounts_controller.controller('accounts_controller',['$scope','$rootScope','rem
 			delete $scope.receiptDate;
 			delete $scope.counterNumber;
 			$('#adjustments-from-rr-number').focus();
+			
+		};
+		
+		$scope.addadjustment = {};
+		$scope.addnewadjustment = function(){
+			
+			$('#adjustmentModal').modal('toggle');
+			
+		};
+		
+		$scope.verifyandfetchreceiptdetails = function(){
+			
+			var request = {
+					"location_code" : $rootScope.user.location_code,	
+					"conn_type" : $rootScope.user.connection_type,
+					"receipt_number" : (($scope.addadjustment.receiptno) ? $scope.addadjustment.receiptno : ''),
+					"receipt_date" : (($scope.addadjustment.receiptdate) ? $scope.addadjustment.receiptdate : ''),
+					"counter_number" : (($scope.addadjustment.counter) ? $scope.addadjustment.counter : '')
+					
+			}
+			console.log(request);
+			remote.load("getreceiptdetailstoadjust", function(response){
+				
+			}, request , 'POST');
+			
 			
 		};
 		
@@ -3271,9 +3380,11 @@ accounts_controller.controller('accounts_controller',['$scope','$rootScope','rem
 				    templateUrl: templates.modal.assign_remove_meter_modal,
 				    controller: function($scope, $uibModalInstance,configs,data,remote,MeterMakeList,MeterTypeList,MeterStatusList){
 				    	
+				    	
 				    	$scope.action = 'edit';
 				    	console.log("row.entity",row.entity);
 				    	$scope.data = angular.copy(data);
+				    	$scope.data.mra_release_dt = null;	
 				    	$scope.MeterMakeList = angular.copy(MeterMakeList);
 				    	$scope.MeterTypeList = angular.copy(MeterTypeList);
 				    	$scope.MeterStatusList = angular.copy(MeterStatusList);

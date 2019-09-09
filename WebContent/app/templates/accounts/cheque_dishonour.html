@@ -21,11 +21,18 @@
 				<div class="pull-left margin-top-5">
 					Bank Name : <input type="text" id="cheque-dishonour-bank-name" class="text-input cheque-dishonour-bank-name" ng-enter="load_cheque_dishoner_details($event)"/>
 				</div>
+				<div class="margin-top-5">
+					<button ng-click="load_cheque_dishoner_details($event)" class="load-cheque-dishoner-details">Show</button>
+					<button ng-click="cheque_dishonour_clear()" class="cheque-dishonour-clear">Clear</button>
+				</div>
+				<!-- <div class="pull-right margin-top-5">
+					<button ng-click="addchequedishonourdetails()">Add New</button>
+				</div> -->
 			</div>
-			<div class="action width-100 text-center margin-top-15">
+			<!-- <div class="action width-100 text-center margin-top-15">
 				<button ng-click="load_cheque_dishoner_details($event)" class="load-cheque-dishoner-details">Show</button>
 				<button ng-click="cheque_dishonour_clear()" class="cheque-dishonour-clear">Clear</button>
-			</div>
+			</div> -->
 			<div class="width-100 clear-both padding-top-15">
 				<div id="cheque_dishonour_details">
 					<div class="gridStyle" ui-grid="chequeDishonourDetailsGridOptions" style="width: 100%;height: 440px;"></div>
@@ -34,3 +41,161 @@
 		</div>
 	</div>
 </div>
+
+<style>
+.modal-dialog{
+	width: 75%;
+}
+label {
+    font-weight: 100;
+}
+
+#chequedis_receiptdetails_table tbody {font-size: 14px;}
+
+/* .modal_fixed_header_column table {position: relative;overflow: hidden;border-collapse: collapse;table-layout:fixed;}
+.modal_fixed_header_column thead {position: relative;display: block;overflow: visible;}
+.modal_fixed_header_column tbody {position: relative; display: block;height: 200px;overflow: scroll;}
+.modal_fixed_header_column thead th {min-width: 95px;width: 95px;color: #000000;border-color: #6ea1cc !important;text-align: center;
+										height: 35px;word-wrap:break-word;}
+.modal_fixed_header_column tbody td {min-width: 95px;width: 95px;color: #353535;word-break: break-all;height: 35px;
+										word-wrap:break-word;}
+.modal_fixed_header_column th,.modal_fixed_header_column td {border: 1px solid #337ab7;}
+
+.modal_fixed_header_column thead tr th {vertical-align: middle;border-top: 1px solid #6ea1cc !important;font-weight: 600;
+    font-size: 16px;} */
+</style>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><b>Add Cheque Dishonour Details</b></h4>
+      </div>
+      <div class="modal-body">
+       <div class="row">
+       		<div class="col-xs-4">
+       			<label>Cheque No</label>
+		  			<input type="text" class="form-control" ng-model="chqdis.chequeno" ng-readonly="true">
+       		</div>
+      		<div class="col-xs-4">
+       			<label>Cheque Date</label>
+		  			<div class='form-inline input-group input-append date dfchequedate'
+						data-provide="datepicker">
+						<input type='text' class="form-control" id="dfchequedate"
+							readonly="readonly" name="dfromdate" ng-model="chqdis.chequedate"
+							> <span
+							class="input-group-addon datepicker"> <span
+							class="glyphicon glyphicon-calendar"></span>
+						</span>
+					</div>
+       		</div>
+       		<div class="col-xs-4">
+       			<label>Cheque Amount</label>
+		  			<input type="text" class="form-control" ng-model="chqdis.chequeamount"  ng-readonly="true">
+       		</div>
+       </div>
+       <div class="row">
+       	<div  class="col-xs-8">
+       		<div class="row">
+       			 <div class="col-xs-6">
+       			<label>Drawn Bank</label>
+		  			<input type="text" class="form-control" ng-model="chqdis.drawnbank"  ng-readonly="true">
+       		</div>
+       		
+       		<div class="col-xs-6">
+				<label>Penalty Amount</label>
+				<input type="text" class="form-control" ng-model="chqdis.penaltyamount"  ng-readonly="true">
+			</div>
+			
+
+       		</div>
+       		 <div class="row">
+       		        		<div class="col-xs-6">
+       			<label>Cheque Dis Date</label>
+		  			<div class='form-inline input-group input-append date dfchequedisdate'
+						data-provide="datepicker">
+						<input type='text' class="form-control" id="dfchequedisdate"
+							readonly="readonly" name="dfromdate" ng-model="chqdis.chequedisdate"
+							> <span
+							class="input-group-addon datepicker"> <span
+							class="glyphicon glyphicon-calendar"></span>
+						</span>
+					</div>
+       		</div>
+	 			<div class="col-xs-6">
+			<label>Bank Collection/Other Charges</label>
+			<input type="text" class="form-control" ng-model="chqdis.bankcharges" ng-keyup="calculatedebitamount()">
+			</div>
+			
+      	</div>	 
+       	</div>
+       	
+       	<div  class="col-xs-4">
+       	<div class="row">
+         <div class="col-xs-12">
+         	<label>Remarks</label>
+         	<textarea rows="4" cols="*" class="form-control" ng-model="chqdis.remarks" required></textarea>
+         </div>
+       </div>
+       	</div>
+       
+       
+      		
+       </div>
+       
+       
+       
+       <br/>
+      	<div class="row">
+	
+	 <div class="col-xs-12" style="width: 100%;">
+	
+	<table id="chequedis_receiptdetails_table" class="table table-sm table-hover table-striped thalign table-bordered" style="width: 100%;">
+		<thead style="background-color: #70bcff">
+						<tr>
+							<th  >Sl. No.</th>
+							<th  >Receipt No</th>
+							<th  >Receipt Date</th>
+							<th  >Counter</th>
+							<th  >RR Number</th>
+							<th  >Amount</th>
+							<th  >Debit To Bill</th>
+						</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="data in receipt_details_cheque_dishonour_details">
+							<td align="center">{{data.row_num}}</td>
+							<td align="left">{{data.rcpt_no}}</td>
+							<td align="left">{{data.rcpt_dt}}</td>
+							<td align="left">{{data.counter}}</td>
+							<td align="left">{{data.rr_no}}</td>
+							<td align="right">{{data.rcpt_amount}}</td>
+							<td align="right">{{data.debit_amount}}</td>
+						</tr>
+		</tbody>
+	</table>
+	</div>
+</div>
+
+<div class="row" ng-show="setmessagefordishonour.length > 0">
+	<div style="color: red;">{{setmessagefordishonour}}</div>
+</div>
+      </div>
+      <div class="modal-footer">
+       
+        <button type="button" class="btn btn-primary" ng-click="save_cheque_dishonour()" ng-disabled="setmessagefordishonour.length > 0">Save</button>
+         <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+$('.dfchequedisdate').datetimepicker({
+	format : 'dd/mm/yyyy',
+	minView : 2,
+	autoclose : 1,
+	//startDate : new Date(new Date().setDate(new Date().getDate() - 15)),
+	endDate : new Date()
+});
+</script>

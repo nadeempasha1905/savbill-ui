@@ -241,6 +241,8 @@ $scope.grouptype = null;
 
     $scope.refreshchart_tab1 = function(type){
     	
+    	 $scope.search.financial_years = $scope.FIN_YEARS[1];// $filter('filter')($scope.FIN_YEARS,{year:'2018-2019'},true)[0]; 
+    	
     	$scope.createmaindashboard();
     	
     	$scope.grouptype = type;
@@ -256,8 +258,8 @@ $scope.grouptype = null;
 		var request = {
 				"Location_Code": $rootScope.user.location_code,
 				"Conn_Type": $rootScope.user.connection_type,
-				//"financial_year" : $scope.search.financial_years.year,
-				"financial_year" : '2009-2010',
+				"financial_year" : $scope.search.financial_years.year,
+				//"financial_year" : '2018-2019',
 				"search_location" : search_location,
 				/*"displaywise":'TRF',*/
 				"displaywise":$scope.grouptype,
@@ -413,8 +415,8 @@ $scope.grouptype = null;
     	var request = {
     			"Location_Code": $rootScope.user.location_code,
     			"Conn_Type": $rootScope.user.connection_type,
-    			//"financial_year" : $scope.dmonthyear,
-    			"financial_year" : 'Jun-2013',
+    			"financial_year" : $scope.dmonthyear,
+    			//"financial_year" : 'Jun-2013',
     			"search_location" : search_location,
     			/*"displaywise":'TRF',*/
     			"displaywise":$scope.grouptype ,
@@ -445,7 +447,8 @@ $scope.grouptype = null;
     	var request = {
     			"Location_Code": $rootScope.user.location_code,
     			"Conn_Type": $rootScope.user.connection_type,
-    			"month_year" : 'Jun-2013' //$scope.dmonthyear,
+    			//"month_year" : 'Jun-2013',
+    			"month_year" : $scope.dmonthyear,
 			};
 
     	remote.load("maindashboard", function(response){
@@ -794,5 +797,13 @@ $scope.grouptype = null;
     		label2.text = "0";
     		
     	}
+    	
+    	$scope.generate_random_number = function(){
+    	
+    		return 'card'+(Math.floor(Math.random() * 12) + 1 ); 
+    		
+    	};
+    	
+    	
     	
 });

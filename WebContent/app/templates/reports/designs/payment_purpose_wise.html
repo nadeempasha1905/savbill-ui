@@ -1,0 +1,57 @@
+<style>
+
+.paymentpurposeclass table {position: relative;overflow: hidden;border-collapse: collapse;table-layout:fixed;}
+.paymentpurposeclass thead {position: relative;display: block;overflow: visible;}
+.paymentpurposeclass tbody {position: relative; display: block;height: 500px;overflow: scroll;}
+.paymentpurposeclass thead th {min-width: 95px;width: 95px;color: #000000;border-color: #6ea1cc !important;text-align: center;
+										height: 35px;word-wrap:break-word;}
+.paymentpurposeclass tbody td {min-width: 95px;width: 95px;color: #353535;word-break: break-all;height: 35px;
+										word-wrap:break-word;}
+.paymentpurposeclass th,.paymentpurposeclass td {border: 1px solid #337ab7;}
+
+.paymentpurposeclass thead tr th {vertical-align: middle;border-top: 1px solid #6ea1cc !important;font-weight: 600;
+    font-size: 16px;}
+    
+     .paymentpurposeclass thead tr th:nth-child(3){min-width: 350px;width : 350px;word-wrap:break-word;}
+     .paymentpurposeclass tbody tr td:nth-child(3){min-width: 350px;width : 350px;word-wrap:break-word;}
+
+</style>
+
+<div class="row" >
+	<div class="col-xs-9" style="text-align: center;font-size: 20px;">
+		<span><strong>{{report_heading}}</strong></span>
+	</div>
+ 	<div class="col-xs-3">
+		<button class="btn btn-success btn-sm" ng-click="exporttoexcel('payment_purpose_wise_table','Payment Purpose Wise Report')">
+			<i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; Export Excel</button>
+		<button class="btn btn-danger btn-sm" ng-click="genereatereport(true)">
+			<i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Export PDF</button>
+	</div>
+</div>
+ <br/>	
+
+	<div class="row" >
+	
+	 <div class="col-xs-12" style="width: 100%;overflow-x: scroll">
+	
+	<table id="payment_purpose_wise_table" class="table table-hover table-striped paymentpurposeclass thalign" style="width: 100%;">
+		<thead style="background-color: #aed9ff">
+		<tr ng-show="false"><td colspan="4"><div style="text-align: center;font-size: 16px;"><span><strong>{{report_heading}}</strong></span></div></td></tr>
+						<tr>
+							<th valign="middle">Sl. No.</th>
+							<th >Account Code</th>
+							<th >Payment Purpose</th>
+							<th >Amount</th>
+						</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="data in PURPOSEWISE">
+							<td align="center">{{data.row_no}}</td>
+							<td align="center">{{data.account_code}}</td>
+							<td align="left">{{data.pymnt_purpose}}</td>
+							<td align="right">{{data.amount}}</td>
+						</tr>
+		</tbody>
+	</table>
+	</div>
+</div>

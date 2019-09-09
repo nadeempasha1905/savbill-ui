@@ -333,12 +333,15 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 		
 		$scope.genereatereport = function(exportpdf){
 			
-			var search_location = "",zone="",circle="",division="",subdivision="",omsection="",station="",feeder="",transformer="",village="";
-			if($scope.search.zone != undefined || $scope.search.zone != null){zone = $scope.search.zone.key; search_location = $scope.search.zone.ZONE_CODE;}
-			if($scope.search.circle != undefined || $scope.search.circle != null){circle = $scope.search.circle.key; search_location = $scope.search.circle.CIRCLE_CODE;}
-			if($scope.search.division != undefined || $scope.search.division != null){division = $scope.search.division.key; search_location = $scope.search.division.DIVISION_CODE;}
-			if($scope.search.subdivision != undefined || $scope.search.subdivision != null){subdivision = $scope.search.subdivision.key; search_location = $scope.search.subdivision.LOCATION_CODES;}
-			if($scope.search.omsection != undefined || $scope.search.omsection != null){omsection = $scope.search.omsection.key; search_location = $scope.search.omsection.key;}
+			$scope.REPORT_DATA = null;
+			$scope.report_heading = null;
+			
+			var search_location = "",search_location_name = "",zone="",circle="",division="",subdivision="",omsection="",station="",feeder="",transformer="",village="";
+			if($scope.search.zone != undefined || $scope.search.zone != null){zone = $scope.search.zone.key; search_location = $scope.search.zone.ZONE_CODE;search_location_name = $scope.search.zone.ZONE_CODE;}
+			if($scope.search.circle != undefined || $scope.search.circle != null){circle = $scope.search.circle.key; search_location = $scope.search.circle.CIRCLE_CODE;search_location_name = $scope.search.circle.CIRCLE_NAME;}
+			if($scope.search.division != undefined || $scope.search.division != null){division = $scope.search.division.key; search_location = $scope.search.division.DIVISION_CODE;search_location_name = $scope.search.division.DIVISION_NAME;}
+			if($scope.search.subdivision != undefined || $scope.search.subdivision != null){subdivision = $scope.search.subdivision.key; search_location = $scope.search.subdivision.LOCATION_CODES;search_location_name = $scope.search.subdivision.LOCATION_NAME;}
+			if($scope.search.omsection != undefined || $scope.search.omsection != null){omsection = $scope.search.omsection.key; search_location = $scope.search.omsection.key;search_location_name = $scope.search.omsection.value;}
 			
 			if($scope.selected_report_type === 'billing_efficiency'){
 				
@@ -402,7 +405,10 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 						
 						var data = response.BILLING_EFFICIENCY;
 						$scope.BILLING_EFFICIENCY = response.BILLING_EFFICIENCY;
+						$scope.REPORT_DATA = response.BILLING_EFFICIENCY;
 						$('.collapse').collapse("hide");
+						
+						$scope.report_heading = "Billing Efficiency for "+search_location_name+" for the date "+$scope.dfromdate + " to "+ $scope.dtodate;
 						
 					}, request , 'POST', false, false, true);
 				}
@@ -458,6 +464,7 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 							+"&todate="+ (($scope.dtodate != null || $scope.dtodate != undefined) ? $scope.dtodate : '')
 							+"&header=false"
 							+"&username="+$rootScope.user.user_id
+							+"&report_type=COLLECTION_EFF"
 							,{ responseType : 'arraybuffer'}).then(handleResponse)
 					
 					
@@ -467,7 +474,10 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 						
 						var data = response.COLLECTION_EFFICIENCY;
 						$scope.COLLECTION_EFFICIENCY = response.COLLECTION_EFFICIENCY;
+						$scope.REPORT_DATA = response.COLLECTION_EFFICIENCY;
 						$('.collapse').collapse("hide");
+						
+						$scope.report_heading = "Collection Efficiency for "+search_location_name+" for the date "+$scope.dfromdate + " to "+ $scope.dtodate;
 						
 					}, request , 'POST', false, false, true);
 				}
@@ -519,6 +529,7 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 							+"&todate="+ (($scope.dtodate != null || $scope.dtodate != undefined) ? $scope.dtodate : '')
 							+"&header=false"
 							+"&username="+$rootScope.user.user_id
+							+"&report_type=PAYMENT_PURPOSE_WISE"
 							,{ responseType : 'arraybuffer'}).then(handleResponse)
 					
 					
@@ -528,7 +539,10 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 						
 						var data = response.PURPOSEWISE;
 						$scope.PURPOSEWISE = response.PURPOSEWISE;
+						$scope.REPORT_DATA = response.PURPOSEWISE;
 						$('.collapse').collapse("hide");
+						
+						$scope.report_heading = "Collection Purpose Wise for "+search_location_name+" for the date "+$scope.dfromdate + " to "+ $scope.dtodate;
 						
 					}, request , 'POST', false, false, true);
 				}
@@ -605,7 +619,11 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 						
 						var data = response.DCBDATA;
 						$scope.DCBDATA = response.DCBDATA;
+						$scope.REPORT_DATA = response.DCBDATA;
+						
 						$('.collapse').collapse("hide");
+						
+						$scope.report_heading = "DCB for "+search_location_name+" for the month "+$scope.dmonthyear;
 						
 					}, request , 'POST', false, false, true);
 				}
@@ -676,6 +694,7 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 						
 						var data = response.SBDDATA;
 						$scope.SBDDATA = response.SBDDATA;
+						$scope.REPORT_DATA = response.SBDDATA;
 						$('.collapse').collapse("hide");
 						
 					}, request , 'POST', false, false, true);

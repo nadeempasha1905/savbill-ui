@@ -1,0 +1,70 @@
+<style>
+
+.billeffclass table {position: relative;overflow: hidden;border-collapse: collapse;table-layout:fixed;}
+.billeffclass thead {position: relative;display: block;overflow: visible;}
+.billeffclass tbody {position: relative; display: block;height: 500px;overflow: scroll;}
+.billeffclass thead th {min-width: 95px;width: 95px;color: #000000;border-color: #6ea1cc !important;text-align: center;
+										height: 35px;word-wrap:break-word;}
+.billeffclass tbody td {min-width: 95px;width: 95px;color: #353535;word-break: break-all;height: 35px;
+										word-wrap:break-word;}
+.billeffclass th,.billeffclass td {border: 1px solid #337ab7;}
+
+.billeffclass thead tr th {vertical-align: middle;border-top: 1px solid #6ea1cc !important;font-weight: 600;
+    font-size: 16px;}
+
+</style>
+
+<div class="row" >
+	<div class="col-xs-9" style="text-align: center;font-size: 18px;">
+		<span><strong>{{report_heading}}</strong></span>
+	</div>
+ 	<div class="col-xs-3">
+		<button class="btn btn-success btn-sm" ng-click="exporttoexcel('billingefficiencytable','Billing Efficiency Report')">
+			<i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; Export Excel</button>
+		<button class="btn btn-danger btn-sm" ng-click="genereatereport(true)">
+			<i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Export PDF</button>
+	</div>
+</div>
+	  <br/>	
+<div class="row" >
+	
+	 <div class="col-xs-12" style="width: 100%;overflow-x: scroll">
+	
+	<table id="billingefficiencytable" class="table table-hover table-striped billeffclass thalign" style="width: 100%;">
+		<thead style="background-color: #aed9ff">
+		<tr ng-show="false"><td colspan="11"><div style="text-align: center;font-size: 16px;"><span><strong>{{report_heading}}</strong></span></div></td></tr>
+						<tr>
+							<th rowspan="2" valign="middle">Sl. No.</th>
+							<th rowspan="2">Tariff</th>
+							<th rowspan="2">No. of Installation</th>
+							<th rowspan="2">Billed</th>
+							<th rowspan="2">Not Read</th>
+							<th rowspan="2">Billing Efficiency in %</th>
+							<th colspan="5">Billing Status</th>	
+						</tr>
+						<tr >
+							<th >Normal</th>
+							<th >Door Lock</th>
+							<th >MNR</th>
+							<th >Direct Connection</th>
+							<th >Vacant</th>
+						</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="data in BILLING_EFFICIENCY">
+							<td align="center">{{data.row_no}}</td>
+							<td align="left">{{data.trf}}</td>
+							<td align="right">{{data.tobebilled}}</td>
+							<td align="right">{{data.billed}}</td>
+							<td align="right">{{data.notbilled}}</td>
+							<td align="right">{{data.billeff}}</td>
+							<td align="right">{{data.nor}}</td>
+							<td align="right">{{data.dl}}</td>
+							<td align="right">{{data.mnr}}</td>
+							<td align="right">{{data.dc}}</td>
+							<td align="right">{{data.vacant}}</td>
+						</tr>
+		</tbody>
+	</table>
+	</div>
+</div>

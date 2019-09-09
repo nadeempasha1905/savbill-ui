@@ -1,0 +1,147 @@
+<style>
+
+.dcbclass table {position: relative;overflow: hidden;border-collapse: collapse;table-layout:fixed;}
+.dcbclass thead {position: relative;display: block;overflow: visible;}
+.dcbclass tbody {position: relative; display: block;height: 500px;overflow: scroll;}
+.dcbclass thead th {min-width: 95px;width: 95px;color: #000000;border-color: #6ea1cc !important;text-align: center;
+										height: 35px;word-wrap:break-word;}
+.dcbclass tbody td {min-width: 95px;width: 95px;color: #353535;word-break: break-all;height: 35px;
+										word-wrap:break-word;}
+.dcbclass th,.dcbclass td {border: 1px solid #337ab7;}
+
+.dcbclass thead tr th {vertical-align: middle;border-top: 1px solid #6ea1cc !important;font-weight: 600;
+    font-size: 16px;}
+
+</style>
+
+<div class="row" >
+	<div class="col-xs-9" style="text-align: center;font-size: 20px;">
+		<span><strong>{{report_heading}}</strong></span>
+	</div>
+ 	<div class="col-xs-3">
+		<button class="btn btn-success btn-sm" ng-click="exporttoexcel('maindcbtable','DCB Report')">
+			<i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; Export Excel</button>
+		<button class="btn btn-danger btn-sm" ng-click="genereatereport(true)">
+			<i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Export PDF</button>
+	</div>
+</div>
+ <br/>	
+<div class="row" >
+	
+	 <div class="col-xs-12" style="width: 100%;overflow-x: scroll">
+	
+	<table id="maindcbtable" class="table table-hover table-striped dcbclass thalign" style="width: 100%;">
+		<thead style="background-color: #aed9ff">
+		<tr ng-show="false"><td colspan="54"><div style="text-align: center;font-size: 16px;"><span><strong>{{report_heading}}</strong></span></div></td></tr>
+						<tr>
+							<th rowspan="3" valign="middle">Sl. No.</th>
+							<th colspan="2">ACCOUNT CODE</th>
+							<th rowspan="3" valign="middle">Voltage Class</th>
+							<th rowspan="3" valign="middle">Tariff Description</th>
+							<th rowspan="3" valign="middle">Tariff Category</th>
+							<th colspan="3">Connected Load</th>
+							<th rowspan="3" valign="middle">Total No of Instl</th>
+							<th rowspan="3" valign="middle">No of Live Instl</th>
+							<th rowspan="3" valign="middle">No of Instl To Be Billed</th>
+							<th rowspan="3" valign="middle">No of Instl Actually Billed</th>
+							<th colspan="4">Consumption</th>
+							<th colspan="4">Opening Balance</th>
+							<th colspan="4">Demand</th>
+							<th colspan="4">Opening Balance+Demand</th>
+							<th colspan="10">Collection</th>
+							<th colspan="4">Closing Balance</th>
+						</tr>
+						<tr >
+							<th rowspan="2">Revenue Demand</th>
+							<th rowspan="2">Balance</th>
+							<th rowspan="2">KW</th>
+							<th rowspan="2">HP</th>
+							<th rowspan="2">KVA</th>
+							<th rowspan="2">Metered Units</th>
+							<th rowspan="2">Assessed Constn</th>
+							<th rowspan="2">Wheeled Energy</th>
+							<th rowspan="2">Total</th>
+							<th rowspan="2">Revenue</th>
+							<th rowspan="2">Interest</th>
+							<th rowspan="2">Tax</th>
+							<th rowspan="2">Total</th>
+							<th rowspan="2">Revenue</th>
+							<th rowspan="2">Interest</th>
+							<th rowspan="2">Tax</th>
+							<th rowspan="2">Total</th>
+							<th rowspan="2">Revenue</th>
+							<th rowspan="2">Interest</th>
+							<th rowspan="2">Tax</th>
+							<th rowspan="2">Total</th>
+							<th colspan="3">Revenue</th>
+							<th colspan="3">Interest</th>
+							<th colspan="3">Tax</th>
+							<th rowspan="2">Coll Total</th>
+							<th rowspan="2">Revenue</th>
+							<th rowspan="2">Interest</th>
+							<th rowspan="2">Tax</th>
+							<th rowspan="2">Total</th>
+						</tr>
+						<tr>
+							<th>Chq/Cash</th>
+							<th>Adj</th>
+							<th>Total</th>
+							<th>Chq/Cash</th>
+							<th>Adj</th>
+							<th>Total</th>
+							<th>Chq/Cash</th>
+							<th>Adj</th>
+							<th>Total</th>
+						</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="data in DCBDATA">
+							<td align="center">{{data.row_no}}</td>
+							<td align="center">{{data.acccd_dmd}}</td>
+							<td align="center">{{data.acccd_bal}}</td>
+							<td align="center">{{data.vc}}</td>
+							<td align="left">{{data.trf_desc}}</td>
+							<td align="left">{{data.trf}}</td>
+							<td align="right">{{data.kw}}</td>
+							<td align="right">{{data.hp}}</td>
+							<td align="right">{{data.kva}}</td>
+							<td align="right">{{data.tot_insts}}</td>
+							<td align="right">{{data.active_insts}}</td>
+							<td align="right">{{data.tobe_billed}}</td>
+							<td align="right">{{data.billed_insts}}</td>
+							<td align="right">{{data.mtr_units}}</td>
+							<td align="right">{{data.assd_units}}</td>
+							<td align="right">{{data.wheeled_units}}</td>
+							<td align="right">{{data.consmptot}}</td>
+							<td align="right">{{data.rev_ob}}</td>
+							<td align="right">{{data.int_ob}}</td>
+							<td align="right">{{data.tax_ob}}</td>
+							<td align="right">{{data.obtot}}</td>
+							<td align="right">{{data.rev_dmd}}</td>
+							<td align="right">{{data.int_dmd}}</td>
+							<td align="right">{{data.tax_dmd}}</td>
+							<td align="right">{{data.dmdtot}}</td>
+							<td align="right">{{data.obdmdrev}}</td>
+							<td align="right">{{data.obdmdint}}</td>
+							<td align="right">{{data.obdmdtax}}</td>
+							<td align="right">{{data.obdmdtot}}</td>
+							<td align="right">{{data.ccrev_coll}}</td>
+							<td align="right">{{data.adjrev_coll}}</td>
+							<td align="right">{{data.collrevtot}}</td>
+							<td align="right">{{data.ccint_coll}}</td>
+							<td align="right">{{data.adjint_coll}}</td>
+							<td align="right">{{data.collinttot}}</td>
+							<td align="right">{{data.cctax_coll}}</td>
+							<td align="right">{{data.adjtax_coll}}</td>
+							<td align="right">{{data.colltaxtot}}</td>
+							<td align="right">{{data.colltot}}</td>
+							<td align="right">{{data.rev_cb}}</td>
+							<td align="right">{{data.int_cb}}</td>
+							<td align="right">{{data.tax_cb}}</td>
+							<td align="right">{{data.cb_total}}</td>
+						</tr>
+						
+		</tbody>
+	</table>
+	</div>
+</div>

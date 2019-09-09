@@ -29,6 +29,8 @@
 			<div class="action width-100 text-center margin-top-15">
 				<button ng-click="load_adjustments_details($event)" class="load-adjustments-details">Show</button>
 				<button ng-click="adjustments_clear()" class="adjustments-clear">Clear</button>
+				
+				<button class="pull-right" ng-click="addnewadjustment()">Add New</button>
 			</div>
 			<div class="width-100 clear-both padding-top-15">
 				<div id="adjustments_details">
@@ -38,3 +40,132 @@
 		</div>
 	</div>
 </div>
+
+<style>
+.modal-dialog{
+	width: 55%;
+}
+
+
+#chequedis_receiptdetails_table tbody {font-size: 14px;}
+
+/* .modal_fixed_header_column table {position: relative;overflow: hidden;border-collapse: collapse;table-layout:fixed;}
+.modal_fixed_header_column thead {position: relative;display: block;overflow: visible;}
+.modal_fixed_header_column tbody {position: relative; display: block;height: 200px;overflow: scroll;}
+.modal_fixed_header_column thead th {min-width: 95px;width: 95px;color: #000000;border-color: #6ea1cc !important;text-align: center;
+										height: 35px;word-wrap:break-word;}
+.modal_fixed_header_column tbody td {min-width: 95px;width: 95px;color: #353535;word-break: break-all;height: 35px;
+										word-wrap:break-word;}
+.modal_fixed_header_column th,.modal_fixed_header_column td {border: 1px solid #337ab7;}
+
+.modal_fixed_header_column thead tr th {vertical-align: middle;border-top: 1px solid #6ea1cc !important;font-weight: 600;
+    font-size: 16px;} */
+</style>
+<div class="modal fade" id="adjustmentModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><b>Add New Adjustments</b></h4>
+      </div>
+      <div class="modal-body">
+      
+      <div class="row">
+      	<div class="col-xs-6">
+      	      <div class="panel panel-info">
+      	      <div class="panel-heading"><h3 class="panel-title">Transfer From RR Number</h3></div>
+				  <div class="panel-body">
+				    <div class="row">
+				    	<div class="col-xs-12">
+			       			<label>Receipt No</label>
+					  		<input type="text" class="form-control" ng-model="addadjustment.receiptno">
+			       		</div>
+			       		<div class="col-xs-12">
+			       			<label>Receipt Date</label>
+					  		<div class='form-inline input-group input-append date dfreceiptdate'	data-provide="datepicker">
+								<input type='text' class="form-control" id="dfchequedate" readonly="readonly" name="dfromdate" ng-model="addadjustment.receiptdate"> 
+								<span class="input-group-addon datepicker"> <span class="glyphicon glyphicon-calendar"></span></span>
+							</div>
+			       		</div>
+			       		<div class="col-xs-12">
+			       			<label>Counter</label>
+			       			<select type="text"  class="form-control" ng-model="addadjustment.counter" ng-change="verifyandfetchreceiptdetails()">
+								<option value="">-- Select --</option>
+								<option ng-repeat="type in cash_counters_list" value="{{type.key}}">{{type.value}}</option>
+							</select>
+			       		</div>
+			       		<div class="col-xs-12">
+			       			<label>From RR Number</label>
+					  		<input type="text" class="form-control" ng-model="addadjustment.fromrrnumber" readonly="readonly">
+			       		</div>
+			       		<div class="col-xs-12">
+			       			<label>Purpose</label>
+					  		<input type="text" class="form-control" ng-model="addadjustment.purpose" readonly="readonly">
+			       		</div>
+			       		<div class="col-xs-12">
+			       			<label>Amount</label>
+					  		<input type="text" class="form-control" ng-model="addadjustment.amount" readonly="readonly">
+			       		</div>
+				    </div>
+				  </div>
+			</div>
+      	</div>
+      	
+      	<div class="col-xs-6">
+      			 <div class="panel panel-success">
+      	      <div class="panel-heading"><h3 class="panel-title">Transfer To RR Number</h3></div>
+				  <div class="panel-body">
+				    <div class="row">
+				    	<div class="col-xs-12">
+			       			<label>To RR Number</label>
+					  		<input type="text" class="form-control" ng-model="addadjustment.torrnumber" placeholder="Type Here & Press Enter">
+			       		</div>
+			       		<div class="col-xs-12">
+			       			<label>JV Number</label>
+					  		<input type="text" class="form-control" ng-model="addadjustment.jvnumber" >
+			       		</div>
+			       		<div class="col-xs-12">
+			       			<label>Adjustment Number</label>
+					  		<input type="text" class="form-control" ng-model="addadjustment.adjnumber" >
+			       		</div>
+			       		<div class="col-xs-12">
+			       			<label>Adjustment Date</label>
+					  		<div class='form-inline input-group input-append date dfreceiptdate'	data-provide="datepicker">
+								<input type='text' class="form-control" id="dfchequedate" readonly="readonly" name="dfromdate" ng-model="addadjustment.adjdate"> 
+								<span class="input-group-addon datepicker"> <span class="glyphicon glyphicon-calendar"></span></span>
+							</div>
+			       		</div>
+			       		<div class="col-xs-12">
+			       			<label>Remarks</label>
+					  		<textarea rows="4" cols="*" class="form-control" ng-model="addadjustment.remarks" ></textarea>
+			       		</div>
+				    </div>
+				  </div>
+			</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-xs-3 pull-right">
+      		<button type="button" class="btn btn-primary " >Transfer</button>
+      		<button type="button" class="btn btn-warning " data-dismiss="modal">Close</button>
+      		</div>
+      		
+      	</div>
+      </div>
+
+      </div>
+     <!--  <div class="modal-footer">
+         <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+      </div> -->
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+$('.dfreceiptdate').datetimepicker({
+	format : 'dd/mm/yyyy',
+	minView : 2,
+	autoclose : 1,
+	//startDate : new Date(new Date().setDate(new Date().getDate() - 15)),
+	endDate : new Date()
+});
+</script>
