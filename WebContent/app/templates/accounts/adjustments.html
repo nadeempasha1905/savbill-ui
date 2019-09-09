@@ -117,16 +117,23 @@
 				  <div class="panel-body">
 				    <div class="row">
 				    	<div class="col-xs-12">
+			       			<label>Payment Purpose</label>
+			       			<select type="text"  class="form-control" ng-model="addadjustment.paymentpurpose" ng-change="verifypaymentpurpose()" ng-disabled="!addadjustment.fromrrnumber">
+								<option value="">-- Select --</option>
+								<option ng-repeat="type in payment_purpose_list" value="{{type.PAYMENT_PURPOSE_CODE}}">{{type.PAYMENT_PURPOSE_DESCR}}</option>
+							</select>
+			       		</div>
+				    	<div class="col-xs-12">
 			       			<label>To RR Number</label>
-					  		<input type="text" class="form-control" ng-model="addadjustment.torrnumber" placeholder="Type Here & Press Enter">
+					  		<input type="text" class="form-control" ng-model="addadjustment.torrnumber" ng-disabled="verifiedpaymentpurpose" placeholder="Type & Press Enter" ng-enter="CheckRRnumberExistsOrNot(event)">
 			       		</div>
 			       		<div class="col-xs-12">
 			       			<label>JV Number</label>
-					  		<input type="text" class="form-control" ng-model="addadjustment.jvnumber" >
+					  		<input type="text" class="form-control" ng-model="addadjustment.jvnumber"  ng-disabled="!rr_status">
 			       		</div>
 			       		<div class="col-xs-12">
 			       			<label>Adjustment Number</label>
-					  		<input type="text" class="form-control" ng-model="addadjustment.adjnumber" >
+					  		<input type="text" class="form-control" ng-model="addadjustment.adjnumber"  ng-disabled="!rr_status">
 			       		</div>
 			       		<div class="col-xs-12">
 			       			<label>Adjustment Date</label>
@@ -137,7 +144,7 @@
 			       		</div>
 			       		<div class="col-xs-12">
 			       			<label>Remarks</label>
-					  		<textarea rows="4" cols="*" class="form-control" ng-model="addadjustment.remarks" ></textarea>
+			       			<input type="text" class="form-control" ng-model="addadjustment.remarks"  ng-disabled="!rr_status">
 			       		</div>
 				    </div>
 				  </div>
@@ -145,7 +152,7 @@
       	</div>
       	<div class="row">
       		<div class="col-xs-3 pull-right">
-      		<button type="button" class="btn btn-primary " >Transfer</button>
+      		<button type="button" class="btn btn-primary " ng-disabled="!rr_status" ng-click="validateandtransferrrno()">Transfer</button>
       		<button type="button" class="btn btn-warning " data-dismiss="modal">Close</button>
       		</div>
       		

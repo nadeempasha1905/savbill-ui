@@ -1704,8 +1704,19 @@ accounts_controller.controller('accounts_controller',['$scope','$rootScope','rem
 			
 		};
 		
-		$scope.addadjustment = {};
+		
 		$scope.addnewadjustment = function(){
+			
+			$scope.addadjustment = {};
+			$scope.verifiedpaymentpurpose = true;
+			$scope.rr_status = false;
+			
+			$scope.addadjustment.receiptdate = moment(new Date()).format("DD/MM/YYYY").toString();
+			$scope.addadjustment.adjdate     = moment(new Date()).format("DD/MM/YYYY").toString();
+			
+			remote.load("getpaymentpurposelist", function(response){
+				$scope.payment_purpose_list = response.PAYMENT_PURPOSE_DESCR_LIST;
+			}, { CONN_TYPE : $rootScope.user.connection_type,LOCATION_CODE : $rootScope.user.location_code, } , 'POST');
 			
 			$('#adjustmentModal').modal('toggle');
 			
@@ -1719,10 +1730,82 @@ accounts_controller.controller('accounts_controller',['$scope','$rootScope','rem
 					"receipt_number" : (($scope.addadjustment.receiptno) ? $scope.addadjustment.receiptno : ''),
 					"receipt_date" : (($scope.addadjustment.receiptdate) ? $scope.addadjustment.receiptdate : ''),
 					"counter_number" : (($scope.addadjustment.counter) ? $scope.addadjustment.counter : '')
-					
 			}
 			console.log(request);
 			remote.load("getreceiptdetailstoadjust", function(response){
+				$scope.addadjustment.fromrrnumber = response.receipt_rr_number;
+				$scope.addadjustment.purpose = response.receipt_purpose;
+				$scope.addadjustment.amount = response.receipt_amount_paid;
+				
+			}, request , 'POST');
+			
+			
+		};
+		
+		$scope.verifypaymentpurpose = function(){
+			if($scope.addadjustment.paymentpurpose === '2' // '3MMD'
+				||$scope.addadjustment.paymentpurpose === '15' // 'ADDL MSD' 
+					||$scope.addadjustment.paymentpurpose === '6' // 'ADD. 3MMD' 
+						||$scope.addadjustment.paymentpurpose === '1' // 'REVENUE'
+							){
+								$scope.verifiedpaymentpurpose = false;
+			}else{
+				$scope.verifiedpaymentpurpose = true;
+			}
+			
+		};
+		
+		$scope.rr_status = false;
+		$scope.CheckRRnumberExistsOrNot = function(event){
+			
+			var request = {
+					"location_code" : $rootScope.user.location_code,	
+					"conn_type" : $rootScope.user.connection_type,
+					"to_rrno" : (($scope.addadjustment.torrnumber) ? $rootScope.user.location_code+$scope.addadjustment.torrnumber : ''),
+					
+			}
+			console.log(request);
+			remote.load("dovalidaterrnumber", function(response){
+				$scope.rr_status = response.rr_status;
+			}, request , 'POST');
+			
+		};
+		
+		$scope.validateandtransferrrno = function(){
+			
+			if(!$scope.addadjustment.receiptno){notify.warn("Please Enter Receipt Number !!!");return;}
+			if(!$scope.addadjustment.receiptdate){notify.warn("Please Select Receipt Date !!!");return;}
+			if(!$scope.addadjustment.counter){notify.warn("Please Select Counter !!!");return;}
+			if(!$scope.addadjustment.paymentpurpose){notify.warn("Please Select Payment Purpose !!!");return;}
+			if(!$scope.addadjustment.torrnumber){notify.warn("Please Enter TO Rr-Number !!!");return;}
+			if(!$scope.addadjustment.jvnumber){notify.warn("Please Enter JV Number !!!");return;}
+			if(!$scope.addadjustment.adjnumber){notify.warn("Please Enter Adjustment Number !!!");return;}
+			if(!$scope.addadjustment.adjdate){notify.warn("Please Select Adjustment Date !!!");return;}
+			
+			var pymnt_desc = $filter('filter')($scope.payment_purpose_list,{PAYMENT_PURPOSE_CODE:$scope.addadjustment.paymentpurpose},true)[0]; 
+			console.log("pymnt_desc",pymnt_desc);
+			
+			var request = {
+					"location_code" : $rootScope.user.location_code,	
+					"conn_type" : $rootScope.user.connection_type,
+					"adjustment_date" : (($scope.addadjustment.adjdate) ? $scope.addadjustment.adjdate : ''),
+					"adjustment_number" : (($scope.addadjustment.adjnumber) ? $scope.addadjustment.adjnumber : ''),
+					"jv_number" : (($scope.addadjustment.jvnumber) ? $scope.addadjustment.jvnumber : ''),
+					"receipt_number" : (($scope.addadjustment.receiptno) ? $scope.addadjustment.receiptno : ''),
+					"receipt_date" : (($scope.addadjustment.receiptdate) ? $scope.addadjustment.receiptdate : ''),
+					"counter_number" : (($scope.addadjustment.counter) ? $scope.addadjustment.counter : ''),
+					"to_rrnumber" : (($scope.addadjustment.torrnumber) ? $rootScope.user.location_code+$scope.addadjustment.torrnumber : ''),
+					"from_rrnumber" : (($scope.addadjustment.fromrrnumber) ? $rootScope.user.location_code+$scope.addadjustment.fromrrnumber : ''),
+					"payment_purpose_descr" :  (($scope.addadjustment.paymentpurpose) ? $scope.addadjustment.paymentpurpose : ''),
+					"remarks" : (($scope.addadjustment.remarks) ? $scope.addadjustment.remarks : ''),
+					"user" :  $rootScope.user.user_id,
+					"from_rr_flag" : (($scope.addadjustment.fromrrnumber) ? 'Y' : 'N'),
+					"to_rr_flag" : (($scope.addadjustment.torrnumber) ? 'Y' : 'N'),
+			}
+			console.log(request);
+			
+			
+			remote.load("saveadjustmentrecord", function(response){
 				
 			}, request , 'POST');
 			

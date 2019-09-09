@@ -330,11 +330,11 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 		
 		$scope.selected_report_type = "billing_efficiency";
 		
+		$scope.REPORT_DATA = null;
+		$scope.report_heading = null;
 		
 		$scope.genereatereport = function(exportpdf){
 			
-			$scope.REPORT_DATA = null;
-			$scope.report_heading = null;
 			
 			var search_location = "",search_location_name = "",zone="",circle="",division="",subdivision="",omsection="",station="",feeder="",transformer="",village="";
 			if($scope.search.zone != undefined || $scope.search.zone != null){zone = $scope.search.zone.key; search_location = $scope.search.zone.ZONE_CODE;search_location_name = $scope.search.zone.ZONE_CODE;}
@@ -389,6 +389,7 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 							+"&Location_Code="+$rootScope.user.location_code
 							+"&report_wise=SUBTRF"
 							+"&selected_location="+search_location
+							+"&search_location_name="+search_location_name
 							+"&metercode="+($scope.search.metercode != null || $scope.search.metercode != undefined ? $scope.search.metercode : '')
 							+"&tariffcodes="+request_tariffs
 							+"&fromdate="+(($scope.dfromdate != null || $scope.dfromdate != undefined )? $scope.dfromdate : '') 
@@ -458,6 +459,7 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 							+"&Location_Code="+$rootScope.user.location_code
 							+"&report_type=TRF"
 							+"&selected_location="+search_location
+							+"&search_location_name="+search_location_name
 							+"&metercode="+($scope.search.metercode != null || $scope.search.metercode != undefined ? $scope.search.metercode : '')
 							+"&tariffcodes="+request_tariffs
 							+"&fromdate="+(($scope.dfromdate != null || $scope.dfromdate != undefined )? $scope.dfromdate : '') 
@@ -524,7 +526,8 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 					$http.get($rootScope.serviceURL+'downloadreport?conn_type='+$rootScope.user.connection_type
 							+"&Location_Code="+$rootScope.user.location_code
 							+"&selected_location="+search_location
-							+"&cashcounternumber="+"''"
+							+"&search_location_name="+search_location_name
+							+"&cashcounternumber="
 							+"&fromdate="+(($scope.dfromdate != null || $scope.dfromdate != undefined )? $scope.dfromdate : '') 
 							+"&todate="+ (($scope.dtodate != null || $scope.dtodate != undefined) ? $scope.dtodate : '')
 							+"&header=false"
@@ -542,7 +545,7 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 						$scope.REPORT_DATA = response.PURPOSEWISE;
 						$('.collapse').collapse("hide");
 						
-						$scope.report_heading = "Collection Purpose Wise for "+search_location_name+" for the date "+$scope.dfromdate + " to "+ $scope.dtodate;
+						$scope.report_heading = "Payment Purpose Wise for "+search_location_name+" for the date "+$scope.dfromdate + " to "+ $scope.dtodate;
 						
 					}, request , 'POST', false, false, true);
 				}
@@ -600,6 +603,7 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 							+"&report_type=MAIN_DCB"
 							+"&Location_Code="+$rootScope.user.location_code
 							+"&selected_location="+search_location
+							+"&search_location_name="+search_location_name
 							+"&month_year="+ (($scope.dmonthyear != null || $scope.dmonthyear != undefined )? $scope.dmonthyear : '')
 							+"&tariffcodes="+request_tariffs
 							+"&station_code="+''
@@ -678,6 +682,7 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 							+"&report_type=MR"
 							+"&Location_Code="+$rootScope.user.location_code
 							+"&selected_location="+search_location
+							+"&search_location_name="+search_location_name
 							+"&metercode="+($scope.search.metercode != null || $scope.search.metercode != undefined ? $scope.search.metercode : '')
 							+"&tariffcodes="+request_tariffs
 							+"&fromdate="+(($scope.dfromdate != null || $scope.dfromdate != undefined )? $scope.dfromdate : '') 
