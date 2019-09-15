@@ -802,4 +802,61 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 		
 	}
 	
+	// receipt/cheque cancellation starts
+	if(cash_section_flow === 'receipt_cheque_cancellation'){
+		
+		remote.load("cashcounterlist", function(response){
+			$scope.cash_counters_list = response.cash_counters_list;
+		}, { conn_type : $rootScope.user.connection_type,location_code : $rootScope.user.location_code, } , 'POST');																												
+		
+		$scope.togglefunction = function(canceltype){
+			
+			if(canceltype === 'receiptwise'){
+				
+				 $scope.cancel_type_selected = 'receiptwise' ;
+				 
+				 $scope.receiptcancel.receiptno = '';
+				 $scope.receiptcancel.cancelflag = 'N';
+				 $('#receipt_no').val('').focus();
+				
+			}
+			
+			else if(canceltype === 'chequewise'){
+				
+				 $scope.cancel_type_selected = 'chequewise' ;
+				 
+				 $scope.chequecancel.receiptno = '';
+				 $scope.chequecancel.cancelflag = 'N';
+				 $('#cheque_no').val('').focus();
+				 
+			}
+			
+		};
+		
+		$scope.receipts_clear = function(){
+			
+			$scope.receiptcancel = {};
+			$scope.chequecancel = {};
+			
+			$scope.proceed = true;
+			$scope.change = true;
+			
+		        $("#cancel_receiptwise").prop("checked", true);
+		        $("#cancel_chequewise").prop("checked", false);
+			
+		        $scope.cancel_type_selected = 'receiptwise' ;
+		        
+		        $scope.togglefunction('receiptwise');
+		        
+		        $scope.message = '';
+		    	$scope.sts = '';
+			
+		};
+		
+		$scope.receipts_clear();
+		
+		
+		
+	}
+	
 }]);

@@ -1807,6 +1807,12 @@ accounts_controller.controller('accounts_controller',['$scope','$rootScope','rem
 			
 			remote.load("saveadjustmentrecord", function(response){
 				
+				if(response.status === "success"){
+					$scope.addadjustment = {};
+					$scope.verifiedpaymentpurpose = true;
+					$scope.rr_status = false;
+				}
+				
 			}, request , 'POST');
 			
 			

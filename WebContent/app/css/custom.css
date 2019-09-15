@@ -1082,9 +1082,12 @@ web-tabs div.tabs-content > div.tab-left{
 /************************************************/
 
 .navbar-default {
-    background-color: #0381a9;
-    border-color: #0381a9;
+   /*  background-color: #0381a9;
+    border-color: #0381a9; */
     /* color: white; */
+    
+    background-color: #002e88;
+    border-color: #002e88;
 }
 
 .navbar-default .navbar-nav>li>a {

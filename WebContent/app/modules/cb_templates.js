@@ -43,7 +43,7 @@ var templates = {
 		'add_customer_updations' : baseURL +'app/templates/customer/add_customer_updations.html',
 		'verify_customer_updations' : baseURL +'app/templates/customer/verify_customer_updations.html', 
 		'approve_customer_updations' : baseURL +'app/templates/customer/approve_customer_updations.html',
-		'customer_region_mapping' : baseURL +'app/templates/customer/customer_region_mapping.html'
+		'customer_region_mapping' : baseURL +'app/templates/customer/customer_region_mapping.html',
 	},
 	'deposits' : {
 		'customer_deposits' : baseURL +'app/templates/deposits/customer_deposits.html',
@@ -58,7 +58,8 @@ var templates = {
 		'list_of_payment' : baseURL +'app/templates/cash_section/list_of_payment.html',
 		'receipts_posting' : baseURL +'app/templates/cash_section/receipts_posting.html',
 		'receipts_generation' : baseURL +'app/templates/cash_section/receipts_generation.html',
-		'manual_receipts_generation' : baseURL +'app/templates/cash_section/manual_receipts_generation.html'
+		'manual_receipts_generation' : baseURL +'app/templates/cash_section/manual_receipts_generation.html',
+		'receipt_cheque_cancellation' : baseURL +'app/templates/cash_section/receipt_cheque_cancellation.html'
 	},
 	'accounts' : {
 		'debits' : {

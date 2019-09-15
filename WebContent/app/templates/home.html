@@ -1,5 +1,6 @@
-  <div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-bottom: 20px;"></div>
-  <style>
+<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-top: 50px;" ></div>
+		  
+		   <style>
 	.fontbig{font-weight: bolder;}
 	.fontbold{font-weight: bold;}
 	.fontnormal{font-weight: normal;}
@@ -272,8 +273,10 @@
                         	<div class="row">
                         		<div class="col-xs-2">
                         			<input type="radio" name="radiotype" ng-click="refreshchart_tab1('TRF')" value="trf-wise" checked="checked">Tariff Wise
-                        		</div>	
+                        		
                         		<input type="radio" name="radiotype" ng-click="refreshchart_tab1('SUBTRF')"  value=sub-trf-wise">Sub-Tariff Wise
+                        		
+                        		</div>	
                         		<br/>
                         		<div class="col-xs-12">
                         			<h3><u>Billing Efficiency for the month ({{dmonthyear}})</u></h3>

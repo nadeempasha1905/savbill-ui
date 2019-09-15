@@ -119,6 +119,11 @@
 		<div id="notification" class="alert" role="alert">
 			<strong>Well done!</strong> You successfully read this important alert message. 
 		</div>
-		<div ng-view style="    margin-top: 50px;"></div>
+<!-- 		 <div ng-hide="!user" >
+		  <div ng-include="'app/templates/menu_new.html'" 
+		  		user-info="$root.user" style="margin-top: 50px;" >
+		  </div>
+		  </div> -->
+		<div ng-view></div>
 	</body>
 </html>
