@@ -393,8 +393,48 @@ energy_audit_controller.controller('energy_audit_controller',['$scope','$rootSco
 				{field: 'rollover_descr', displayName: 'R/C Flag', filed_key : 'rollover', width : '8%', cellTemplate: '<div class="ui-grid-cell-contents"><input type="text" class="text-input" ng-model="row.entity[col.field]" ng-keyup="grid.appScope.hitTab($event)" /></div>'},
 
 	        ],
-	        data: []
+	        data: [],
+	        rowTemplate: rowTemplate() 
 		};
+		
+		function rowTemplate() {    //custom rowtemplate to enable double click and right click menu options
+
+	        return ' <div ng-dblclick="grid.appScope.rowDblClick(row)"  ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" ' +
+	        	   ' class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }"  ui-grid-cell context-menu="grid.appScope.contextmenuOptions(row)" '+
+	        	   ' data-target="myMenu" ></div>'
+
+	    }
+	    
+		$scope.modal= {};
+	    $scope.rowDblClick = function( row) {
+	       //alert('Row double-clicked!\n'+'Full Name  --> '+row.entity.stn_name+' '+row.entity.fdr_name) 
+	       //add code here 
+	    	
+	    	$scope.assessedconsumptiondetails = {};
+	    	
+	    	$scope.modal.transformername = row.entity.dtc_name;
+	    	$scope.modal.readingdate = row.entity.prev_rdg_dt;
+	    	$scope.modal.omsection = row.entity.om_name;
+	    	$scope.modal.stationname = row.entity.stn_name;
+	    	$scope.modal.feedername = row.entity.fdr_name;
+	    	
+	    	var request = {
+					"conn_type": $rootScope.user.connection_type,	
+					"location_code" : $rootScope.user.location_code,					
+					"station_code": row.entity.stn_cd,
+					"feeder_code" : row.entity.fdr_cd,
+					"om_code" : row.entity.om_cd,
+					"reading_date" : row.entity.prev_rdg_dt,
+					"transformer_code":row.entity.dtc_cd
+				}
+				remote.load("getentryrecordsforassessed", function(response){
+					$scope.assessedconsumptiondetails = response.dtc_assessedentry_details;
+				}, request , 'POST');
+	    	
+	       $('#assessedModal').modal('toggle');
+	       
+	    };
+	    
 		$scope.hitTab = function(e){
 			if(e.which === 13){
 				var $el = $(e.target);

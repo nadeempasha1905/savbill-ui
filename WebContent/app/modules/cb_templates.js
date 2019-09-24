@@ -59,7 +59,8 @@ var templates = {
 		'receipts_posting' : baseURL +'app/templates/cash_section/receipts_posting.html',
 		'receipts_generation' : baseURL +'app/templates/cash_section/receipts_generation.html',
 		'manual_receipts_generation' : baseURL +'app/templates/cash_section/manual_receipts_generation.html',
-		'receipt_cheque_cancellation' : baseURL +'app/templates/cash_section/receipt_cheque_cancellation.html'
+		'receipt_cheque_cancellation' : baseURL +'app/templates/cash_section/receipt_cheque_cancellation.html',
+		'upload_manual_receipts' : baseURL +'app/templates/cash_section/upload_manual_receipts.html'
 	},
 	'accounts' : {
 		'debits' : {
@@ -121,7 +122,8 @@ var templates = {
 		'bill_generation' : baseURL +'app/templates/main/bill_generation.html',
 		'bill_print' : baseURL +'app/templates/main/bill_print.html',
 		'transfer' : baseURL +'app/templates/main/transfer.html',
-		'reconciliation' : baseURL +'app/templates/main/reconciliation.html'
+		'reconciliation' : baseURL +'app/templates/main/reconciliation.html',
+		'process_details' : baseURL +'app/templates/main/process_details.html'
 	},
 	'reports' : {
 		'reports' : baseURL +'app/templates/reports/reports_new.html',

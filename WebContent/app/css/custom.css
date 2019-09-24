@@ -1094,6 +1094,11 @@ web-tabs div.tabs-content > div.tab-left{
     color: #fff;
 }
 
+.navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>li>a:focus {
+    color: #f5f5f5;
+    background-color: #00000029;
+}
+
 /***********************************************?
 
 

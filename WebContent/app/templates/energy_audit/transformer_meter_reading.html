@@ -46,3 +46,50 @@
 		</div>
 	</div>
 </div>	
+
+	<!-- Modal -->
+<div class="modal fade" id="assessedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Assessed Consumption Entry</h4>
+      </div>
+      <div class="modal-body">
+       <div class="row">
+	    	<div class="col-xs-12"><label>Reading Date     :</label> &nbsp;{{modal.readingdate}}</div>
+	    	<div class="col-xs-12"><label>O&M Section      :</label> &nbsp;{{modal.omsection}}</div>
+	    	<div class="col-xs-12"><label>Station Name     :</label> &nbsp;{{modal.stationname}}</div>
+	    	<div class="col-xs-12"><label>Feeder Name      :</label> &nbsp;{{modal.feedername}}</div>
+	    	<div class="col-xs-12"><label>Transformer Name :</label> &nbsp;{{modal.transformername}}</div>
+		</div>
+		<br>
+		<div class="row">
+	 		<div class="col-xs-12" style="width: 100%;margin-top: 5px;">
+				<table id="assessedconsumptiondetails_table" class="table table-sm table-hover table-striped thalign table-bordered" style="width: 100%;">
+					<thead style="background-color: #70bcff">
+								<tr>
+									<th  >Sl. No.</th>
+									<th  >Tariff Category</th>
+									<th  >No Of Installtions</th>
+									<th  >Assessed Units</th>
+								</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="data in assessedconsumptiondetails">
+									<td align="center">{{$index+1}}</td>
+									<td align="left">{{data.tariff_category}}</td>
+									<td align="left">{{data.no_of_installtions}}</td>
+									<td align="right">{{data.assessed_units}}</td>
+								</tr>
+					</tbody>
+			</table>
+ 		</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

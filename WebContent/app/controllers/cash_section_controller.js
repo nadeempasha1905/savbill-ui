@@ -236,9 +236,9 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 				}
 				console.log(request);
 				remote.load("dorecepitposting", function(response){
-					/*$scope.receipts_posting_details = response.receipts_list;
+					$scope.receipts_posting_details = response.receipts_list;
 					console.log(response.receipts_list);
-					$scope.receiptsPostingDetailsGridOptions.data = $scope.receipts_posting_details;*/
+					$scope.receiptsPostingDetailsGridOptions.data = $scope.receipts_posting_details;
 					
 					if(response.status1 === 'fail'){
 						setTimeout(function () {
@@ -813,15 +813,29 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 			
 			if(canceltype === 'receiptwise'){
 				
+				 $scope.receiptcancel = {};
+				 
 				 $scope.cancel_type_selected = 'receiptwise' ;
 				 
 				 $scope.receiptcancel.receiptno = '';
 				 $scope.receiptcancel.cancelflag = 'N';
 				 $('#receipt_no').val('').focus();
-				
+				 
+				 $scope.message = '';
+			     $scope.sts = '';
+			     
+				 $scope.proceed = true;
+				 $scope.change = true;
+				 
+				 $scope.receiptcancel.receiptdate =  $filter('date')(new Date(), 'dd/MM/yyyy');
+				 
 			}
 			
 			else if(canceltype === 'chequewise'){
+				
+				 $scope.chequecancel = {};
+				 
+				 $scope.cheque_details = {};
 				
 				 $scope.cancel_type_selected = 'chequewise' ;
 				 
@@ -829,7 +843,163 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 				 $scope.chequecancel.cancelflag = 'N';
 				 $('#cheque_no').val('').focus();
 				 
+				 $scope.message = '';
+		    	 $scope.sts = '';
+		    	 
+		    	 $scope.proceed = true;
+				 $scope.change = true;
+				 
+				 $scope.chequecancel.chequedate =  $filter('date')(new Date(), 'dd/MM/yyyy');
+				 
 			}
+			
+		};
+		
+		$scope.load_receipt_details_for_cancellation = function(){
+			
+			if(!$scope.receiptcancel.receiptdate){
+				notify.warn("Please Select Date");
+				return;
+			}
+			if(!$scope.receiptcancel.counter){
+				notify.warn("Please Select Counter");
+				return;
+			}
+			if(!$scope.receiptcancel.receiptno){
+				notify.warn("Please eneter receipt no");
+				$('#receipt_no').val('').focus();
+				return;
+			}
+
+			var request = {
+					"location_code": $rootScope.user.location_code,
+					"conn_type": $rootScope.user.connection_type,
+					"user_id": $rootScope.user.user_id,
+					"counter": (($scope.receiptcancel.counter) ? $scope.receiptcancel.counter : ''),
+					"receiptdate": (($scope.receiptcancel.receiptdate) ? $scope.receiptcancel.receiptdate : ''),
+					"receiptno": (($scope.receiptcancel.receiptno) ? $scope.receiptcancel.receiptno : '')
+				}
+				console.log(request);
+			remote.load("getreceiptdetailstocancel", function(response){
+				$scope.receiptcancel.cancelflag = response.cancel_flag;
+				$scope.receiptcancel.rrnumber     = response.shop_number;
+				$scope.receiptcancel.customername = response.payee_name;
+				$scope.receiptcancel.amountpaid = response.amount_paid;
+				$scope.receiptcancel.payment = response.payment_mode_descr;
+				if(response.cancel_flag === 'Y' || response.posted_status === '4'){
+					$scope.proceed = true;
+				}else{
+					$scope.proceed = false;
+				}
+				$scope.message = response.message;
+				$scope.sts = response.sts;
+			}, request , 'POST');
+		};
+		
+		$scope.load_cheque_details_for_cancellation = function(){
+			
+			$scope.cheque_details = [];
+			
+			if(!$scope.chequecancel.chequedate){
+				notify.warn("Please Select Date");
+				return;
+			}
+			if(!$scope.chequecancel.counter){
+				notify.warn("Please Select Counter");
+				return;
+			}
+			if(!$scope.chequecancel.chequeno){
+				notify.warn("Please eneter receipt no");
+				$('#cheque-no').val('').focus();
+				return;
+			}
+
+			var request = {
+					"location_code": $rootScope.user.location_code,
+					"conn_type": $rootScope.user.connection_type,
+					"user_id": $rootScope.user.user_id,
+					"counter": (($scope.chequecancel.counter) ? $scope.chequecancel.counter : ''),
+					"cheque_date": (($scope.chequecancel.chequedate) ? $scope.chequecancel.chequedate : ''),
+					"cheque_no": (($scope.chequecancel.chequeno) ? $scope.chequecancel.chequeno : '')
+				}
+				console.log(request);
+			remote.load("getchequedetailstocancel", function(response){
+				
+				console.log(response);
+				
+				$scope.cheque_details = response.cheque_list;
+				$scope.chequecancel.draweebank  = response.bankname;
+				$scope.chequecancel.chequeamount = response.total_cheque_amount;
+				if(response.cancel_flag === 'Y' || response.posted_status === '4'){
+					$scope.proceed = true;
+					
+					$scope.message = response.message;
+					$scope.sts = response.sts;
+				}else{
+					$scope.proceed = false;
+					$scope.change = true;
+				}
+				/*$scope.message = response.message;
+				$scope.sts = response.sts;*/
+			}, request , 'POST');
+			
+		};
+		
+		$scope.change_value = function(value){
+			
+			if(value === 'c'){
+				if($scope.receiptcancel.cancelflag === 'Y'){
+					$scope.change = false;
+				}else{
+					$scope.change = true;
+				}
+			}else if(value === 'chq'){
+				if($scope.chequecancel.cancelflag === 'Y'){
+					$scope.change = false;
+				}else{
+					$scope.change = true;
+				}
+			}
+		};
+		
+		$scope.receipts_do_cancel = function(){
+			
+			if($scope.cancel_type_selected === 'receiptwise'){
+				
+				var request = {
+						"location_code": $rootScope.user.location_code,
+						"conn_type": $rootScope.user.connection_type,
+						"user_id": $rootScope.user.user_id,
+						"counter": (($scope.receiptcancel.counter) ? $scope.receiptcancel.counter : ''),
+						"receiptdate": (($scope.receiptcancel.receiptdate) ? $scope.receiptcancel.receiptdate : ''),
+						"receiptno": (($scope.receiptcancel.receiptno) ? $scope.receiptcancel.receiptno : '')
+					};
+				console.log(request);
+				remote.load("docancelreceipts", function(response){
+					console.log(response);
+					$scope.receipts_clear();
+
+				}, request , 'POST');
+				
+			}else if($scope.cancel_type_selected === 'chequewise'){
+				
+				var request = {
+						"location_code": $rootScope.user.location_code,
+						"conn_type": $rootScope.user.connection_type,
+						"user_id": $rootScope.user.user_id,
+						"counter": (($scope.chequecancel.counter) ? $scope.chequecancel.counter : ''),
+						"cheque_date": (($scope.chequecancel.chequedate) ? $scope.chequecancel.chequedate : ''),
+						"cheque_no": (($scope.chequecancel.chequeno) ? $scope.chequecancel.chequeno : '')
+					};
+				console.log(request);
+				remote.load("docancelcheques", function(response){
+					console.log(response);
+					$scope.receipts_clear();
+				}, request , 'POST');
+				
+			}
+			
+
 			
 		};
 		
@@ -855,7 +1025,67 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 		
 		$scope.receipts_clear();
 		
+	}
+	
+	if(cash_section_flow === 'upload_manual_receipts'){
 		
+		 $scope.uploadmanual_receiptdate =  $filter('date')(new Date(), 'dd/MM/yyyy');
+		
+		remote.load("cashcounterlist", function(response){
+			$scope.cash_counters_list = response.cash_counters_list;
+		}, { conn_type : $rootScope.user.connection_type,location_code : $rootScope.user.location_code, } , 'POST');	
+		
+		
+		$scope.getSummaryDetails = function(){
+			
+			if(!$scope.uploadmanual_receiptdate){
+				notify.warn("Please Select Date");
+				return;
+			}
+			if(!$scope.uploadmanual_counter){
+				notify.warn("Please Select Counter");
+				return;
+			}
+			
+			var request = {
+					"conn_type": $rootScope.user.connection_type,
+					"receipt_date" : ($scope.uploadmanual_receiptdate === undefined ? '' : $scope.uploadmanual_receiptdate),
+					"counter_number" : ($scope.uploadmanual_counter === undefined ? '' : $scope.uploadmanual_counter)
+			};
+			
+			console.log("request",request);
+			remote.load("getreceiptsummarydetails", function(response){
+				console.log("getreceiptsummarydetails",response);
+				$scope.summarydetails = response.summarydetails[0];
+				
+				$('#myModal').modal('toggle');
+				
+			}, request , 'POST');
+		};
+		
+		$scope.upload_receipts = function(){
+			
+			if(!$scope.uploadmanual_receiptdate){
+				notify.warn("Please Select Date");
+				return;
+			}
+			if(!$scope.uploadmanual_counter){
+				notify.warn("Please Select Counter");
+				return;
+			}
+			
+			var request = {
+					"conn_type": $rootScope.user.connection_type,
+					"receipt_date" : ($scope.uploadmanual_receiptdate === undefined ? '' : $scope.uploadmanual_receiptdate),
+					"counter_number" : ($scope.uploadmanual_counter === undefined ? '' : $scope.uploadmanual_counter)
+			};
+			
+			console.log("request",request);
+			remote.load("uploadmanualreceipts", function(response){
+			}, request , 'POST');
+			
+			
+		};
 		
 	}
 	

@@ -1,0 +1,144 @@
+<style>
+
+.meterreadedetailsclass table {position: relative;overflow: hidden;border-collapse: collapse;table-layout:fixed;}
+.meterreadedetailsclass thead {position: relative;display: block;overflow: visible;}
+.meterreadedetailsclass tbody {position: relative; display: block;height: 230px;overflow: scroll;}
+.meterreadedetailsclass thead th {min-width: 110px;width: 110px;color: #000000;border-color: #6ea1cc !important;text-align: center;
+										height: 25px;word-wrap:break-word;}
+.meterreadedetailsclass tbody td {min-width: 110px;width: 110px;color: #353535;word-break: break-all;height: 25px;
+										word-wrap:break-word;}
+.meterreadedetailsclass th,.meterreadedetailsclass td {border: 1px solid #337ab7;}
+.meterreadedetailsclass thead tr th {vertical-align: middle;border-top: 1px solid #6ea1cc !important;font-size: 16px;}
+     .meterreadedetailsclass thead tr th:nth-child(2){min-width: 150px;width : 150px;word-wrap:break-word;}
+     .meterreadedetailsclass tbody tr td:nth-child(2){min-width: 150px;width : 150px;word-wrap:break-word;}
+     
+ .rrnumberdetailsclass table {position: relative;overflow: hidden;border-collapse: collapse;table-layout:fixed;}
+.rrnumberdetailsclass thead {position: relative;display: block;overflow: visible;}
+.rrnumberdetailsclass tbody {position: relative; display: block;height: 230px;overflow: scroll;}
+.rrnumberdetailsclass thead th {min-width: 110px;width: 110px;color: #000000;border-color: #6ea1cc !important;text-align: center;
+										height: 25px;word-wrap:break-word;}
+.rrnumberdetailsclass tbody td {min-width: 110px;width: 110px;color: #353535;word-break: break-all;height: 25px;
+										word-wrap:break-word;}
+.rrnumberdetailsclass th,.rrnumberdetailsclass td {border: 1px solid #337ab7;}
+.rrnumberdetailsclass thead tr th {vertical-align: middle;border-top: 1px solid #6ea1cc !important;font-size: 16px;}
+     .rrnumberdetailsclass thead tr th:nth-child(4){min-width: 150px;width : 150px;word-wrap:break-word;}
+      .rrnumberdetailsclass tbody tr td:nth-child(4){min-width: 150px;width : 150px;word-wrap:break-word;}
+  
+  .table>tbody>tr>td {
+    padding: 1px;
+}
+
+.table>tbody>tr:hover {
+    cursor: pointer;
+}
+     
+     .meter_highlight  { background-color: #00ff66; }
+     .rrno_highlight  { background-color: chartreuse; }
+
+</style>
+
+<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-top: 50px;" ></div>
+
+<div class="cb-wrapper">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+			
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="panel panel-primary">
+      	     		<!--  <div class="panel-heading"><h3 class="panel-title">Upload Manual Receipts</h3></div> -->
+					 	 <div class="panel-body">
+					 	 		<div class="row">
+					 	 		<div class="col-xs-12">
+									<table style="width: 40%;"><tr><td width="15%;"><label>Meter Reading Day&nbsp;</label></td>
+										<td align="left" width="20%;">
+									 	<select class="form-control" id="meterreadingday" ng-model="meterreadingday" style="margin-top: -5px;">
+											<option value="">-- Select --</option>
+											<option ng-repeat="type in readingdays" value="{{type}}" >{{type}}</option>
+									  	</select>	
+									  	</td>
+									  	<td align="center" width="20%;">
+									  		<button class="btn btn-primary" ng-click="getprocessdetailslist()"  style="margin-top: -5px;">Show</button>
+									  		<button class="btn btn-primary" ng-click="clear()"  style="margin-top: -5px;">Clear</button>
+									  	</td></tr></table>
+								</div><br><br>
+					 	 		<div class="col-xs-6">
+					 	 			<div class="panel panel-info">
+				      	     		 <div class="panel-heading" style="text-align: center;"><h3 class="panel-title">Meter Reader Details</h3></div>
+									 	 <div class="panel-body">
+									 	 		<div class="row" >
+												 <div class="col-xs-12" style="width: 100%;overflow-x: scroll">
+													<table id="meter_reader_details_table" class="table meterreadedetailsclass" style="width: 100%;">
+														<thead style="background-color: #aed9ff">
+															<tr>
+																<th valign="middle">Sl. No.</th>
+																<th >Meter Reader Code</th>
+																<th >Status</th>
+																<th >No Of RR-No's</th>
+																<th >Bill Date</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr id="meter_row{{$index}}" ng-repeat="data in process_list" 
+																						 ng-dblclick="getrrnumberdetails(data)"
+																						 ng-click="preparemeteretoreset('meter_row'+$index,data)">
+																<td align="center">{{$index+1}}</td>
+																<td align="center">{{data.CM_MTR_RDR_CD}}</td>
+																<td align="center">{{data.CB_RR_STS}}</td>
+																<td align="center">{{data.NO_OF_RR_NO}}</td>
+																<td align="center">{{data.CB_MRI_BILL_DT}}</td>
+															</tr>
+														</tbody>
+												</table>
+												</div>
+											</div>
+									 	 </div>
+									 </div>
+								</div>
+								
+								<div class="col-xs-6">
+					 	 			<div class="panel panel-info">
+				      	     		 <div class="panel-heading" style="text-align: center;"><h3 class="panel-title">RR Number Details</h3></div>
+									 	 <div class="panel-body">
+								 	 		<div class="row" >
+												 <div class="col-xs-12" style="width: 100%;overflow-x: scroll">
+													<table id="rr_number_details_table" class="table rrnumberdetailsclass" style="width: 100%;">
+														<thead style="background-color: #aed9ff">
+															<tr>
+																<th valign="middle">Sl. No.</th>
+																<th >RR Number</th>
+																<th >Status</th>
+																<th >Meter Reader Code</th>
+																<th >Bill Date</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr id="rrno_row{{$index}}" ng-repeat="data in process_rrnumber_list" 
+																						 ng-click="preparerrnotoreset('rrno_row'+$index,data)">
+																<td align="center">{{$index+1}}</td>
+																<td align="center">{{data.CM_RR_NO}}</td>
+																<td align="center">{{data.CB_RR_STS}}</td>
+																<td align="center">{{data.CM_MTR_RDR_CD}}</td>
+																<td align="center">{{data.CB_MRI_BILL_DT}}</td>
+															</tr>
+														</tbody>
+												</table>
+												</div>
+											</div>
+									 	 </div>
+									 </div>
+								</div>
+					 	 		</div>
+					 	 		<div class="row">
+					 	 			<div class="col-xs-6">
+					 	 				<button class="btn btn-primary" ng-click="process_mr_reset()" ng-disabled="!selected_mr">Reset MR</button>
+					 	 			</div>
+					 	 			<div class="col-xs-6">
+					 	 				<button class="btn btn-primary" ng-click="process_rr_reset()" ng-disabled="!selected_rr">Reset RR</button>
+					 	 			</div>
+					 	 		</div>	
+					 	 </div>
+				 	 </div>
+				</div>
+			</div>
+		</div>
+		

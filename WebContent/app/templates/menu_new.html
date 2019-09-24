@@ -16,7 +16,7 @@
               <li><a href="#/">Home</a></li>
              <!--  <li class="dropdown"> -->
              <li class="dropdown" ng-class="{ open : dd1 }" ng-init="dd1 = false" ng-click="dd1 = !dd1;dd2=false;dd3=false;dd4=false;dd5=false;dd6=false;dd7=false;dd8=false;dd9=false;dd10=false;dd11=false;">
-                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >
                	 Master <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <li><a ng-href="#/master/code_master">{{'CODE MASTER' | capitalize}}</a></li>
@@ -78,6 +78,7 @@
                   <li><a ng-href="#/cash_section/receipts_generation">{{'AUTOMATIC RECEIPTS' | capitalize}}</a></li>
                   <li><a ng-href="#/cash_section/manual_receipts_generation">{{'MANUAL RECEIPTS' | capitalize}}</a></li>
                    <li><a ng-href="#/cash_section/receipt_cheque_cancellation">{{'RECEIPTS CANCELLATION' | capitalize}}</a></li>
+                   <li><a ng-href="#/cash_section/upload_manual_receipts">{{'Upload Manual Receipts' | capitalize}}</a></li>
                 </ul>
               </li>
               
@@ -89,6 +90,7 @@
 					  <li><a ng-href="#/main/bill_print">{{'BILL PRINT' | capitalize}}</a></li>
 					  <li><a ng-href="#/main/reconciliation">{{'RECONCILIATION' | capitalize}}</a></li>
 					  <li><a ng-href="#/main/transfer">{{'TRANSFER' | capitalize}}</a></li>
+					  <li><a ng-href="#/main/process_details">{{'Process Details' | capitalize}}</a></li>
 					</ul>
 				</li>
 				
@@ -191,8 +193,10 @@
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
       </nav>
+      
+      
       <br>
-            	<div style="padding-left: 40px;background-color: goldenrod;" >
+<div style="padding-left: 40px;background-color: goldenrod;" >
 	<table style="width: 70%;margin-top: -16px;">
 		<tr>
 			<td>Location Code : &nbsp;<strong>{{user.location_code}}</strong></td>
@@ -202,5 +206,5 @@
 			<td>Name : &nbsp;<strong>{{user.name}}</strong></td>
 		</tr>
 	</table>
-	</div>
+</div>
 	

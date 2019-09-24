@@ -10,15 +10,16 @@
 			<div class="panel panel-info">
       	      <div class="panel-heading"><h3 class="panel-title">Receipts/Cheque Cancellation</h3></div>
 				  <div class="panel-body">
-				  		<div class="row">
-				  			<div class="col-xs-2">
+				  		<div class="row"><h4>
+				  			<div class="col-xs-3">
 				  				<input type="radio" name="radiotype" ng-click="togglefunction('receiptwise')" 
 				  				 id="cancel_receiptwise">Receipt Cancellation
 				  			</div>
-				  			<div class="col-xs-2">
+				  			<div class="col-xs-3">
 				  				<input type="radio" name="radiotype" ng-click="togglefunction('chequewise')" 
 				  				id="cancel_chequewise">Cheque Cancellation
 				  			</div>
+				  			</h4>
 				  		</div>
 				  		<div class="row" ng-show="cancel_type_selected === 'receiptwise'">
 				  			<div style="text-align: center;"><h2>Receipt Cancellation</h2></div>
@@ -60,12 +61,12 @@
 				  					<div class="col-xs-12">
 				  						<div class="col-xs-12">
 							                <label for="shop_no">Shop No</label>
-					   			 			<input type="text" class="form-control"  ng-model="receiptcancel.shopno" id="shop_no" ng-readonly="true">
+					   			 			<input type="text" class="form-control"  ng-model="receiptcancel.rrnumber" id="shop_no" ng-readonly="true">
 					   			 		</div>
 					   			 		
 					   			 		<div class="col-xs-12">	
 					   			 			<label for="shop_owner_name">Shop Owner Name</label>
-					   			 			<input type="text" class="form-control"  ng-model="receiptcancel.shopownername" id="shop_owner_name" ng-readonly="true">
+					   			 			<input type="text" class="form-control"  ng-model="receiptcancel.customername" id="shop_owner_name" ng-readonly="true">
 					   			 		</div>
 					   			 			
 					   			 		<div class="col-xs-12">	
@@ -90,7 +91,7 @@
 				  						 <label for="cheque-date">Cheque Date</label>
 	   			 						 <div class='form-inline input-group input-append date dfchequedate'	data-provide="datepicker">
 											<input type='text' class="form-control" id="cheque-date" readonly="readonly" name="dfromdate" 
-											ng-model="chequecancel.receiptdate" ng-disabled="!proceed"> 
+											ng-model="chequecancel.chequedate" ng-disabled="!proceed"> 
 											<span class="input-group-addon datepicker"> <span class="glyphicon glyphicon-calendar"></span></span>
 										</div>
 				  					</div>
@@ -106,11 +107,11 @@
 				  						<label for="cheque_no">Cheque Number</label>
 			               				 <input type="text" class="form-control" placeholder="Type & press enter"   
 			               				 id="cheque_no" placeholder="" value="" ng-model="chequecancel.chequeno" 
-			               				 ng-enter="load_receipt_details_for_cancellation($event)" ng-disabled="!proceed" numbers-only>	
+			               				 ng-enter="load_cheque_details_for_cancellation($event)" ng-disabled="!proceed" numbers-only>	
 				  					</div>
 				  					<div class="col-xs-12">
 				  						<label for="chequecancelflag">Cancel Flag</label>
-					   			 		<select class="form-control" id="chequecancelflag" ng-model="chequecancel.cancelflag" ng-change="change_value('c')">
+					   			 		<select class="form-control" id="chequecancelflag" ng-model="chequecancel.cancelflag" ng-change="change_value('chq')">
 											<!-- <option value="">Choose</option> -->
 											<option value="Y" >YES</option>
 											<option value="N">NO</option>
@@ -139,11 +140,11 @@
 														</tr>
 										</thead>
 										<tbody>
-											<tr ng-repeat="data in receipt_cheque_details">
-															<td align="center">{{data.row_num}}</td>
-															<td align="left">{{data.rcpt_no}}</td>
-															<td align="left">{{data.rcpt_dt}}</td>
-															<td align="left">{{data.counter}}</td>
+											<tr ng-repeat="data in cheque_details">
+															<td align="center">{{$index+1}}</td>
+															<td align="left">{{data.RR_NUMBER}}</td>
+															<td align="left">{{data.PAYEE_NAME}}</td>
+															<td align="right">{{data.AMOUNT_PAID}}</td>
 														</tr>
 										</tbody>
 									</table>
@@ -151,6 +152,23 @@
 			   			 		</div>
 				  			</div>
 				  		</div>
+				  		
+			    <div class="row">
+			    	<div class="col-xs-2">
+	   			 		<button class="btn btn-blue btn-primary" ng-click="receipts_do_cancel()" style="margin-top: 30px;" 
+	   			 		ng-disabled="proceed == true || change == true">Proceed</button> 
+	   			 	</div>
+	   			 	<div class="col-xs-2">
+	   			 		<button class="btn btn-blue btn-primary" ng-click="receipts_clear()" style="margin-top: 30px;">Clear</button>
+			    </div>
+			    <div class="col-xs-12" style="margin-top: 30px;">
+	   			 		<h4 class="text-danger" ng-if="sts === 'error'">
+	   			 			{{message}}
+	   			 		</h4>
+			    </div>
+			    
+			    </div>
+			    
 				  </div>
 			</div>	
 		</div>
