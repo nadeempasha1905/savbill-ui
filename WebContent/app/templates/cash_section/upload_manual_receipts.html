@@ -10,14 +10,14 @@
 			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
 			
 			<div class="row">
-				<div class="col-xs-3">
+				<div class="col-xs-2">
 				</div>
-				<div class="col-xs-6">
+				<div class="col-xs-8">
 					<div class="panel panel-primary">
       	     		 <div class="panel-heading"><h3 class="panel-title">Upload Manual Receipts</h3></div>
 					 	 <div class="panel-body">
 					 	 		<div class="row">
-					 	 			<div class="col-xs-6">
+					 	 			<div class="col-xs-4">
 					 	 				<label for="receipt-date">Receipt Date</label>
 					 	 				<div class='form-inline input-group input-append date dfreceiptdate'	data-provide="datepicker">
 											<input type='text' class="form-control" id="receipt_date" readonly="readonly" name="dfromdate" 
@@ -25,27 +25,117 @@
 											<span class="input-group-addon datepicker"> <span class="glyphicon glyphicon-calendar"></span></span>
 										</div>
 					 	 			</div>
-					 	 			<div class="col-xs-6">
+					 	 			<div class="col-xs-4">
 				  						<label for="receipt-counter">Counter</label>
-	   			 						 <select class="form-control" id="receipt-counter" ng-model="uploadmanual_counter">
+	   			 						 <select class="form-control" id="receipt-counter" ng-model="uploadmanual_counter" ng-disabled="summarydetails != null">
 											<option value="">-- Select --</option>
 											<option ng-repeat="type in cash_counters_list" value="{{type.key}}" >{{type.value}}</option>
 									  	</select>	
 				  					</div>
+				  					<div class="col-xs-2" style="margin-top: 25px;">
+				  						<button class="btn btn-primary" ng-click="getSummaryDetails()"  ng-disabled="summarydetails != null">Upload Receipts</button>
+				  					</div>
 					 	 		</div>
 					 	 		<br>
-					 	 		<div class="row">
+<!-- 					 	 		<div class="row">
 					 	 			<div class="col-xs-3">
 					 	 				<button class="btn btn-primary btn-block" ng-click="getSummaryDetails()">Get Summary</button>
 					 	 			</div>
 					 	 			<div class="col-xs-3">
 					 	 				<button class="btn btn-primary btn-block" ng-click="upload_receipts()">Upload Receipts</button>
 					 	 			</div>
-					 	 		</div>	
+					 	 		</div> -->	
+					 	 		<br>
+					 	 		<div class="row" ng-show="summarydetails != null">
+					 	 			<div class="col-xs-12">
+		 	 							<div class="panel panel-success">
+										  <div class="panel-heading">
+										    <h3 class="panel-title" style="font-size: 20px;"><i>Summary for the date {{uploadmanual_receiptdate}}</i> </h3>
+										  </div>
+										  <div class="panel-body">
+										    <div class="row">
+										    	<div class="col-xs-4"><span>First Receipt Number</span></div>
+										    	<div class="col-xs-2">{{summarydetails.first_receipt_number}}</div>
+										    	<div class="col-xs-4"><span>Last Receipt Number</span></div>
+										    	<div class="col-xs-2">{{summarydetails.last_receipt_number}}</div>
+										    </div>
+										    <div class="row">
+										    	<div class="col-xs-4"><span>Cash Receipts</span></div>
+										    	<div class="col-xs-2">{{summarydetails.cash_receipts}}</div>
+										    	<div class="col-xs-4"><span>Cash Amount</span></div>
+										    	<div class="col-xs-2">{{summarydetails.cash_amount}}</div>
+										    </div>
+										    <div class="row">
+										    	<div class="col-xs-4"><span>Cheque/DD Receipts</span></div>
+										    	<div class="col-xs-2">{{summarydetails.cheque_receipts}}</div>
+										    	<div class="col-xs-4"><span>Cheque/DD Amount</span></div>
+										    	<div class="col-xs-2">{{summarydetails.cheque_amount}}</div>
+										    </div>
+										    <div class="row">
+										    	<div class="col-xs-4"><span>Other Receipts</span></div>
+										    	<div class="col-xs-2">{{summarydetails.other_recipts}}</div>
+										    	<div class="col-xs-4"><span>Other Amount</span></div>
+										    	<div class="col-xs-2">{{summarydetails.other_amount}}</div>
+										    </div>
+										    <div class="row">
+										    	<div class="col-xs-4"><span>Cancelled Receipts</span></div>
+										    	<div class="col-xs-2">{{summarydetails.cancelled_recipts}}</div>
+										    	<div class="col-xs-4"><span>Cancelled Amount</span></div>
+										    	<div class="col-xs-2">{{summarydetails.cancelled_amount}}</div>
+										    </div>
+										  </div>
+										</div>
+					 	 			</div>
+					 	 		</div>
+					 	 		
+					 	 	<div class="row" ng-show="summarydetails != null">
+			 	 				<div class="col-xs-12">	
+ 	 								<div class="panel panel-warning">
+										  <div class="panel-heading">
+										    <h3 class="panel-title" style="font-size: 20px;"><i>Pending Uploads for the date {{uploadmanual_receiptdate}}</i> </h3>
+										  </div>
+										  <div class="panel-body">
+										    <div class="row">
+										    	<div class="col-xs-4"><span>Cash Receipts</span></div>
+										    	<div class="col-xs-2">{{summarydetails.not_uploaded_cash_receipts}}</div>
+										    	<div class="col-xs-4"><span>Cash Amount</span></div>
+										    	<div class="col-xs-2">{{summarydetails.not_uploaded_cash_amount}}</div>
+										    </div>
+										    <div class="row">
+										    	<div class="col-xs-4"><span>Cheque/DD Receipts</span></div>
+										    	<div class="col-xs-2">{{summarydetails.not_uploaded_cheque_receipts}}</div>
+										    	<div class="col-xs-4"><span>Cheque/DD Amount</span></div>
+										    	<div class="col-xs-2">{{summarydetails.not_uploaded_cheque_amount}}</div>
+										    </div>
+										    <div class="row">
+										    	<div class="col-xs-4"><span>Other Receipts</span></div>
+										    	<div class="col-xs-2">{{summarydetails.not_uploaded_other_recipts}}</div>
+										    	<div class="col-xs-4"><span>Other Amount</span></div>
+										    	<div class="col-xs-2">{{summarydetails.not_uploaded_other_amount}}</div>
+										    </div>
+										    <div class="row">
+										    	<div class="col-xs-4"><span>Cancelled Receipts</span></div>
+										    	<div class="col-xs-2">{{summarydetails.not_uploaded_cancelled_recipts}}</div>
+										    	<div class="col-xs-4"><span>Cancelled Amount</span></div>
+										    	<div class="col-xs-2">{{summarydetails.not_uploaded_cancelled_amount}}</div>
+										    </div>
+										  </div>
+										</div>
+									</div>
+								</div>		
+					 	 		
+ 					 	 		<div class="row"  ng-show="summarydetails != null">
+					 	 			<div class="col-xs-2">
+					 	 				<button class="btn btn-primary " ng-click="upload_receipts()">Proceed</button>
+					 	 			</div>
+					 	 			<div class="col-xs-2">
+					 	 				<button class="btn btn-primary " ng-click="cancel()">Cancel</button>
+					 	 			</div>
+					 	 		</div> 
 					 	 </div>
 				 	 </div>
 				</div>
-				<div class="col-xs-3">
+				<div class="col-xs-2">
 				</div>
 			</div>
 		</div>

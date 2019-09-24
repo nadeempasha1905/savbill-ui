@@ -328,7 +328,12 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 		//$scope.dtodate    = moment(new Date()).format("DD/MM/YYYY").toString();
 		//$scope.dmonthyear = moment(new Date()).format("MMM-YYYY").toString();
 		
-		$scope.selected_report_type = "billing_efficiency";
+		$scope.set_selected_report_type = function(value){
+			$scope.selected_report_type = value;
+			 $('#contentLeft').hide();
+		};
+		
+		$scope.set_selected_report_type("billing_efficiency");
 		
 		$scope.REPORT_DATA = null;
 		$scope.report_heading = null;

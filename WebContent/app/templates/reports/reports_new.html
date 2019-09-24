@@ -53,13 +53,13 @@
     <ul id="leftNavigation">
        <li class="active"> <a href="#"><i class="fa fa-bar-chart leftNavIcon"></i> Billing</a>
         <ul>
-          <li> <a href="#" ng-click="selected_report_type='billing_efficiency'"><i class="fa fa-angle-right leftNavIcon"></i> Billing Efficiency</a> </li>
+          <li> <a href="#" ng-click="set_selected_report_type('billing_efficiency')"><i class="fa fa-angle-right leftNavIcon"></i> Billing Efficiency</a> </li>
         </ul>
       </li>
       <li> <a href="#"><i class="fa fa-line-chart leftNavIcon"></i> Collection</a>
         <ul>
-         <li> <a href="#" ng-click="selected_report_type='collection_efficiency'"><i class="fa fa-angle-right leftNavIcon"></i> Collection Efficiency</a> </li>
-         <li> <a href="#" ng-click="selected_report_type='payment_purpose_wise'"><i class="fa fa-angle-right leftNavIcon"></i> Collection Purposewise Report</a> </li>
+         <li> <a href="#" ng-click="set_selected_report_type('collection_efficiency')"><i class="fa fa-angle-right leftNavIcon"></i> Collection Efficiency</a> </li>
+         <li> <a href="#" ng-click="set_selected_report_type('payment_purpose_wise')"><i class="fa fa-angle-right leftNavIcon"></i> Collection Purposewise Report</a> </li>
         </ul>
         
       </li> 
@@ -71,11 +71,11 @@
       
       <li > <a href="#"><i class="fa fa-bar-chart leftNavIcon"></i> DCB</a>
         <ul>
-          <li> <a href="#" ng-click="selected_report_type='main_dcb'"><i class="fa fa-angle-right leftNavIcon"></i> Main DCB</a> </li>
+          <li> <a href="#" ng-click="set_selected_report_type('main_dcb')"><i class="fa fa-angle-right leftNavIcon"></i> Main DCB</a> </li>
         </ul>
       </li> 
       
-     <!--  <li > <a href="#" ng-click="selected_report_type='sbd_mr_wise'"><i class="fa fa-bar-chart leftNavIcon"></i> Spot Billing Efficiency</a>
+     <!--  <li > <a href="#" ng-click="set_selected_report_type('sbd_mr_wise')"><i class="fa fa-bar-chart leftNavIcon"></i> Spot Billing Efficiency</a>
       </li> 
  -->
     </ul>

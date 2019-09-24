@@ -60,6 +60,7 @@ var templates = {
 		'receipts_generation' : baseURL +'app/templates/cash_section/receipts_generation.html',
 		'manual_receipts_generation' : baseURL +'app/templates/cash_section/manual_receipts_generation.html',
 		'receipt_cheque_cancellation' : baseURL +'app/templates/cash_section/receipt_cheque_cancellation.html',
+		'receipt_cheque_cancellation_hrt' : baseURL +'app/templates/cash_section/receipt_cheque_cancellation_hrt.html',
 		'upload_manual_receipts' : baseURL +'app/templates/cash_section/upload_manual_receipts.html'
 	},
 	'accounts' : {

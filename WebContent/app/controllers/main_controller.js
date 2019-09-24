@@ -348,6 +348,9 @@ main_controller.controller('main_controller',['$scope','$rootScope','remote','$f
 			if(status == true){
 				remote.load("doprocessmrreset", function(response){
 					console.log(response);
+					if(response.status === "success"){
+						$scope.getprocessdetailslist();
+					}
 				}, $scope.request_mrreset , 'POST');
 			}
 		};
@@ -361,6 +364,10 @@ main_controller.controller('main_controller',['$scope','$rootScope','remote','$f
 			if(status == true){
 				remote.load("doprocessrrreset", function(response){
 					console.log(response);
+					if(response.status === "success"){
+						var data = {"CM_MTR_RDR_CD":$scope.request_rrreset.meter_reader_code,"CB_MRI_BILL_DT":$scope.request_rrreset.bill_date};
+						$scope.getrrnumberdetails(data);
+					}
 				}, $scope.request_rrreset , 'POST');
 			}
 		};

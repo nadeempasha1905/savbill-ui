@@ -1,0 +1,201 @@
+<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-top: 50px;" ></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper" id="receipts-generation">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+
+
+	<div class="row">
+		<div class="col-xs-1"></div>
+		<div class="col-xs-10">
+			<div class="panel panel-info">
+      	      <div class="panel-heading"><h3 class="panel-title">Receipts/Cheque Cancellation</h3></div>
+				  <div class="panel-body">
+				  		<div class="row"><h4>
+				  			<div class="col-xs-3">
+				  				<input type="radio" name="radiotype" ng-click="togglefunction('receiptwise')" 
+				  				 id="cancel_receiptwise">HRT Receipt Cancellation
+				  			</div>
+				  			<div class="col-xs-3">
+				  				<input type="radio" name="radiotype" ng-click="togglefunction('chequewise')" 
+				  				id="cancel_chequewise">HRT Cheque Cancellation
+				  			</div>
+				  			</h4>
+				  		</div>
+				  		<div class="row" ng-show="cancel_type_selected === 'receiptwise'">
+				  			<div style="text-align: center;"><h2>HRT Receipt Cancellation</h2></div>
+				  			<div class="col-xs-6">
+				  				<div class="row">
+				  					<div class="col-xs-12">
+				  						 <label for="receipt-date">Receipt Date</label>
+	   			 						 <div class='form-inline input-group input-append date dfreceiptdate'	data-provide="datepicker">
+											<input type='text' class="form-control" id="receipt-date" readonly="readonly" name="dfromdate" 
+											ng-model="receiptcancel.receiptdate" ng-disabled="!proceed"> 
+											<span class="input-group-addon datepicker"> <span class="glyphicon glyphicon-calendar"></span></span>
+										</div>
+				  					</div>
+				  					<div class="col-xs-12">
+				  						 <label for="receipt-counter">Counter</label>
+	   			 						 <select class="form-control" id="receipt-counter" ng-model="receiptcancel.counter" ng-change="focus_receiptno()"  ng-disabled="!proceed">
+											<option value="">-- Select --</option>
+											<option ng-repeat="type in cash_counters_list" value="{{type.key}}" >{{type.value}}</option>
+									  	</select>
+				  					</div>
+				  					<div class="col-xs-12">
+				  						<label for="receipt_no">Receipt Number</label>
+			               				 <input type="text" class="form-control" placeholder="Type & press enter"   
+			               				 id="receipt_no" placeholder="" value="" ng-model="receiptcancel.receiptno" 
+			               				 ng-enter="load_receipt_details_for_cancellation($event)" ng-disabled="!proceed" numbers-only>	
+				  					</div>
+				  					<div class="col-xs-12">
+				  						<label for="receiptcancelflag">Cancel Flag</label>
+					   			 		<select class="form-control" id="receiptcancelflag" ng-model="receiptcancel.cancelflag" ng-change="change_value('c')">
+											<!-- <option value="">Choose</option> -->
+											<option value="Y" >YES</option>
+											<option value="N">NO</option>
+									  	</select>
+				  					</div>
+				  				</div>
+				  			</div>
+				  			<div class="col-xs-6">
+				  				<div class="row">
+				  					<div class="col-xs-12">
+				  						<div class="col-xs-12">
+							                <label for="shop_no">Shop No</label>
+					   			 			<input type="text" class="form-control"  ng-model="receiptcancel.rrnumber" id="shop_no" ng-readonly="true">
+					   			 		</div>
+					   			 		
+					   			 		<div class="col-xs-12">	
+					   			 			<label for="shop_owner_name">Shop Owner Name</label>
+					   			 			<input type="text" class="form-control"  ng-model="receiptcancel.customername" id="shop_owner_name" ng-readonly="true">
+					   			 		</div>
+					   			 			
+					   			 		<div class="col-xs-12">	
+					   			 			<label for="amount_paid">Amount Paid</label>
+					   			 			<input type="text" class="form-control"  ng-model="receiptcancel.amountpaid" id="amount_paid" ng-readonly="true">
+					   			 		</div>
+					   			 			
+					   			 		<div class="col-xs-12">	
+					   			 			<label for="payment">Payment Mode</label>
+					   			 			<input type="text" class="form-control"  ng-model="receiptcancel.payment" id="payment" ng-readonly="true">
+							            </div>
+				  					</div>
+				  				</div>	
+				  			</div>
+				  		</div>
+				  		
+				  		<div class="row" ng-show="cancel_type_selected === 'chequewise'">
+				  			<div style="text-align: center;"><h2>HRT Cheque Cancellation</h2></div>
+				  			<div class="col-xs-4">
+				  				<div class="row">
+				  					<div class="col-xs-12">
+				  						 <label for="cheque-date">Cheque Date</label>
+	   			 						 <div class='form-inline input-group input-append date dfchequedate'	data-provide="datepicker">
+											<input type='text' class="form-control" id="cheque-date" readonly="readonly" name="dfromdate" 
+											ng-model="chequecancel.chequedate" ng-disabled="!proceed"> 
+											<span class="input-group-addon datepicker"> <span class="glyphicon glyphicon-calendar"></span></span>
+										</div>
+				  					</div>
+				  					<div class="col-xs-12">
+				  						 <label for="cheque-counter">Counter</label>
+	   			 						 <select class="form-control" id="cheque-counter" ng-model="chequecancel.counter" 
+	   			 						 	ng-change="focus_receiptno()"  ng-disabled="!proceed">
+											<option value="">-- Select --</option>
+											<option ng-repeat="type in cash_counters_list" value="{{type.key}}" >{{type.value}}</option>
+									  	</select>
+				  					</div>
+				  					<div class="col-xs-12">
+				  						<label for="cheque_no">Cheque Number</label>
+			               				 <input type="text" class="form-control" placeholder="Type & press enter"   
+			               				 id="cheque_no" placeholder="" value="" ng-model="chequecancel.chequeno" 
+			               				 ng-enter="load_cheque_details_for_cancellation($event)" ng-disabled="!proceed" numbers-only>	
+				  					</div>
+				  					<div class="col-xs-12">
+				  						<label for="chequecancelflag">Cancel Flag</label>
+					   			 		<select class="form-control" id="chequecancelflag" ng-model="chequecancel.cancelflag" ng-change="change_value('chq')">
+											<!-- <option value="">Choose</option> -->
+											<option value="Y" >YES</option>
+											<option value="N">NO</option>
+									  	</select>
+				  					</div>
+				  				</div>
+				  			</div>
+				  			<div class="col-xs-8">
+				  				<div class="col-xs-4">
+					                <label for="total_cheque_amount">Total Cheque Amount</label>
+			   			 			<input type="text" class="form-control"  ng-model="chequecancel.chequeamount" id="total_cheque_amount" ng-readonly="true">
+			   			 		</div>
+			   			 		
+			   			 		<div class="col-xs-8">	
+			   			 			<label for="drawee_bank">Drawee Bank</label>
+			   			 			<input type="text" class="form-control"  ng-model="chequecancel.draweebank" id="drawee_bank" ng-readonly="true">
+			   			 		</div>
+			   			 		<div class="col-xs-12" style="width: 100%;margin-top: 5px;">
+									<table id="chequedis_receiptdetails_table" class="table table-sm table-hover table-striped thalign table-bordered" style="width: 100%;">
+										<thead style="background-color: #70bcff">
+														<tr>
+															<th  >Sl. No.</th>
+															<th  >RR Number</th>
+															<th  >Consumer Name</th>
+															<th  >Amount Paid</th>
+														</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="data in cheque_details">
+															<td align="center">{{$index+1}}</td>
+															<td align="left">{{data.RR_NUMBER}}</td>
+															<td align="left">{{data.PAYEE_NAME}}</td>
+															<td align="right">{{data.AMOUNT_PAID}}</td>
+														</tr>
+										</tbody>
+									</table>
+			   			 			
+			   			 		</div>
+				  			</div>
+				  		</div>
+				  		
+			    <div class="row">
+			    	<div class="col-xs-2">
+	   			 		<button class="btn btn-blue btn-primary" ng-click="receipts_do_cancel()" style="margin-top: 30px;" 
+	   			 		ng-disabled="proceed == true || change == true">Proceed</button> 
+	   			 	</div>
+	   			 	<div class="col-xs-2">
+	   			 		<button class="btn btn-blue btn-primary" ng-click="receipts_clear()" style="margin-top: 30px;">Clear</button>
+			    </div>
+			    <div class="col-xs-12" style="margin-top: 30px;">
+	   			 		<h4 class="text-danger" ng-if="sts === 'error'">
+	   			 			{{message}}
+	   			 		</h4>
+			    </div>
+			    
+			    </div>
+			    
+				  </div>
+			</div>	
+		</div>
+		<div class="col-xs-1"></div>
+		
+	</div>
+  
+
+			
+		</div>
+	</div>
+		
+		
+<script>
+$('.dfreceiptdate').datetimepicker({
+	format : 'dd/mm/yyyy',
+	minView : 2,
+	autoclose : 1,
+	//startDate : new Date(new Date().setDate(new Date().getDate() - 15)),
+	endDate : new Date()
+});
+$('.dfchequedate').datetimepicker({
+	format : 'dd/mm/yyyy',
+	minView : 2,
+	autoclose : 1,
+	//startDate : new Date(new Date().setDate(new Date().getDate() - 15)),
+	endDate : new Date()
+});
+</script>
+			
