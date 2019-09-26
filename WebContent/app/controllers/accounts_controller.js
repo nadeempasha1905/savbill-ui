@@ -3404,6 +3404,12 @@ accounts_controller.controller('accounts_controller',['$scope','$rootScope','rem
 	    	$timeout(function(){ $scope.loadmeterstatuslist();	});
 	    	
 			$scope.load_meter_detail = function(e){
+				
+				if(!($rr_no.val().length > 0) && !($mtr_sl_no.val().length > 0) && !($mtr_make.val().length > 0) && !($mtr_type.val().length > 0)){
+					notify.warn("Please enter/select any one filter");
+					return;
+				}
+				
 				var request = {
 					"conn_type": $rootScope.user.connection_type,	
 					"location_code" : $rootScope.user.location_code,					
@@ -3456,31 +3462,162 @@ accounts_controller.controller('accounts_controller',['$scope','$rootScope','rem
 			
 			$scope.edit_assign_or_remove_meter_details = function(e, row){
 				
-				$scope.fixedmeter = {};
+				$scope.removedmeter = {};
+				$scope.viewdetails = {};
+				$scope.search = {};
+				$scope.fixedmeter = {
+						mtr_sl_no:'',
+						mtr_make:'',
+						mtr_type:'',
+						mtr_amp:'',
+						mtr_volt:'',
+						no_of_ph: '',
+						mtr_sts:'',
+						mra_assigned_dt:'',
+						f_bkwh : '',
+						f_ckwh : '',
+						f_bmd : '',
+						f_bpf : '',
+						assigned_released_by : '',
+						remarks : ''
+						};
 				
-				if(row.entity.mtr_assign_sts === '4'){
+				$scope.phaselist = [
+					{key:"1",value:"Single Phase"},{key:"3",value:"Three Phase"}
+				];
+				
+				/*if(row.entity.mtr_assign_sts === '4'){
 					notify.error("Cannot Edit !!! Already Released...");
 					return;
-				}
+				}*/
 				
 				var assignMeterModalInstance = $uibModal.open({
 					animation: true,
 					size: 'lg',
 				    templateUrl: templates.modal.assign_remove_meter_modal,
-				    controller: function($scope, $uibModalInstance,configs,data,remote,MeterMakeList,MeterTypeList,MeterStatusList){
+				    controller: function($scope, $uibModalInstance,configs,data,remote,MeterMakeList,MeterTypeList,MeterStatusList,phaselist,fixedmeter){
 				    	
+				    	if(row.entity.mtr_assign_sts === '4'){
+							notify.info("Cannot Edit !!! Already Released. View Only.");
+							$scope.viewdetails = angular.copy(data);
+						}
 				    	
 				    	$scope.action = 'edit';
 				    	console.log("row.entity",row.entity);
-				    	$scope.data = angular.copy(data);
-				    	$scope.data.mra_release_dt = null;	
+				    	$scope.removedmeter = angular.copy(data);
+				    	$scope.removedmeter.mra_release_dt = null;	
 				    	$scope.MeterMakeList = angular.copy(MeterMakeList);
 				    	$scope.MeterTypeList = angular.copy(MeterTypeList);
 				    	$scope.MeterStatusList = angular.copy(MeterStatusList);
+				    	$scope.phaselist = angular.copy(phaselist);
+				    	$scope.fixedmeter = angular.copy(fixedmeter);
+				    	$scope.removedmeter.mra_release_dt = moment(new Date()).format("DD/MM/YYYY").toString();
+				    	$scope.fixedmeter.mra_assigned_dt = moment(new Date()).format("DD/MM/YYYY").toString();
+				    	
+				    	//$scope.fixedmeter =  angular.copy(data);
+				    	//$scope.fixedmeter.mra_assigned_dt = moment(new Date()).format("DD/MM/YYYY").toString();
+				    	
+				    	$scope.search = angular.copy(data);
+				    	$scope.disablerr_no = true;
 				    	
 				    	$scope.cancel = function(){
 				    		$uibModalInstance.dismiss();
 				    	}
+				    	
+				    	$scope.clear = function(){
+				    		$scope.removedmeter = {};
+							$scope.viewdetails = {};
+							$scope.search = {};
+							$scope.fixedmeter = {
+									mtr_sl_no:'',
+									mtr_make:'',
+									mtr_type:'',
+									mtr_amp:'',
+									mtr_volt:'',
+									no_of_ph: '',
+									mtr_sts:'',
+									mra_assigned_dt:'',
+									f_bkwh : '',
+									f_ckwh : '',
+									f_bmd : '',
+									f_bpf : '',
+									assigned_released_by : '',
+									remarks : ''
+									};
+				    	};
+				    	
+				    	$scope.setAssignDateinFixed = function(){
+				    		
+				    		$scope.fixedmeter.mra_assigned_dt = moment(moment($scope.removedmeter.mra_release_dt,'DD/MM/YYYY').add('days', 1)).format("DD/MM/YYYY").toString();
+				    		
+				    	};
+				    	
+						$scope.save_remove_assign_meter_details = function(e){
+							
+							if(!$scope.fixedmeter){notify.warn("Please Enter Fixed Meter Details To Proceed !!!");return;}
+							
+							if(!$scope.fixedmeter.mtr_sl_no){notify.warn("Please Enter Meter Sl.No.");return;}
+							if(!$scope.fixedmeter.mtr_make){notify.warn("Please Select Meter Make");return;}	
+							if(!$scope.fixedmeter.mtr_type){notify.warn("Please Select Meter Type");return;}
+							if(!$scope.fixedmeter.mtr_amp){notify.warn("Please Enter Amps");return;}
+							if(!$scope.fixedmeter.mtr_volt){notify.warn("Please Enter Voltage");return;}
+							if(!$scope.fixedmeter.no_of_ph){notify.warn("Please Select NO. Of Phases");return;}
+							if(!$scope.fixedmeter.mtr_sts){notify.warn("Please Select Meter Status");return;}
+							if(!$scope.fixedmeter.mra_assigned_dt){notify.warn("Please Select Assigned Date");return;}
+							if(!$scope.fixedmeter.assigned_released_by){notify.warn("Please Enter Assigned By");return;}
+
+							if($scope.fixedmeter.mtr_type === '3' || $scope.fixedmeter.mtr_type === '6' ){
+								if(!$scope.fixedmeter.f_ckwh){notify.warn("Please Enter CKWH");return;}
+								if(!$scope.fixedmeter.f_bmd){notify.warn("Please Enter BMD");return;}
+								if(!$scope.fixedmeter.f_bpf){notify.warn("Please Enter BPF");return;}
+							}else{
+								if(!$scope.fixedmeter.f_bkwh){notify.warn("Please Enter BKWH");return;}
+							}
+							
+							
+							var request = {
+									rrno:$rootScope.user.location_code+$scope.search.rr_no,
+									r_mtr_sl_no:($scope.removedmeter.mtr_sl_no  ? $scope.removedmeter.mtr_sl_no : ''),
+									r_mtr_make:($scope.removedmeter.mtr_make ? $scope.removedmeter.mtr_make : ''),
+									r_mtr_type:($scope.removedmeter.mtr_type ? $scope.removedmeter.mtr_type : ''),
+									r_mtr_amp:($scope.removedmeter.mtr_amp ? $scope.removedmeter.mtr_amp : ''),
+									r_mtr_volt:($scope.removedmeter.mtr_volt ? $scope.removedmeter.mtr_volt : ''),
+									r_no_of_ph:($scope.removedmeter.no_of_ph ? $scope.removedmeter.no_of_ph : '0'),
+									r_mtr_sts:($scope.removedmeter.mtr_sts ? $scope.removedmeter.mtr_sts : ''),
+									r_mra_assigned_dt:($scope.removedmeter.mra_assigned_dt ? $scope.removedmeter.mra_assigned_dt : ''),
+									r_mra_release_dt:($scope.removedmeter.mra_release_dt ? $scope.removedmeter.mra_release_dt : ''),
+									r_bkwh:($scope.removedmeter.r_bkwh ? $scope.removedmeter.r_bkwh : '0'),
+									r_ckwh:($scope.removedmeter.r_ckwh ? $scope.removedmeter.r_ckwh : '0'),
+									r_bmd:($scope.removedmeter.r_bmd ? $scope.removedmeter.r_bmd : '0'),
+									r_bpf:($scope.removedmeter.r_bpf ? $scope.removedmeter.r_bpf : '0'),
+									r_assigned_released_by:($scope.removedmeter.assigned_released_by  ? $scope.removedmeter.assigned_released_by : ''),
+									r_remarks:($scope.removedmeter.remarks  ? $scope.removedmeter.remarks : ''),
+									f_mtr_sl_no:$scope.fixedmeter.mtr_sl_no,
+									f_mtr_make:$scope.fixedmeter.mtr_make,
+									f_mtr_type:$scope.fixedmeter.mtr_type,
+									f_mtr_amp:$scope.fixedmeter.mtr_amp,
+									f_mtr_volt:$scope.fixedmeter.mtr_volt,
+									f_no_of_ph:($scope.fixedmeter.no_of_ph ? $scope.fixedmeter.no_of_ph : '0'),
+									f_mtr_sts:$scope.fixedmeter.mtr_sts,
+									f_mra_assigned_dt:$scope.fixedmeter.mra_assigned_dt,
+									f_bkwh:($scope.fixedmeter.f_bkwh ? $scope.fixedmeter.f_bkwh : '0'),
+									f_ckwh:($scope.fixedmeter.f_ckwh ? $scope.fixedmeter.f_ckwh : '0'),
+									f_bmd:($scope.fixedmeter.f_bmd   ? $scope.fixedmeter.f_bmd : '0'),
+									f_bpf:($scope.fixedmeter.f_bpf   ? $scope.fixedmeter.f_bpf : '0'),
+									f_assigned_released_by:($scope.fixedmeter.assigned_released_by  ? $scope.fixedmeter.assigned_released_by : ''),
+									f_remarks:($scope.fixedmeter.remarks  ? $scope.fixedmeter.remarks : ''),
+									
+									conn_type: $rootScope.user.connection_type,
+									userid : $rootScope.user.user_id,
+							};
+							
+							console.log("save",request);
+							remote.load("saveremoveassignmeterdetails", function(response){
+								if(response.status === 'success'){
+									$scope.cancel();
+								}
+							}, request , 'POST');
+						};
 				    },
 				    resolve: {
 				        configs: function() {
@@ -3500,46 +3637,181 @@ accounts_controller.controller('accounts_controller',['$scope','$rootScope','rem
 				        },
 				        MeterStatusList: function(){
 				        	return $scope.MeterStatusList;
-				        }
+				        },
+				        phaselist: function(){
+				        	return $scope.phaselist;
+				        },
+				        fixedmeter: function(){
+				        	return $scope.fixedmeter;
+				        },
 				    }
 				});
 			};
 			
 			$scope.add_assign_or_remove_meter_details = function(e){
 				
+
+				$scope.removedmeter = {};
+				$scope.viewdetails = {};
+				$scope.search = {};
+				$scope.fixedmeter = {
+						mtr_sl_no:'',
+						mtr_make:'',
+						mtr_type:'',
+						mtr_amp:'',
+						mtr_volt:'',
+						no_of_ph: '',
+						mtr_sts:'',
+						mra_assigned_dt:'',
+						f_bkwh : '',
+						f_ckwh : '',
+						f_bmd : '',
+						f_bpf : '',
+						assigned_released_by : '',
+						remarks : ''
+						};
+				$scope.disablerr_no = false;
+				
+				$scope.phaselist = [
+					{key:"1",value:"Single Phase"},{key:"3",value:"Three Phase"}
+				];
+				
 				$modal_rr_no = $('#assign-remove-meter-rr-number');
 				$modal_customer_id = $('#assign-remove-meter-customer-id');
-				
-				$scope.fixedmeter = {};
 				
 				var assignMeterModalInstance = $uibModal.open({
 					animation: true,
 					size: 'lg',
 				    templateUrl: templates.modal.assign_remove_meter_modal,
-				    controller: function($scope, $uibModalInstance,configs,remote,MeterMakeList,MeterTypeList,MeterStatusList){
+				    controller: function($scope, $uibModalInstance,configs,remote,MeterMakeList,MeterTypeList,MeterStatusList,phaselist,fixedmeter){
 				    	
 				    	$scope.action = 'add';
 				    	$scope.data = {};
 				    	$scope.MeterMakeList = angular.copy(MeterMakeList);
 				    	$scope.MeterTypeList = angular.copy(MeterTypeList);
 				    	$scope.MeterStatusList = angular.copy(MeterStatusList);
+				    	$scope.phaselist = angular.copy(phaselist);
+				    	$scope.fixedmeter = angular.copy(fixedmeter);
+				    	$scope.fixedmeter.mra_assigned_dt = moment(new Date()).format("DD/MM/YYYY").toString();
 				    	
 				    	$scope.cancel = function(){
 				    		$uibModalInstance.dismiss();
+				    	};
+				    	
+				    	$scope.clear = function(){
+				    		$scope.removedmeter = {};
+							$scope.viewdetails = null;
+							$scope.search = {};
+							$scope.fixedmeter = {
+									mtr_sl_no:'',
+									mtr_make:'',
+									mtr_type:'',
+									mtr_amp:'',
+									mtr_volt:'',
+									no_of_ph: '',
+									mtr_sts:'',
+									mra_assigned_dt:'',
+									f_bkwh : '',
+									f_ckwh : '',
+									f_bmd : '',
+									f_bpf : '',
+									assigned_released_by : '',
+									remarks : ''
+									};
+							$scope.disablerr_no = false;
 				    	};
 				    	
 				    	$scope.load_meter_detail_modal = function(e){
 							var request = {
 								"conn_type": $rootScope.user.connection_type,	
 								"location_code" : $rootScope.user.location_code,					
-								"rr_no": (($scope.data.rr_no) ? $rootScope.user.location_code + $scope.data.rr_no : ''),
+								"rr_no": (($scope.search.rr_no) ? $rootScope.user.location_code + $scope.search.rr_no : ''),
 								"customer_id": (($modal_customer_id.val()) ? $modal_customer_id.val() : ''),
 								"mtr_sl_no" : '',
 								"mtr_make" : '',
 								"mtr_type" : ''
 							}
 							remote.load("getmeterdetails", function(response){
-								$scope.fixedmeter = response.meter_details;
+								if(response.meter_details){
+									if(response.meter_details.length > 0){
+										$scope.removedmeter = response.meter_details[0];
+										$scope.disablerr_no = true;
+									}
+									//$scope.fixedmeter.mra_assigned_dt = moment(new Date()).format("DD/MM/YYYY").toString();
+								}
+							}, request , 'POST');
+						};
+						
+						$scope.setAssignDateinFixed = function(){
+				    		
+				    		$scope.fixedmeter.mra_assigned_dt = moment(new Date()).format("DD/MM/YYYY").toString();
+				    		
+				    	};
+				    	
+						$scope.save_remove_assign_meter_details = function(e){
+							
+							if(!$scope.fixedmeter){notify.warn("Please Enter Fixed Meter Details To Proceed !!!");return;}
+							
+							if(!$scope.fixedmeter.mtr_sl_no){notify.warn("Please Enter Meter Sl.No.");return;}
+							if(!$scope.fixedmeter.mtr_make){notify.warn("Please Select Meter Make");return;}	
+							if(!$scope.fixedmeter.mtr_type){notify.warn("Please Select Meter Type");return;}
+							if(!$scope.fixedmeter.mtr_amp){notify.warn("Please Enter Amps");return;}
+							if(!$scope.fixedmeter.mtr_volt){notify.warn("Please Enter Voltage");return;}
+							if(!$scope.fixedmeter.no_of_ph){notify.warn("Please Select NO. Of Phases");return;}
+							if(!$scope.fixedmeter.mtr_sts){notify.warn("Please Select Meter Status");return;}
+							if(!$scope.fixedmeter.mra_assigned_dt){notify.warn("Please Select Assigned Date");return;}
+							if(!$scope.fixedmeter.assigned_released_by){notify.warn("Please Enter Assigned By");return;}
+
+							if($scope.fixedmeter.mtr_type === '3' || $scope.fixedmeter.mtr_type === '6' ){
+								if(!$scope.fixedmeter.f_ckwh){notify.warn("Please Enter CKWH");return;}
+								if(!$scope.fixedmeter.f_bmd){notify.warn("Please Enter BMD");return;}
+								if(!$scope.fixedmeter.f_bpf){notify.warn("Please Enter BPF");return;}
+							}else{
+								if(!$scope.fixedmeter.f_bkwh){notify.warn("Please Enter BKWH");return;}
+							}
+							
+							
+							var request = {
+									rrno:$rootScope.user.location_code+$scope.search.rr_no,
+									r_mtr_sl_no:'',
+									r_mtr_make:'',
+									r_mtr_type:'',
+									r_mtr_amp:'',
+									r_mtr_volt:'',
+									r_no_of_ph:'0',
+									r_mtr_sts:'',
+									r_mra_assigned_dt:'',
+									r_mra_release_dt:'',
+									r_bkwh:'0',
+									r_ckwh:'0',
+									r_bmd:'0',
+									r_bpf:'0',
+									r_assigned_released_by:'',
+									r_remarks:'',
+									f_mtr_sl_no:$scope.fixedmeter.mtr_sl_no,
+									f_mtr_make:$scope.fixedmeter.mtr_make,
+									f_mtr_type:$scope.fixedmeter.mtr_type,
+									f_mtr_amp:$scope.fixedmeter.mtr_amp,
+									f_mtr_volt:$scope.fixedmeter.mtr_volt,
+									f_no_of_ph:($scope.fixedmeter.no_of_ph ? $scope.fixedmeter.no_of_ph : '0'),
+									f_mtr_sts:$scope.fixedmeter.mtr_sts,
+									f_mra_assigned_dt:$scope.fixedmeter.mra_assigned_dt,
+									f_bkwh:($scope.fixedmeter.f_bkwh ? $scope.fixedmeter.f_bkwh : '0'),
+									f_ckwh:($scope.fixedmeter.f_ckwh ? $scope.fixedmeter.f_ckwh : '0'),
+									f_bmd:($scope.fixedmeter.f_bmd   ? $scope.fixedmeter.f_bmd : '0'),
+									f_bpf:($scope.fixedmeter.f_bpf   ? $scope.fixedmeter.f_bpf : '0'),
+									f_assigned_released_by:($scope.fixedmeter.assigned_released_by  ? $scope.fixedmeter.assigned_released_by : ''),
+									f_remarks:($scope.fixedmeter.remarks  ? $scope.fixedmeter.remarks : ''),
+									
+									conn_type: $rootScope.user.connection_type,
+									userid : $rootScope.user.user_id,
+							};
+							
+							console.log("save",request);
+							remote.load("saveremoveassignmeterdetails", function(response){
+								if(response.status === 'success'){
+									$scope.cancel();
+								}
 							}, request , 'POST');
 						};
 				    },
@@ -3558,9 +3830,16 @@ accounts_controller.controller('accounts_controller',['$scope','$rootScope','rem
 				        },
 				        MeterStatusList: function(){
 				        	return $scope.MeterStatusList;
-				        }
+				        },
+				        phaselist: function(){
+				        	return $scope.phaselist;
+				        },
+				        fixedmeter: function(){
+				        	return $scope.fixedmeter;
+				        },
 				    }
 				});
+				
 			};
 			
 		}

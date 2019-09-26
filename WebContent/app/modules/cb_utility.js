@@ -29,16 +29,21 @@ cb_utility.service('remote', ['$http','$rootScope','notify',function($http, $roo
 			if(!hide_loader){
 				$('#loading').hide();
 			}
-			if(response.data.status === 'error' || response.data.status === 'fail'){
+			if(response.data.status === 'error' || response.data.status === 'fail' ){
 				if(response.data.message){
 					notify.error(response.data.message);
 				}
 				if(typeof error === 'function' ){
 					error(response.data);
 				}
-			}else if(response.data.status === 'success'){
+			}else if(response.data.status === 'success' ){
 				if(response.data.message && !do_not_notify){
 					notify.success(response.data.message);
+				}
+				success(response.data);
+			}else if(response.data.status === 'info' ){
+				if(response.data.message && !do_not_notify){
+					notify.info(response.data.message);
 				}
 				success(response.data);
 			}
