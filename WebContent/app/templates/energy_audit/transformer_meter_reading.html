@@ -1,7 +1,7 @@
 <div id="energy_audit" class="theme">
 	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
 	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
-<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-top: 50px;" ></div>
+<div ng-include="'app/templates/sav_menu.html'" user-info="$root.user" style="margin-top: 50px;" ></div>
 	<div class="container-fluid content">
 		<div class="cb-wrapper energy-audit-transformer-meter-reading-details">
 			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
@@ -47,8 +47,24 @@
 	</div>
 </div>	
 
+
+<style>
+.modal-dialog{
+	width: 50%;
+}
+
+.textbox {
+
+	height: 25px;
+	text-align: right;
+}
+
+#assessedconsumptiondetails_table thead tr th:nth-child(2) {width: 50%;}
+#assessedconsumptiondetails_table tbody tr td:nth-child(2) {width: 50%;}
+
+</style>
 	<!-- Modal -->
-<div class="modal fade" id="assessedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="assessedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -69,7 +85,7 @@
 				<table id="assessedconsumptiondetails_table" class="table table-sm table-hover table-striped thalign table-bordered" style="width: 100%;">
 					<thead style="background-color: #70bcff">
 								<tr>
-									<th  >Sl. No.</th>
+									<th  >#</th>
 									<th  >Tariff Category</th>
 									<th  >No Of Installtions</th>
 									<th  >Assessed Units</th>
@@ -79,8 +95,8 @@
 						<tr ng-repeat="data in assessedconsumptiondetails">
 									<td align="center">{{$index+1}}</td>
 									<td align="left">{{data.tariff_category}}</td>
-									<td align="left">{{data.no_of_installtions}}</td>
-									<td align="right">{{data.assessed_units}}</td>
+									<td align="left"><input type="text" class="form-control textbox" ng-model="data.no_of_installtions" web-numeric></td>
+									<td align="left"><input type="text" class="form-control textbox" ng-model="data.assessed_units" web-numeric ></td>
 								</tr>
 					</tbody>
 			</table>
@@ -88,6 +104,7 @@
 		</div>
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-primary" ng-click="save_assessed_consumption_details()">Save</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div><!-- /.modal-content -->

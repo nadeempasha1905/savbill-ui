@@ -5,433 +5,8 @@ accounts_controller.controller('accounts_controller',['$scope','$rootScope','rem
 	
 	var accounts_flow = $rootScope.breadcrumb[$rootScope.breadcrumb.length-1];
 	
-	// view_bills grid starts
-	if(accounts_flow === 'view_bills'){
-		
-		$scope.print_bill = function(e, row){
-			alert('Print bill functionality build in progress...');
-			console.log(row);
-		}
-		$scope.view_bill = function(e, row){
-			var viewBillModalInstance = $uibModal.open({
-				animation: true,
-				size: 'lg',
-			    templateUrl: templates.modal.view_bill,
-			    controller: function($scope, $uibModalInstance, configs, data, data_set, print_bill){
-			    	var data_set_length = data_set.length;
-			    	$scope.frames = configs;
-			    	$scope.data = angular.copy(data);
-			    	$scope.print_bill = print_bill;
-			    	$scope.next = function(){
-			    		var current = parseInt($scope.data.row_no);
-			    		$scope.data = angular.copy(data_set[(current+data_set_length) % data_set_length]);
-			    	}
-			    	$scope.previous = function(){
-			    		var current = parseInt($scope.data.row_no);
-			    		$scope.data = angular.copy(data_set[(current-2+data_set_length) % data_set_length]);
-			    	}
-			    },
-			    resolve: {
-			        configs: function() {
-			        	return $scope.viewBillModalConfig;
-			        },
-			        data: function() {
-			        	return row.entity;
-			        },
-			        data_set: function() {
-			        	return $scope.viewBillsGridOptions.data;
-			        },
-			        print_bill: function(){
-			        	return $scope.print_bill;
-			        }
-			    }
-			});
-		}
-		
-		$scope.viewBillModalConfig = [
-		     {
-		    	 'header': 'Primary Details',
-		    	 'config': [
-    	            {field: 'row_no', displayName: '#'},
-					{field: 'rr_no', displayName: 'RR Number'},
-					{field: 'tariff', displayName: 'Tariff'},
-					{field: 'bill_no', displayName: 'Bill No'},
-					{field: 'bill_date', displayName: 'Bill Date'},
-					{field: 'bill_due_date', displayName: 'Due Date'},
-					{field: 'bill_type', displayName: 'Bill Type'},
-					{field: 'bill_period_from', displayName: 'Bill Period From'},	             
-					{field: 'bill_period_to', displayName: 'Bill Period To'},
-					{field: 'consmr_sts', displayName: 'Customer Status'},
-					{field: 'mtr_rdr_cd', displayName: 'MR Code'},
-					{field: 'mtr_rdg_day', displayName: 'Rdg Day'},
-					{field: 'bill_kw', displayName: 'Load KW'},
-					{field: 'bill_hp', displayName: 'Load HP'},
-					{field: 'bill_kva', displayName: 'Load KVA'}
-	    	     ]
-		     },{
-		    	 'header': 'Meter Reading & Consumption Details',
-		    	 'config': [
-		    	    {field: 'bill_gen_mode', displayName: 'Bill Gen On'},
-		    	    {field: 'prev_reading', displayName: 'Prev Reading'},
-					{field: 'pres_reading', displayName: 'Pres Reading'},
-					{field: 'bill_md', displayName: 'BMD'},
-					{field: 'bill_pf', displayName: 'BPF'},
-					{field: 'mult_const', displayName: 'Multi Const'},
-					{field: 'fl_units', displayName: 'FL Units'},
-					{field: 'error_crep', displayName: 'Error Crep(%)'},
-					{field: 'unit_consmp', displayName: 'Units'}		    	    
-	    	     ]
-		     },{
-		    	 'header': 'Balance Details',
-		    	 'config': [
-					{field: 'bill_amt', displayName: 'Bill Amt'},
-					{field: 'paid_amt', displayName: 'Paid Amt'},
-					{field: 'paid_date', displayName: 'Paid Date'},
-					{field: 'rebate_amt', displayName: 'Rebate Amt'},
-					{field: 'wdrl_amt', displayName: 'Wdrl Amt'},
-					{field: 'credit_amt', displayName: 'Credit Amt'},                                                 
-					{field: 'trf_chng_flg', displayName: 'Trf Chng Flag'},
-					{field: 'fl_consmr', displayName: 'FL Flag'},
-					{field: 'bal_amt', displayName: 'Balance Amt'},
-					{field: 'energy_entlment', displayName: 'Energy Entlment'},
-					{field: 'demand_entlment', displayName: 'Dmd Entlment'},
-					{field: 'line_min', displayName: 'Line Min'},
-					{field: 'arr_bill_no', displayName: 'Arr Bill No'},
-					{field: 'arr_bill_date', displayName: 'Arr Bill Date'}
-	    	     ]
-		     },{
-		    	 'header': 'CT PT Details',
-		    	 'config': [
-		    	    {field: 'ct_ratio_avail', displayName: 'CT Ratio Avail '},
-					{field: 'ct_ratio_num', displayName: 'CT Ratio Num'},
-					{field: 'ct_ratio_den', displayName: 'CT Ratio Den'},
-					{field: 'pt_ratio_avail', displayName: 'PT Ratio Avail'},
-					{field: 'pt_ratio_num', displayName: 'PT Ratio Num'},
-					{field: 'pt_ratio_den', displayName: 'PT Ratio Den'}
-	    	     ]
-		     },{
-		    	 'header': 'Other Details',
-		    	 'config': [
-    	            {field: 'bill_user', displayName: 'User ID'},
-    	            {field: 'bill_tmpstp', displayName: 'Time Stamp'}
-	    	     ]
-		     }
-		];
-		
-		$scope.viewBillsGridOptions = {
-			showGridFooter: true,
-			gridFooterHeight: 20,
-			expandableRowTemplate: templates.accounts.view_bills_expansion,
-		    expandableRowHeight: 350,
-			columnDefs: [
-	             {field: 'row_no', displayName: '#', width : '3%', hide: true},
-	             {field: 'rr_no', displayName: 'RR Number', width : '8%'},
-	             {field: 'tariff', displayName: 'Tariff', width : '6%'},
-	             {field: 'bill_no', displayName: 'Bill No', width : '5%'},
-	             {field: 'bill_date', displayName: 'Bill Date', width : '7%'},
-	             {field: 'bill_due_date', displayName: 'Due Date', width : '7%'},
-	             {field: 'bill_kw', displayName: 'KW', width : '4%'},
-	             {field: 'bill_hp', displayName: 'HP', width : '4%'},
-	             {field: 'bill_kva', displayName: 'KVA', width : '4%'},
-	             {field: 'prev_reading', displayName: 'IR', width : '6%'},
-	             {field: 'pres_reading', displayName: 'FR', width : '6%'},
-	             {field: 'unit_consmp', displayName: 'Units', width : '5%'},
-	             {field: 'bill_amt', displayName: 'Bill Amt', width : '7%'},
-	             {field: 'paid_amt', displayName: 'Paid', width : '6%'},
-	             {field: 'credit_amt', displayName: 'Credit', width : '5%'},
-	             {field: 'bal_amt', displayName: 'Balance', width : '8%'},
-	        ],
-	        data: [],
-	        onRegisterApi: function (gridApi) {
-	        	//print action
-	        	var printCellTemplate = '<div class="ui-grid-cell-contents text-center"><button class="glyphicon glyphicon-print" ng-click="grid.appScope.print_bill($event,row.entity)" title="Print Bill"></button></div>';
-	        	gridApi.core.addRowHeaderColumn({ name: 'Print', displayName: '', width: '3%', cellTemplate: printCellTemplate } );
-	        	//whole data view action
-	        	var viewCellTemplate = '<div class="ui-grid-cell-contents text-center"><button class="glyphicon glyphicon-fullscreen" ng-click="grid.appScope.view_bill($event,row)" title="View Bill"></button></div>';
-	        	gridApi.core.addRowHeaderColumn({ name: 'View', displayName: '', width: '3%', cellTemplate: viewCellTemplate } );
-	        	
-	        	gridApi.expandable.on.rowExpandedStateChanged($scope, function (row) {
-	                if (row.isExpanded) {
-	                	$scope.parentRow = row.entity;
-	                	
-	                	//Bill break up grid loading
-	                	$scope.parentRow.billBreakUpGridOptions = {
-	                		showColumnFooter: true,
-	                		enableRowSelection: true, 
-	                		enableRowHeaderSelection: false,
-	                		multiSelect: false,
-	                		modifierKeysToMultiSelect: false,
-	                		noUnselect: true,
-	    	                columnDefs: [
-	    						{field: 'row_id', displayName: 'Sl. No', width : '6%', footerCellTemplate: '<div class="ui-grid-cell-contents" style="font-weight: bold;">Total:</div>'},
-	    						{field: 'chrg_cd_descr', displayName: 'Charge Code', width : '30%'},
-	    						{field: 'billed_amt', displayName: 'Demand', width : '16%', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true},
-	    						{field: 'rbt_amt', displayName: 'Rebate', width : '16%',aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true},
-	    						{field: 'wdrls_amt', displayName: 'Withdrawal', width : '16%',aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true},
-	    						{field: 'total_amt', displayName: 'Total', width : '16%', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true}
-	    		            ],
-	    		            onRegisterApi : function(gridApi){
-	    		            	gridApi.selection.on.rowSelectionChanged($scope, function(row){
-	    		                   if(row.isSelected){
-	    		                	   $('#billBreakUpSlabGrid').hide();
-	    		                	   $scope.parentRow.billBreakUpSlabGridOptions.data = [];
-	    		                	   var request = {
-    				        				"rr_number": row.entity.full_rr_no,
-    				        				"bill_date": row.entity.bill_dt,
-    				        				"bill_number": row.entity.bill_no,
-    				        				"charge_code": row.entity.chrg_cd,
-    				        				"conn_type" : $rootScope.user.connection_type
-    				        			}
-	    			                	remote.load("getbillbreakupslabs", function(response){
-	    			                		if(!response.bill_breakup_slabs){
-	    			                			return;
-	    			                		}
-	    			                		$('#billBreakUpSlabGrid').show();
-	    			                		$scope.parentRow.billBreakUpSlabGridOptions.data = response.bill_breakup_slabs;
-	    			        			}, request , 'POST');
-	    		                   }
-	    		                });
-	    	                },
-	    		            data: []
-	    	            };
-	                	$scope.parentRow.billBreakUpSlabGridOptions = {
-	                		showColumnFooter: true,
-	    	                columnDefs: [
-	    						{field: 'row_id', displayName: 'Sl. No', footerCellTemplate: '<div class="ui-grid-cell-contents" style="font-weight: bold;">Total:</div>'},
-	    						{field: 'salb_unit', displayName: 'Units', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true},
-	    						{field: 'slab_rate', displayName: 'Unit Rate'},
-	    						{field: 'slab_amount', displayName: 'Total Rate', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true}
-	    		            ],
-	    		            data: []
-	    	            };
-	                	
-	                	//Receipt grid loading
-	                	$scope.parentRow.receiptGridOptions = {
-	                		showColumnFooter: true,
-	                		enableRowSelection: true, 
-	                		enableRowHeaderSelection: false,
-	                		multiSelect: false,
-	                		modifierKeysToMultiSelect: false,
-	                		noUnselect: true,
-	    	                columnDefs: [
-								{field: 'row_id', displayName: 'Sl. No', width : '6%', footerCellTemplate: '<div class="ui-grid-cell-contents" style="font-weight: bold;">Total:</div>'},
-								{field: 'chrg_cd_descr', displayName: 'Charge Code', width : '34%'},
-								{field: 'billed_amt', displayName: 'Demand', width : '12%', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true},
-								{field: 'rbt_amt', displayName: 'Rebate', width : '12%',aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true},
-								{field: 'wdrls_amt', displayName: 'Withdrawal', width : '12%',aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true},
-								{field: 'total_amt', displayName: 'Total', width : '12%',aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true},
-								{field: 'paid_amt', displayName: 'Paid', width : '12%', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true}
-	    		            ],
-	    		            onRegisterApi : function(gridApi){
-	    		            	gridApi.selection.on.rowSelectionChanged($scope, function(row){
-	    		                   if(row.isSelected){
-	    		                	   $('#receiptSlabGrid').hide();
-	    		                	   $scope.parentRow.receiptSlabGridOptions.data = [];
-	    		                	   var request = {
-    				        				"rr_number": row.entity.full_rr_no,
-    				        				"bill_date": row.entity.bill_dt,
-    				        				"bill_number": row.entity.bill_no,
-    				        				"charge_code": row.entity.chrg_cd,
-    				        				"conn_type" : $rootScope.user.connection_type
-    				        			}
-	    			                	remote.load("getbillreceiptbreakupslabs", function(response){
-	    			                		if(!response.bill_receipt_breakup_slabs){
-	    			                			return;
-	    			                		}
-	    			                		$('#receiptSlabGrid').show();
-	    			                		$scope.parentRow.receiptSlabGridOptions.data = response.bill_receipt_breakup_slabs;
-	    			        			}, request , 'POST');
-	    		                   }
-	    		                });
-	    	                },
-	    		            data: []
-	    	            };
-	                	$scope.parentRow.receiptSlabGridOptions = {
-	                		showColumnFooter: true,
-	    	                columnDefs: [
-	    						{field: 'row_id', displayName: 'Sl. No', width : '6%', footerCellTemplate: '<div class="ui-grid-cell-contents" style="font-weight: bold;">Total:</div>'},
-	    						{field: 'amt_paid', displayName: 'Paid Amount', width : '30%', aggregationType: uiGridConstants.aggregationTypes.sum, aggregationHideLabel: true},
-	    						{field: 'rcpt_dt', displayName: 'Receipt Date', width : '16%'},
-	    						{field: 'rcpt_detl', displayName: 'Receipt Details', width : '16%'},
-	    						{field: 'rcpt_table', displayName: 'Receipt From', width : '16%'}
-	    		            ],
-	    		            data: []
-	    	            };
-	                	var request = {
-		        				"rr_number": row.entity.full_rr_no,
-		        				"bill_date": row.entity.bill_date,
-		        				"bill_number": row.entity.bill_no,
-		        				"conn_type" : $rootScope.user.connection_type
-		        			}
-	                	remote.load("getbillbreakup", function(response){
-	        				row.entity.billBreakUpGridOptions.data = response.bill_breakup;
-	        				row.entity.receiptGridOptions.data = response.bill_breakup;
-	        			}, request , 'POST');
-	                }
-	            });
-	        }
-		};
-				
-		$scope.load_bills = function(){
-			if( !$scope.view_bills_rr_number && !$scope.view_bills_bill_number && !$scope.view_bills_bill_date ){
-				return;
-			}
-			$scope.viewBillsGridOptions.data = [];
-			var request = {
-				"location_code" : $rootScope.user.location_code,					
-				"rr_number": ($scope.view_bills_rr_number) ? $rootScope.user.location_code+$scope.view_bills_rr_number : '',
-				"bill_number": $scope.view_bills_bill_number || '',
-				"bill_date": $scope.view_bills_bill_date || '',
-				"conn_type" : $rootScope.user.connection_type
-			}
-			remote.load("getbills", function(response){
-				console.log(response.bills);
-				$scope.viewBillsGridOptions.data = response.bills;
-			}, request , 'POST');
-		}
-		$scope.clear_bill_view = function(){
-			$scope.viewBillsGridOptions.data = [];
-			delete $scope.view_bills_rr_number;
-			delete $scope.view_bills_bill_number;
-			delete $scope.view_bills_bill_date;
-		}
-	}
-	
-	// list_bill_details grid starts
-	if(accounts_flow === 'list_bill_details'){
-		
-		
-		var $rr_no = $('#list-bill-rr-number');
-		var $no_of_months = $('#list-bill-no-of-months');
-		$no_of_months.val('12');
-		
-		
-		
-		$scope.load_list_bill_details = function($event){
-			
-			if(!$rr_no.val()){
-				notify.warn('Please Enter RR Number...!');
-				$('#list-bill-rr-number').focus();
-				return;
-			}
-			
-			var request = {
-					"location_code" : $rootScope.user.location_code,					
-					"rr_number": (($rr_no.val().trim()) ? $rootScope.user.location_code + $rr_no.val().trim() : ''),
-					"no_of_months" : (($no_of_months.val().trim()) ?  $no_of_months.val().trim() : ''),
-					"fromdate": (($scope.listBillsFromDate) ? $scope.listBillsFromDate : ''),
-					"todate": (($scope.listBillsToDate) ? $scope.listBillsToDate : ''),
-					"om_code": '',
-					"tariffs": '',
-					"mrcode": '',
-					"reading_day": '',
-					"conn_type" : $rootScope.user.connection_type
-				}
-				remote.load("getbillslist", function(response){
-					$scope.list_bills = response.bills_list;
-					console.log(response.bills_list);
-					$scope.listBillDetailsGridOptions.data = $scope.list_bills;
-				}, request , 'POST');
-			
-			
-		};
-		
-		$scope.print_list_bill_details = function($event){
-			
-			if(!$rr_no.val()){
-				notify.warn('Please Enter RR Number...!');
-				$('#list-bill-rr-number').focus();
-				return;
-			}
-			
-			$('#loading').show();
-			
-			/*var request = {
-					"selected_location" : $rootScope.user.location_code,					
-					"rr_number": (($rr_no.val().trim()) ? $rootScope.user.location_code + $rr_no.val().trim() : ''),
-					"no_of_months" : (($no_of_months.val().trim()) ?  $no_of_months.val().trim() : ''),
-					"fromdate": (($scope.listBillsFromDate) ? $scope.listBillsFromDate : ''),
-					"todate": (($scope.listBillsToDate) ? $scope.listBillsToDate : ''),
-					"om_code": '',
-					"tariffs": '',
-					"mrcode": '',
-					"reading_day": '',
-					"conn_type" : $rootScope.user.connection_type
-				}
-				remote.load("getbillslist", function(response){
-					$scope.list_bills = response.bills_list;
-					console.log(response.bills_list);
-					$scope.listBillDetailsGridOptions.data = $scope.list_bills;
-				}, request , 'POST');*/
-			
-			
-			$http.get($rootScope.serviceURL+'downloadreport?conn_type='+$rootScope.user.connection_type
-					+"&report_type=LIST_BILLS"
-					+"&Location_Code="+$rootScope.user.location_code
-					+"&selected_location="+$rootScope.user.location_code
-					+"&rr_number="+ (($rr_no.val().trim()) ? $rootScope.user.location_code + $rr_no.val().trim() : '')
-					+"&no_of_months="+ (($no_of_months.val().trim()) ?  $no_of_months.val().trim() : '')
-					+"&fromdate="+ (($scope.listBillsFromDate) ? $scope.listBillsFromDate : '')
-					+"&todate="+ (($scope.listBillsToDate) ? $scope.listBillsToDate : '')
-					+"&om_code="+''
-					+"&tariffs="+''
-					+"&metercode="+''
-					+"&reading_day="+''
-					+"&username="+$rootScope.user.user_id
-					
-					,{ responseType : 'arraybuffer'}).then(handleResponse)
-			
-			
-		};
-		
-		$scope.listBillDetailsGridOptions = {
-			showGridFooter: true,
-			gridFooterHeight: 20,
-			columnDefs: [
-	             {field: 'row_num', displayName: 'Sl. No',width : '5%'},
-	             {field: 'rrno', displayName: 'RR Number', width : '8%'},
-	             {field: 'trf', displayName: 'Tariff', width : '8%'},
-	             {field: 'billno', displayName: 'Bill No', width : '8%'},
-	             {field: 'billdt', displayName: 'Bill Date', width : '8%'},
-	             {field: 'fr', displayName: 'Reading', width : '7%'},
-	             {field: 'consp', displayName: 'Units', width : '6%'},
-	             {field: 'obtot', displayName: 'Arrears', width : '6%'},
-	             {field: 'fc', displayName: 'Fixed Charges', width : '9%'},
-	             {field: 'ec', displayName: 'Energy Charges', width : '10%'},
-	             {field: 'int', displayName: 'Interest', width : '6%'},
-	             {field: 'tax', displayName: 'Tax', width : '5%'},
-	             {field: 'dbt', displayName: 'Debit', width : '5%'},
-	             {field: 'rbt', displayName: 'Rebate', width : '6%'},
-	             {field: 'wdrl', displayName: 'Withdrawal', width : '8%'},
-	             {field: 'totdmd', displayName: 'Total Demand', width : '9%'},
-	             {field: 'totbal', displayName: 'Bill Amount', width : '9%'},
-	             {field: 'col', displayName: 'Paid Amount', width : '9%'},
-	             {field: 'credit', displayName: 'Credit', width : '6%'},
-	             {field: 'cb', displayName: 'Balance', width : '9%'}
-	         ],
-	         data: []
-		};
-		
-		$scope.list_bill_details_clear = function(e){
-			$scope.list_bills = [];
-			$rr_no.val('').focus();
-			$no_of_months.val('12');
-			$scope.listBillsFromDate='';
-			$scope.listBillsToDate='';
-			$scope.listBillDetailsGridOptions.data = [];
-		};
-	}
-	
-	function handleResponse(response){
-       	var pdfFile = new Blob([response.data], { type : 'application/pdf' });	
-       	var downloadURL = URL.createObjectURL(pdfFile);
-       	$('#loading').hide();
-       		$window.open(downloadURL);
-     };
-	
-		
 	// Free lighting Details grid starts
-	if(accounts_flow === 'fl_sanction'){
+	if(accounts_flow === 'free_lighting_details'){
 		
 		var $rr_no = $('#fl-sanction-rr-number');
 		
@@ -810,7 +385,7 @@ accounts_controller.controller('accounts_controller',['$scope','$rootScope','rem
 	}
 	
 	//Regular Penality Grid starts
-	if(accounts_flow === 'regular_penalty'){
+	if(accounts_flow === 'regular_penalty_details'){
 		
 		var $rr_no = $('#regular-penality-rr-number');
 		var $sl_no = $('#regular-penality-serial-number');
@@ -3202,61 +2777,6 @@ accounts_controller.controller('accounts_controller',['$scope','$rootScope','rem
 		}
 	}
 	
-	if(accounts_flow === 'bill_cancellation'){
-
-		var $rr_no = $('#rr_no');
-		
-		$scope.getRRnoDetails = function(){
-			$scope.disable_rr_no = true;
-			var request = {
-				"conn_type" : $rootScope.user.connection_type,
-				"rr_no": (($rr_no.val().trim()) ? $rootScope.user.location_code + $rr_no.val().trim() : '')
-			}
-			remote.load("getrrdetailsforbillcancel", function(response){
-				$scope.data = response.rr_details_for_bill_cancel;
-				if (Object.keys($scope.data).length<=0){
-					notify.warn('No Bills Found for RR Number : '+$rr_no.val());
-					$scope.clear_entries();
-					return;
-				}else{
-					$('#remarks').focus();
-				}
-			}, request ,'POST');
-			
-		}
-		
-		$scope.cancel_bill = function(){
-			if(!$scope.disable_rr_no){
-				notify.warn('Please fetch RR No details from DB');
-				return;
-			}
-			if(!$scope.data.remarks){
-				notify.warn('Please fill Remarks to Submit');
-				return;
-			}
-			var request = {
-				"conn_type" : $rootScope.user.connection_type,
-				"rr_no": (($rr_no.val().trim()) ? $rootScope.user.location_code + $rr_no.val().trim() : ''),
-				"userid" : $rootScope.user.user_id,
-				"remarks" : $scope.data.remarks
-			}
-			remote.load("cancelbill", function(response){
-				$scope.clear_entries();
-			}, request ,'POST');
-			
-			
-		}
-		
-		$scope.clear_entries = function(){
-			$scope.data = {};
-			$scope.disable_rr_no = false;
-			$timeout(function(){
-				$rr_no.focus();
-			});
-		}
-		
-	}
-	
 	if(accounts_flow === 'spot_folio_regeneration'){
 		
 		$scope.get_meter_reader_info = function(){
@@ -3843,5 +3363,96 @@ accounts_controller.controller('accounts_controller',['$scope','$rootScope','rem
 			};
 			
 		}
+	
+	if(accounts_flow === 'transfer'){
+		
+		$scope.from_folio_no ='0';
+		$scope.to_folio_no ='9999';
+		
+		var request = {
+			"om_code": $rootScope.user.location_code,
+			"location": $rootScope.user.location_code,
+			"conn_type": $rootScope.user.connection_type
+		}
+		remote.load("getMeterReaderCodesByOMUnit", function(response){
+			$scope.MRCodeList = response.MeterReaderCode;
+		}, request , 'POST');
+			
+		$scope.load_from_reading_days = function(){
+			var request = {
+				"om_code": $rootScope.user.location_code,
+				"mr_code": $scope.from_mr_code,
+				"location": $rootScope.user.location_code,
+				"conn_type": $rootScope.user.connection_type
+			}
+			remote.load("getMeterReadingDayByMrCode", function(response){
+				$scope.fromMeterReadingDay = response.MeterReadingDay;
+			}, request , 'POST');
+		}
+		
+		$scope.load_to_reading_days = function(){
+			var request = {
+				"om_code": $rootScope.user.location_code,
+				"mr_code": $scope.to_mr_code,
+				"location": $rootScope.user.location_code,
+				"conn_type": $rootScope.user.connection_type
+			}
+			remote.load("getMeterReadingDayByMrCode", function(response){
+				$scope.toMeterReadingDay = response.MeterReadingDay;
+			}, request , 'POST');
+		}
+		
+		$scope.transfer_save = function(){
+			
+			var from_mr_cd = $scope.from_mr_code;
+			var to_mr_cd = $scope.to_mr_code;
+			var from_rdg_day = $scope.from_reading_day;
+			var to_rdg_day = $scope.to_reading_day;
+			var from_folio = $scope.from_folio_no;
+			var to_folio = $scope.to_folio_no;
+			
+			 if(!from_mr_cd){
+				notify.warn('Select From MR Code to Transfer ...');
+				return;
+			}else if(!to_mr_cd){
+				notify.warn('Select To MR Code to Transfer ...');
+				return;
+			}else if(!from_rdg_day){
+				notify.warn('Select From Reading Day to Transfer ...');
+				return;
+			}else if(!to_rdg_day){
+				notify.warn('Select To Reading Day to Transfer ...');
+				return;
+			}else if(!from_folio){
+				notify.warn('Enter From Folio Number to Transfer ...');
+				return;
+			}else if(!to_folio){
+				notify.warn('Enter To Folio Number to Transfer ...');
+				return;
+			}
+			var request = {
+				conn_type: $rootScope.user.connection_type,
+				location_code : $rootScope.user.location_code,
+				userid : $rootScope.user.user_id,
+				from_mr_code : from_mr_cd,
+				to_mr_code : to_mr_cd,
+				from_reading_day : from_rdg_day,
+				to_reading_day : to_rdg_day,
+				from_folio_no : from_folio,
+				to_folio_no : to_folio
+			};
+			console.log(request);
+			remote.load("mrtomrrransfer", function(response){
+			}, request, 'POST');
+		}
+		$scope.transfer_clear = function(){
+			$scope.from_mr_code = '';
+			$scope.to_mr_code = '';
+			$scope.fromMeterReadingDay ='';
+			$scope.toMeterReadingDay ='';
+			$scope.from_folio_no ='0';
+			$scope.to_folio_no ='9999';
+		}
+	}
 
 }]);

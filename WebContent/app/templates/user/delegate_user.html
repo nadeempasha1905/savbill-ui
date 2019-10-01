@@ -1,13 +1,13 @@
 <div id="user" class="theme">
 	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
 	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
-<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-top: 50px;" ></div>
+<div ng-include="'app/templates/sav_menu.html'" user-info="$root.user" style="margin-top: 50px;" ></div>
 	<div class="container-fluid content">
 		<div class="cb-wrapper user-deligation-details">
 			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
 			<div class="action width-100">
 				<div class="pull-right">
-					<button ng-click="add_user_deligation()" class="user-deligation-add">Add Deligation</button>
+					<button ng-click="add_user_deligation_new()" class="user-deligation-add">Add Deligation</button>
 				</div>
 			</div>
 			<div class="width-100 clear-both padding-top-15">
@@ -18,3 +18,79 @@
 		</div>
 	</div>
 </div>
+
+<style>
+label {
+	font-weight: 100;
+}
+</style>
+<div class="modal fade" id="delegateModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><b>Add User Delegation</b></h4>
+      </div>
+      <div class="modal-body">
+      
+      <div class="row">
+       		<div class="col-xs-6">
+       			<label>To User ID</label>
+		  		<input type="text" class="form-control mandatory" id="userid" ng-model="delegateuser.userid" ng-enter="load_user_details($event)" ng-readonly="user_found">
+       		</div>
+       		<div class="col-xs-6">
+       			<label>To User Name</label>
+		  		<input type="text" class="form-control mandatory" ng-model="delegateuser.username" readonly="readonly">
+       		</div>
+       </div> 		
+     <div class="row"> 		
+       		<div class="col-xs-6">
+       			<label>To User Role</label>
+		  		<input type="text" class="form-control mandatory" ng-model="delegateuser.userrole" readonly="readonly">
+       		</div>
+       		<div class="col-xs-6">
+       			<label>Delegated User Role</label>
+		  		<input type="text" class="form-control mandatory" ng-model="delegateuser.delegateduserrole" readonly="readonly">
+       		</div>
+       </div> 	
+     <div class="row"> 		
+       		<div class="col-xs-6">
+       			<label>From Date</label>
+		  		<div class='form-inline input-group input-append date dfreceiptdate'	data-provide="datepicker">
+					<input type='text' class="form-control mandatory" id="dfchequedate" readonly="readonly" name="dfromdate" ng-model="delegateuser.fromdate"> 
+					<span class="input-group-addon datepicker"> <span class="glyphicon glyphicon-calendar"></span></span>
+				</div>
+       		</div>
+       		<div class="col-xs-6">
+       			<label>To Date</label>
+			  		<div class='form-inline input-group input-append date dfreceiptdate'	data-provide="datepicker">
+					<input type='text' class="form-control mandatory" id="dfchequedate" readonly="readonly" name="dfromdate" ng-model="delegateuser.todate"> 
+					<span class="input-group-addon datepicker"> <span class="glyphicon glyphicon-calendar"></span></span>
+				</div>
+       		</div>
+      	</div>
+<br>
+      	<div class="row">
+      		<div class="col-xs-6">
+      			<button type="button" class="btn btn-primary " ng-click="add_edit_delegateuser()">Delegate</button>
+      			<button type="button" class="btn btn-primary " ng-click="clear()">Clear</button>
+      			<button type="button" class="btn btn-warning " data-dismiss="modal">Close</button>
+      		</div>
+      	</div>
+
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script>
+$('.dfreceiptdate').datetimepicker({
+	format : 'dd/mm/yyyy',
+	minView : 2,
+	autoclose : 1,
+	//startDate : new Date(new Date().setDate(new Date().getDate() - 15)),
+	//endDate : new Date(),
+	showClear : true,
+});
+</script>

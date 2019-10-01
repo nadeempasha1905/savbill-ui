@@ -20,6 +20,8 @@ login_controller.controller('login_controller',function($scope,$rootScope,$locat
 				angular.extend($rootScope.user,response.session_details);
 				cookie.set('cb_user',JSON.stringify($rootScope.user),9);
 				$rootScope.menu = response.menus;
+				$rootScope.sav_menus = response.sav_menus;
+				//$scope.customize_menus(response.sav_menus);
 				load_ui.routing();
 				$location.path('/home');
 			}, {
@@ -45,6 +47,21 @@ login_controller.controller('login_controller',function($scope,$rootScope,$locat
 			}, 'POST');
 		}
 	};
+	
+	$scope.customize_menus = function(menus){
+		
+		var group_name_temp = "";
+		menus.map(function(e,index){
+
+			if(e.menu_type === 'M'){
+				console.log(e.form_description);
+			}
+			
+			
+		});
+		
+	};
+	
 	$scope.notMe = function(){
 		$rootScope.password_mode = false;
 		cookie.remove('cb_user');

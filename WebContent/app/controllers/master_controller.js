@@ -2695,4 +2695,125 @@ master_controller.controller('master_controller',['$scope','$rootScope','remote'
 		};
 	}
 	
+	if(master_flow === 'process_details'){
+		
+		
+		//$rootScope.getFormPrivileges(master_flow);
+		
+		$scope.getprocessdetailslist = function(){
+			
+			if(!$scope.meterreadingday){
+				notify.warn("Please Select Reading Day !!!");
+				return;
+			}
+			$scope.process_list = [];$scope.process_rrnumber_list = [];
+			var request = {
+					"conn_type": $rootScope.user.connection_type,
+					"Location" : $rootScope.user.location_code,
+					"readingday" : $scope.meterreadingday
+				};
+			
+			remote.load("getprocessdetails", function(response){
+				console.log(response);
+				$scope.process_list = response.process_list;
+			}, request , 'POST');
+		};
+		
+		$scope.getrrnumberdetails = function(row){
+			$scope.process_rrnumber_list = [];
+			var request = {
+					"conn_type": $rootScope.user.connection_type,
+					"Location" : $rootScope.user.location_code,
+					"meterreadercode" : row.CM_MTR_RDR_CD,
+					"billdate": row.CB_MRI_BILL_DT
+				};
+			
+			remote.load("getrrnumberdetails", function(response){
+				console.log(response);
+				$scope.process_rrnumber_list = response.process_rrnumber_list;
+			}, request , 'POST');
+		};
+		
+		$scope.preparemeteretoreset = function(rowid,row){
+			 $scope.process_list.map(function(e,index){
+				 $('#meter_row'+index).removeClass("meter_highlight");
+			 });
+			 $('#'+rowid).addClass("meter_highlight");
+			 
+			 $scope.selected_mr = true;
+			 $scope.request_mrreset = {
+					 "conn_type": $rootScope.user.connection_type,
+					 "locationcode" : $rootScope.user.location_code,
+					 "meter_reader_code": row.CM_MTR_RDR_CD,
+					 "bill_date": row.CB_MRI_BILL_DT,
+					 "status" : row.CB_RR_STS
+			 };
+		};	
+		
+		$scope.preparerrnotoreset = function(rowid,row){
+			 $scope.process_rrnumber_list.map(function(e,index){
+				 $('#rrno_row'+index).removeClass("rrno_highlight");
+			 });
+			 $('#'+rowid).addClass("rrno_highlight");
+			 
+			 $scope.selected_rr = true;
+			 $scope.request_rrreset = {
+					 "conn_type": $rootScope.user.connection_type,
+					 "locationcode" : $rootScope.user.location_code,
+					 "rrno":$rootScope.user.location_code+row.CM_RR_NO,
+					 "meter_reader_code": row.CM_MTR_RDR_CD,
+					 "bill_date": row.CB_MRI_BILL_DT,
+					 "status" : row.CB_RR_STS
+			 };
+		};	
+		
+		$scope.process_mr_reset = function(){
+			if(!$scope.request_mrreset){
+				notify.warn("Invalid Record !!!");
+				return;
+			}
+			
+			var status = confirm("Are Sure To Reset The MRcode "+$scope.request_rrreset.meter_reader_code +"For The Date "+$scope.request_rrreset.bill_date);
+			if(status == true){
+				remote.load("doprocessmrreset", function(response){
+					console.log(response);
+					if(response.status === "success"){
+						$scope.getprocessdetailslist();
+					}
+				}, $scope.request_mrreset , 'POST');
+			}
+		};
+		
+		$scope.process_rr_reset = function(){
+			if(!$scope.request_rrreset){
+				notify.warn("Invalid Record !!!");
+				return;
+			}
+			var status = confirm("Are Sure To Reset The RRNo "+$scope.request_rrreset.rrno+" Of MRcode "+$scope.request_rrreset.meter_reader_code +"And Date "+$scope.request_rrreset.bill_date);
+			if(status == true){
+				remote.load("doprocessrrreset", function(response){
+					console.log(response);
+					if(response.status === "success"){
+						var data = {"CM_MTR_RDR_CD":$scope.request_rrreset.meter_reader_code,"CB_MRI_BILL_DT":$scope.request_rrreset.bill_date};
+						$scope.getrrnumberdetails(data);
+					}
+				}, $scope.request_rrreset , 'POST');
+			}
+		};
+		
+		$scope.clear = function(){
+			$scope.meterreadingday = null;
+			$scope.readingdays = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
+			$scope.process_list = [];
+			$scope.process_rrnumber_list = [];
+			$scope.request_mrreset = {};
+			$scope.request_rrreset = {};
+			$scope.selected_mr = false;
+			$scope.selected_rr = false;
+		};
+		
+		$scope.clear();
+		
+	}
+	
 }]);

@@ -33,7 +33,7 @@
 		<p>SAV-BILL ACCOUNT LOGIN</p>
 		<ul ng-if="$root.password_mode">
 			<li>Name : {{$root.user.name}} ( {{$root.user.user_id}} )<span ng-click="notMe()" class="not-me" title="Click here to re-login with different ID">Not Me..?</span></li>
-			<li>Role : {{$root.user.role}}</li>
+			<li>Role : {{$root.user.actual_role}}</li><li ng-show="$root.user.role != $root.user.actual_role">Delegated Role : {{$root.user.role}}</li>
 			<li>Sub Divison : {{$root.user.subDivision}}</li>
 			<li>Divison : {{$root.user.division}}</li>
 		</ul>

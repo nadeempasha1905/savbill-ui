@@ -272,7 +272,7 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 	}
 	
 	// receipts generation starts
-	if(cash_section_flow === 'receipts_generation'){
+	if(cash_section_flow === 'automatic_receipts'){
 		
 		$scope.receipts_entry = {};
 		$scope.billdetails = {};
@@ -486,7 +486,7 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 	}
 	
 	// receipts generation starts
-	if(cash_section_flow === 'manual_receipts_generation'){
+	if(cash_section_flow === 'manual_receipts'){
 		
 		$scope.manual_receipts_entry = {};
 		$scope.billdetails = {};
@@ -813,7 +813,7 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 	}
 	
 	// receipt/cheque cancellation starts
-	if(cash_section_flow === 'receipt_cheque_cancellation'){
+	if(cash_section_flow === 'receipt_cancellation'){
 		
 		remote.load("cashcounterlist", function(response){
 			$scope.cash_counters_list = response.cash_counters_list;
@@ -1037,7 +1037,7 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 		
 	}
 	
-	if(cash_section_flow === 'upload_manual_receipts'){
+	if(cash_section_flow === 'upload_hrt_receipts'){
 		
 		$scope.getSummaryDetails = function(){
 			
@@ -1107,7 +1107,7 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 	}
 	
 	// HRT receipt/cheque cancellation starts
-	if(cash_section_flow === 'receipt_cheque_cancellation_hrt'){
+	if(cash_section_flow === 'hrt_receipt_cancellation'){
 		
 		remote.load("cashcounterlist", function(response){
 			$scope.cash_counters_list = response.cash_counters_list;
@@ -1329,6 +1329,86 @@ cash_section_controller.controller('cash_section_controller',['$scope','$rootSco
 		
 		$scope.receipts_clear();
 		
+	}
+	
+	if(cash_section_flow === 'reconciliation'){
+		
+		$scope.selected = 'date_wise';
+		$scope.receiptDate = $filter('date')(new Date(), 'dd/MM/yyyy');
+		$scope.message = null;
+		
+		var request = {
+				"location_code": $rootScope.user.location_code,
+				"conn_type": $rootScope.user.connection_type
+		}
+		remote.load("cashcounterlist", function(response){
+			$scope.counters = response.cash_counters_list;
+		}, request , 'POST');
+		
+		$scope.reconciliation_process = function(){
+			
+			if($scope.selected === 'date_wise'){
+				if(!$scope.receiptDate){
+					notify.warn("Please Select Receipt date !!!");
+					$('#receipt_date').focus();
+					return;
+				}
+			}else if($scope.selected === 'rr_no_wise'){
+				console.log($scope.selected);
+				if(!$scope.receiptDate){
+					notify.warn("Please Select Receipt date !!!");
+					$('#receipt_date').focus();
+					return;
+				}else if(!$scope.rrNo){
+					notify.warn("Please enter the rrno !!!");
+					$('#rr_number').val('').focus();
+					return;
+				}
+			}/*else if($scope.selected === 'receipt_wise'){
+				if(!$scope.receiptDate){
+					notify.warn("Please Select Receipt date !!!");
+					$('#receipt_date').focus();
+					return;
+				}else if(!$scope.receiptNo){
+					notify.warn("Please enter the receipt no !!!");
+					$('#receipt_number').val('').focus();
+					return;
+				}else if(!$scope.counter){
+					notify.warn("Please select the counter !!!");
+					$('#counter').val('').focus();
+					return;
+				}
+			}*/
+			
+			var request = {
+					"conn_type": $rootScope.user.connection_type,
+					"Location" : $rootScope.user.location_code,
+					"UserId" : $rootScope.user.user_id,
+					"recon_receipt_date" : (($scope.receiptDate) ? $scope.receiptDate : ''),
+					"recon_rrno" : (($scope.rrNo) ? $rootScope.user.location_code+$scope.rrNo : ''),
+					/*"recon_receiptno" : (($scope.billrecon_receipt_no) ? $scope.billrecon_receipt_no : ''),*/
+					/*"recon_counter" : (($scope.billrecon_Counter) ? $scope.billrecon_Counter : ''),*/
+					"recon_selected" : $scope.selected
+				};
+			
+			console.log(request);
+			
+			remote.load("doreconcilation", function(response){
+				console.log(response);
+				$scope.message = response.message;
+	    		setTimeout(function () {
+	    			$scope.reconciliation_clear();
+	        	}, 3000);
+			}, request , 'POST');
+			
+		}
+		$scope.reconciliation_clear = function(){
+			$scope.receiptDate = '';
+			$scope.rrNo = ''; 
+			$scope.selected = 'date_wise';
+			$scope.receiptDate = $filter('date')(new Date(), 'dd/MM/yyyy');
+			$scope.message = null;
+		}
 	}
 	
 }]);

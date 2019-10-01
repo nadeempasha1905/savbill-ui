@@ -400,17 +400,22 @@ user_controller.controller('user_controller',['$scope','$rootScope','remote','$t
 			
 			if($scope.new_password != $scope.new_password_confirm){
 				notify.warn("Confirm password doesn't match with New Password. Recheck the password you have entered...");
-				$('#newPasswordConfirm').focus();
+				$('#new_password_confirm').focus();
 				return;
 			}
 			remote.load("changepassword", function(response){
-				alert('Login again to complete the change password process...');
-				$rootScope.logout();
+				if(response.status === 'success'){
+					$timeout(function(){
+						alert('Login again to complete the change password process...');
+						$rootScope.logout();
+					},3000);
+				}
 			}, {
 				location_code: $rootScope.user.location_code,
 				userid: $rootScope.user.user_id,
 				old_password: $scope.old_password,
-				new_password: $scope.new_password
+				new_password: $scope.new_password,
+				conn_type: $rootScope.user.connection_type,
 			} , 'POST');
 		}
 		
@@ -445,21 +450,21 @@ user_controller.controller('user_controller',['$scope','$rootScope','remote','$t
 				enableCellEdit: false,
 				columnDefs: [
 	             {field: 'row_num', displayName: 'Sl. No',width : '4%', hide: true},
-	             {field: 'user_descr', displayName: 'User ID',field_key : 'user_id',  required: true},
-	             {field: 'user_name', displayName: 'User Name', required: true},
-	             {field: 'user_role', displayName: 'User Role', required: true},
-	             {field: 'deligated_role', displayName: 'Deligated Role', required: true},
-	             {field: 'from_dt', displayName: 'From Date', type : 'date', required: true},
-	             {field: 'to_dt', displayName: 'To Date', type : 'date'},
-	             {field: 'deligated_by', displayName: 'Deligated By', hide: true},
-	             {field: 'deligated_on', displayName: 'Deligated On', hide: true},
-	             {field: 'deligation_updated_on', displayName: 'Deligation Updated On', hide: true}
-	             
+	             {field: 'user_id', displayName: 'User ID',field_key : 'user_id', width : '4%', required: true},
+	             {field: 'user_name', displayName: 'User Name', width : '10%',required: true},
+	             {field: 'user_desgn', displayName: 'User Designation', width : '14%',required: true},
+	             {field: 'deligated_role', displayName: 'Deligated Role', width : '14%',required: true},
+	             {field: 'deligated_by', displayName: 'Deligated By',width : '10%', hide: true},
+	             {field: 'deligated_user_name', displayName: 'Deligated Username', width : '12%',hide: true},
+	             {field: 'from_dt', displayName: 'From Date', type : 'date', width : '7%',required: true},
+	             {field: 'to_dt', displayName: 'To Date', type : 'date',width : '7%'},
+	             {field: 'deligated_on', displayName: 'Deligated On', width : '12%',hide: true},
+	             {field: 'deligation_updated_on', displayName: 'Deligation Updated On', width : '12%',hide: true}
              ],
              data: [],
 	        onRegisterApi: function( gridApi ) {
              $scope.userDeligationDetailsGridApi = gridApi;
-             var cellTemplate = '<div class="ui-grid-cell-contents text-center"><button class="glyphicon glyphicon-edit" ng-click="grid.appScope.edit_user_deligation($event,row)" title="Edit"></button></div>';
+             var cellTemplate = '<div class="ui-grid-cell-contents text-center"><button class="glyphicon glyphicon-edit" ng-click="grid.appScope.edit_user_deligation_new($event,row)" title="Edit"></button></div>';
              $scope.userDeligationDetailsGridApi.core.addRowHeaderColumn({ name: 'Edit', displayName: '', width: '3%', cellTemplate: cellTemplate } );
              }
 	};
@@ -524,6 +529,100 @@ user_controller.controller('user_controller',['$scope','$rootScope','remote','$t
 			webValidations.load('addEditForm', $rootScope.popupScope, ['web-required','web-email']);
 		});
 	}
+	
+	$scope.add_user_deligation_new = function(){
+		
+		$('#delegateModal').modal('toggle');
+		$scope.clear();
+		
+		$scope.action = 'add';
+	};
+	
+	$scope.edit_user_deligation_new = function(e,row){
+		
+		$('#delegateModal').modal('toggle');
+		$scope.clear();
+		
+		$scope.action = 'edit';
+		
+		$scope.delegateuser.userid = row.entity.user_id;
+		$scope.delegateuser.username = row.entity.deligated_user_name;
+		$scope.delegateuser.userrole = row.entity.user_name;
+		$scope.delegateuser.delegateduserrole = row.entity.deligated_role;
+		$scope.delegateuser.fromdate = row.entity.from_dt;
+		$scope.delegateuser.todate = row.entity.to_dt;
+		
+		$scope.user_found = true;
+		
+	};
+	
+	$scope.add_edit_delegateuser = function(){
+		
+		if(!$scope.delegateuser.userid){notify.warn("To User Id - Not Empty !!!");return;}
+		if(!$scope.delegateuser.username){notify.warn("To User Name - Not Empty !!!");return;}
+		if(!$scope.delegateuser.userrole){notify.warn("To User Role - Not Empty !!!");return;}
+		if(!$scope.delegateuser.delegateduserrole){notify.warn("Delegated User Role - Not Empty !!!");return;}
+		if(!$scope.delegateuser.fromdate){notify.warn("From Date - Not Empty !!!");return;}
+		if(!$scope.delegateuser.todate){notify.warn("To Date - Not Empty !!!");return;}
+		
+		var request = {
+				location_code: $rootScope.user.location_code,
+    			conn_type : $rootScope.user.connection_type,
+    			option : $scope.action,
+    			to_userid:$scope.delegateuser.userid,
+    			to_username:$scope.delegateuser.username,
+    			to_userrole:$scope.delegateuser.userrole,
+    			delegated_userid:$rootScope.user.user_id,
+    			delegated_username:$rootScope.user.name,
+    			delegated_userrole:$rootScope.user.actual_role,
+    			fromdate:$scope.delegateuser.fromdate,
+    			todate:$scope.delegateuser.todate
+		};
+		
+		remote.load("upsertuserdeligation", function(response){
+			$('#delegateModal').modal('toggle');
+			$scope.load_user_deligation_details();
+		}, request, 'POST');
+		
+		
+	};
+	
+	$scope.clear = function(){
+		
+		$scope.delegateuser = {};
+		$scope.user_found = false;
+		$scope.delegateuser.fromdate = moment(new Date()).format("DD/MM/YYYY").toString();
+		$scope.delegateuser.todate = moment(new Date()).format("DD/MM/YYYY").toString();
+		$('#userid').focus();
+	};
+	
+	$scope.load_user_details = function(e){
+		
+		if(!$scope.delegateuser.userid){
+			notify.warn("Please enter To User ID");
+			return;
+		}
+		
+		remote.load("validateuserid", function(response){
+			if(response.status === 'success'){
+				$scope.user_details = response.user_details;
+				$scope.user_found = true;
+				if($scope.user_details.actual_role != $scope.user_details.role){
+					notify.warn("User Already Delegated !!!");
+					return;
+				}else{
+					$scope.delegateuser.username = $scope.user_details.name;
+					$scope.delegateuser.userrole = $scope.user_details.actual_role;
+					$scope.delegateuser.delegateduserrole = $rootScope.user.role;
+				}
+			}
+			
+		}, {
+			userID : $scope.delegateuser.userid
+		}, 'POST');
+		
+	};
+	
 	$scope.add_user_deligation = function(e){
 		var addUserDeligationDetailsModalInstance = $uibModal.open({
 			animation: true,
@@ -579,6 +678,9 @@ user_controller.controller('user_controller',['$scope','$rootScope','remote','$t
 			webValidations.load('addEditForm', $rootScope.popupScope, ['web-required','web-email']);
 		});
 	};
+	
+	
+	
 	}
 	
 }]);

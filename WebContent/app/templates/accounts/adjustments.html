@@ -1,7 +1,7 @@
 <div id="accounts" class="theme">
 	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
 	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
-<div ng-include="'app/templates/menu_new.html'" user-info="$root.user" style="margin-top: 50px;" ></div>
+<div ng-include="'app/templates/sav_menu.html'" user-info="$root.user" style="margin-top: 50px;" ></div>
 	<div class="container-fluid content">
 		<div class="cb-wrapper accounts-adjustments">
 			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
@@ -61,7 +61,7 @@
 .modal_fixed_header_column thead tr th {vertical-align: middle;border-top: 1px solid #6ea1cc !important;font-weight: 600;
     font-size: 16px;} */
 </style>
-<div class="modal fade" id="adjustmentModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="adjustmentModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">

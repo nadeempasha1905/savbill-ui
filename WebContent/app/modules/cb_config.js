@@ -104,6 +104,18 @@ cb_config.config(['$routeProvider', '$locationProvider', '$uibTooltipProvider', 
 	            },
 				controller: 'report_controller'
 			}).
+			when( '/meter/:sub_menu', {
+				templateUrl: function(urlattr){
+	                return templates.meter[(urlattr.sub_menu)];
+	            },
+				controller: 'accounts_controller'
+			}).
+			when( '/billing/:sub_menu', {
+				templateUrl: function(urlattr){
+	                return templates.billing[(urlattr.sub_menu)];
+	            },
+				controller: 'main_controller'
+			}).
 			otherwise({
 				redirectTo: '/login'
 			});
