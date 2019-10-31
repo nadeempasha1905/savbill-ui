@@ -2083,6 +2083,7 @@ if(customer_flow === 'customer_region_mapping'){
 				{field: 'tot_dep', displayName: 'Deposits Total', width : '12%'}
 	        ],
 	        data: [],
+           /* rowTemplate: rowTemplate() ,*/
 	        onRegisterApi: function (gridApi) {
 	        	gridApi.expandable.on.rowExpandedStateChanged($scope, function (row) {
 	                if (row.isExpanded) {
@@ -2109,8 +2110,32 @@ if(customer_flow === 'customer_region_mapping'){
 								{field: 'userid', displayName: 'User ID', width : '9%', hide : true},
 								{field: 'tmpstp', displayName: 'Time Stamp', width : '13%', hide : true},
 	    		            ],
-	    		            data: []
+	    		            data: [],
+	    		            rowTemplate: rowTemplate(row) ,
+	    		           /* onRegisterApi: function( gridApi ) { 
+	    			             $scope.addnewcustomerdepositsGridApi = gridApi;
+	    			             var cellTemplate = '<div class="ui-grid-cell-contents text-center"><button class="glyphicon glyphicon-edit" ng-click="appScope.rowDblClick(row)" title="Edit"></button></div>';
+	    			             $scope.addnewcustomerdepositsGridApi.core.addRowHeaderColumn({ name: 'Edit', displayName: '', width: '3%', cellTemplate: cellTemplate } );
+	    			        }*/
+	    		            
 	    	            };
+	                	
+	            		function rowTemplate(row) {    //custom rowtemplate to enable double click and right click menu options
+	            			alert(row);
+	            			console.log(row);
+	            	        return ' <div ng-dblclick="row.grid.appScope.rowDblClick(row)"  '+
+	            	               ' ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name" ' +
+	            	        	   ' class="ui-grid-cell" ng-class="{ \'ui-grid-row-header-cell\': col.isRowHeader }"  ' + 
+	            	        	   ' ui-grid-cell context-menu="row.grid.appScope.contextmenuOptions(row)" '+
+	            	        	   ' data-target="myMenu" ></div>'
+	            	    }
+	            		$scope.rowDblClick = function( row) {
+	            			 alert(2);
+	            			 console.log(row);
+	            		 };
+	            		
+	            		 
+	            		 
 	                	var request = {
 	        				"rr_number": $rootScope.user.location_code + row.entity.rr_no,
 	        				"conn_type": $rootScope.user.connection_type
@@ -2123,7 +2148,10 @@ if(customer_flow === 'customer_region_mapping'){
 	                }
 	            });
 	        }
+		
+		
 		};
+		
 		
 		$scope.customer_deposits_clear = function(e){
 			$rr_no.val('').focus();
@@ -2178,6 +2206,14 @@ if(customer_flow === 'customer_region_mapping'){
 			    }
 			});
 		};
+		
+		$scope.add_new_customer_deposits_details = function(e){
+			
+			$scope.add_deposit = {};
+			
+			$('#addDepositModal').modal('toggle');
+			
+		};
 	}
 	
 	if(customer_flow === 'generate_addnl_mmd_and_deposits_intrest'){
@@ -2188,13 +2224,14 @@ if(customer_flow === 'customer_region_mapping'){
 		
 		var type = 'additional_mmd';
 		
-		if ($scope.selected === 'additional_mmd'){
-			type = 'ADD_MMD';
-		}else{
-			type = 'SEC_DEP_INT';
-		}
-		
 		$scope.get_deposit_int_nmmd_parameters = function() {
+			
+			if ($scope.selected === 'additional_mmd'){
+				type = 'ADD_MMD';
+			}else{
+				type = 'SEC_DEP_INT';
+			}
+			
 			var request = {
 					"type" : type,
 					"location_code": $rootScope.user.location_code,
@@ -2216,6 +2253,35 @@ if(customer_flow === 'customer_region_mapping'){
 		
 		
 		$scope.generate_mmd_interest = function(){
+			
+			if ($scope.selected === 'additional_mmd'){
+				
+				var request = {
+						"location_code": $rootScope.user.location_code,
+						"conn_type": $rootScope.user.connection_type,
+						"rrno": (($scope.rrNo) ?  $rootScope.user.location_code+$scope.rrNo : $rootScope.user.location_code),
+						"year": (($scope.depositIntNmmdParameters[0].year) ? $scope.depositIntNmmdParameters[0].year : ''),
+						"mmd": (($scope.mmd) ? $scope.mmd : ''),
+						"userid": $rootScope.user.user_id,
+				};
+				console.log(request);
+				remote.load("calculateadditional_3mmd", function(response){
+				}, request , 'POST');
+			}else{
+				var request = {
+						"location_code": $rootScope.user.location_code,
+						"conn_type": $rootScope.user.connection_type,
+						"rrno": (($scope.rrNo) ? $rootScope.user.location_code+$scope.rrNo : $rootScope.user.location_code),
+						"year": (($scope.depositIntNmmdParameters[0].year) ? $scope.depositIntNmmdParameters[0].year : ''),
+						"interest": (($scope.interest) ? $scope.interest : ''),
+						"tds_amount": (($scope.tdsAmount) ? $scope.tdsAmount : ''),
+						"tds_interest": (($scope.tdsInterest) ? $scope.tdsInterest : ''),
+						"userid": $rootScope.user.user_id,
+				};
+				console.log(request);
+				remote.load("calculatesecuritydeposit", function(response){
+				}, request , 'POST');
+			}
 			
 		}
 		$scope.clear_form = function(){

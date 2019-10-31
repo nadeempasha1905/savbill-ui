@@ -143,6 +143,25 @@ var templates = {
 	},
 	'reports' : {
 		'reports' : baseURL +'app/templates/reports/reports_new.html',
-		'billing_efficiency' : baseURL +'app/templates/reports/billingefficiency.html'
+		'others_reports' : baseURL +'app/templates/reports/other_reports.html',
+		'exception_reports' : baseURL +'app/templates/reports/exception_reports.html',
+		'billing_efficiency' : baseURL +'app/templates/reports/billing_efficiency.html',
+		'billing_cancellation' : baseURL +'app/templates/reports/bill_cancellation.html',
+		'credit_reports' : baseURL +'app/templates/reports/credit_reports.html',
+		'adjustment_report' : baseURL +'app/templates/reports/adjustment_report.html',
+		'dl_&_mnr_report' : baseURL +'app/templates/reports/doorlockandmnrreport.html',
+		'present_reading_lesser_then_previous' : baseURL +'app/templates/reports/present_reading_less_than_previous.html',
+		'abnormal_subnormal_report' : baseURL +'app/templates/reports/abnormal_subnormal_consumption_report.html',
+		'zero_consumption' : baseURL +'app/templates/reports/zero_consumption.html',
+		'demand_recovery_status_report' : baseURL +'app/templates/reports/demand_recovery_status.html',
+		'agewise_arrears_report' : baseURL +'app/templates/reports/agewise_arrears_report.html',
+		'slum_consumer_report' : baseURL +'app/templates/reports/slum_consumer_report.html',
+		'disconn_reconn_reports' : baseURL +'app/templates/reports/disconn_reconn_payment_report.html',
+		'rr_6b_and_temp_discon_list' : baseURL +'app/templates/reports/rr_6b_and_temp_discon_list.html',
+		'high_value_cheque_report' : baseURL +'app/templates/reports/high_value_cheque_report.html',
+		'revenue_report' : baseURL +'app/templates/reports/revenue_report.html',
+		'debit_and_withdrawal' : baseURL +'app/templates/reports/debit_and_withdrawl.html',
+		
+		
 	}
 }

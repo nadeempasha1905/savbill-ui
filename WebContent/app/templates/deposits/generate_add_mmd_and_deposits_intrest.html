@@ -1,3 +1,21 @@
+<style>
+.fa{
+vertical-align: baseline;
+    padding-right: 10px;
+    font-size: 16px;
+    color: #3EB1E7;
+}
+.curso:hover {
+	cursor: pointer;
+}
+
+#rr_selection .fa {
+	vertical-align: baseline;
+    padding-right: 10px;
+    font-size: 16px;
+    color: #DABA5B;
+}
+</style>
 <div id="deposits" class="theme">
 	<!-- <web-header user-info="$root.user" class="relative-pos"></web-header>
 	<web-menu menu-collection="$root.menu" class="menu-bar-sliding-pos"></web-menu> -->
@@ -5,7 +23,99 @@
 	<div class="container-fluid content">
 		<div class="cb-wrapper main-generate-add-mmd-and-deposits-intrest">
 			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
-			<div class="action width-100">
+			
+						<div class="row">
+				<div class="col-xs-3">
+				</div>
+				<div class="col-xs-6">
+					<div class="panel panel-primary">
+      	     		 <div class="panel-heading"><h3 class="panel-title">Generate Additional MMD / Security Deposit Interest</h3></div>
+					 	 <div class="panel-body">
+					 	 		
+					 	 		<div class="row">
+					 	 			<div class="col-xs-4" ng-if="depositIntNmmdParameters[0].year">
+					 	 				<span>For The Year : <b>{{depositIntNmmdParameters[0].year}}</b></span>
+					 	 			</div>
+					 	 			<div class="col-xs-4" ng-if="depositIntNmmdParameters[0].from_dt">
+					 	 				<span>From Date : <b>{{depositIntNmmdParameters[0].from_dt}}</b></span>
+					 	 			</div>
+					 	 			<div class="col-xs-4" ng-if="depositIntNmmdParameters[0].to_dt">
+					 	 				<span>To Date : <b>{{depositIntNmmdParameters[0].to_dt}}</b></span>
+					 	 			</div>
+					 	 		</div>	
+					 	 		<hr/>
+					 	 		<div class="row">
+					 	 			<div class="col-xs-4">
+					 	 				<div ng-click="selected = 'additional_mmd';get_deposit_int_nmmd_parameters();"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': selected === 'additional_mmd', 'fa-circle-o': selected !== 'additional_mmd' }"></span>
+											<span ng-click="selected = 'additional_mmd'">Calculate Additional MMD</span>
+										</div>
+					 	 			</div>
+					 	 			<div class="col-xs-4">
+					 	 				<div ng-click="selected = 'interest';get_deposit_int_nmmd_parameters();" class="curso">
+											<span class="fa" ng-class="{'fa-circle': selected === 'interest', 'fa-circle-o': selected !== 'interest' }"></span>
+											<span ng-click="selected = 'interest'">Calculate Interest</span>
+										</div>
+					 	 			</div>
+					 	 		</div>
+					 	 		<br>
+					 	 		<div class="row" id="rr_selection">
+					 	 			<div class="col-xs-4">
+					 	 				<div ng-click="rr_selected = 'all'"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': rr_selected === 'all', 'fa-circle-o': rr_selected !== 'all' }"></span>
+											<span ng-click="rr_selected = 'all'">All RR Number</span>
+										</div>
+					 	 			</div>
+					 	 			<div class="col-xs-3">
+					 	 				<div ng-click="rr_selected = 'single'" class="curso">
+											<span class="fa" ng-class="{'fa-circle': rr_selected === 'single', 'fa-circle-o': rr_selected !== 'single' }"></span>
+											<span ng-click="rr_selected = 'single'">Single RR Number</span>
+										</div>
+					 	 			</div>
+					 	 			<div class="col-xs-4" style="margin-top: -7px;">
+					 	 				<input type="text" class="form-control" ng-model="rrNo" ng-hide="rr_selected === 'all'">
+					 	 			</div>
+					 	 		</div>
+					 	 		<hr/>
+					 	 		<div class="row">
+					 	 			<div class="col-xs-4" ng-hide="selected === 'interest'">
+					 	 				<label>MMD</label>
+					 	 				<input type="text" class="form-control" ng-model="mmd">
+					 	 			</div>
+					 	 			<div class="col-xs-4" ng-hide="selected === 'interest'">
+					 	 				<label>Prompt Payee MMD</label>
+					 	 				<input type="text" class="form-control" ng-model="promptMmd">
+					 	 			</div>
+					 	 		</div>	
+					 	 		<div class="row">
+					 	 			<div class="col-xs-4" ng-hide="selected === 'additional_mmd'">
+					 	 				<label>Rate Of Interest</label>
+					 	 				<input type="text" class="form-control" ng-model="interest" >
+					 	 			</div>
+					 	 			<div class="col-xs-4" ng-hide="selected === 'additional_mmd'">
+					 	 				<label>TDS Exempt Amount</label>
+					 	 				<input type="text" class="form-control" ng-model="tdsAmount">
+					 	 			</div>
+					 	 			<div class="col-xs-4" ng-hide="selected === 'additional_mmd'">
+					 	 				<label>TDS Rate Of Interest</label>
+					 	 				<input type="text" class="form-control" ng-model="tdsInterest" >
+					 	 			</div>
+					 	 		</div>	
+					 	 		<hr/>
+					 	 		<div class="row">
+					 	 			<div class="col-xs-4">
+					 	 				<button class="btn btn-primary" ng-click="generate_mmd_interest()">Generate</button>
+										<button class="btn btn-warning" ng-click="clear_form()">Clear</button>
+					 	 			</div>
+					 	 		</div>	
+					 	 </div>
+				 	 </div>
+				</div>
+				<div class="col-xs-3">
+				</div>
+			</div>
+			
+<!-- 			<div class="action width-100">
 				<table class="width-50">
 					<tbody>
 						<tr>
@@ -78,7 +188,7 @@
 					<button ng-click="generate_mmd_interest()">Generate</button>
 					<button ng-click="clear_form()">Clear</button>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </div>

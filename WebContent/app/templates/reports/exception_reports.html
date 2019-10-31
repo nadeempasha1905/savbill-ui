@@ -1,0 +1,258 @@
+<style>
+.fa{
+vertical-align: baseline;
+    padding-right: 10px;
+    font-size: 16px;
+    color: #3EB1E7;
+}
+.curso:hover {
+	cursor: pointer;
+}
+
+hr {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+
+#load_fa .fa {
+	vertical-align: baseline;
+    padding-right: 10px;
+    font-size: 16px;
+    color: #3c763d;
+}
+#dmd_consmp_fa .fa {
+	vertical-align: baseline;
+    padding-right: 10px;
+    font-size: 16px;
+    color: #a7001f;
+}
+#dateoption_fa .fa {
+	vertical-align: baseline;
+    padding-right: 10px;
+    font-size: 16px;
+    color: #c75c00;
+}
+</style>
+<div ng-include="'app/templates/sav_menu.html'" user-info="$root.user" style="margin-top: 50px;" ></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper main-generate-add-mmd-and-deposits-intrest">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+
+
+			<div class="row">
+				<div class="col-xs-3">
+				</div>
+				<div class="col-xs-6">
+					<div class="panel panel-primary">
+      	     		 <div class="panel-heading"><h3 class="panel-title">Exception Reports</h3></div>
+					 	 <div class="panel-body">
+					 	 		<div class="row">
+					 	 			<div class="col-xs-12">
+					 	 				<label>Report Type</label>
+					 	 				<select class="form-control" style="height: 30px;"
+								  			ng-model="exception.report_type"
+								  			ng-options="e as e.value for e in exception_reports_list" ng-change="change_ui()">
+							  				<option value="">----Choose Report---</option>
+							  			</select>
+					 	 			</div>
+					 	 		</div>	
+					 	 		
+					 	 		<div ng-show="exception.report_type">
+					 	 		<div class="row" ng-show="row_1">
+					 	 		<hr/>
+					 	 			<div class="col-xs-6">
+					 	 				<label>Having Count</label>
+					 	 				<select class="form-control" style="height: 30px;"
+								  			ng-model="exception.having_count"
+								  			ng-options="o as o.value for o in having_count_list">
+							  				<option value="">----Choose Having Count---</option>
+							  			</select>
+					 	 			</div>
+					 	 		</div>	
+					 	 		
+					 	 		<div class="row"  ng-show="row_2">
+					 	 		<hr/>
+					 	 			<div class="col-xs-3" ng-show="radio_indetail_show">
+					 	 				<div ng-click="exception_reportview_selected = 'indetail'"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': exception_reportview_selected === 'indetail', 'fa-circle-o': exception_reportview_selected !== 'indetail' }"></span>
+											<span ng-click="exception_reportview_selected = 'indetail'">In Detail</span>
+										</div>
+					 	 			</div>
+					 	 			<div class="col-xs-3" ng-show="radio_inabstract_show">
+					 	 				<div ng-click="exception_reportview_selected = 'inabstract'" class="curso">
+											<span class="fa" ng-class="{'fa-circle': exception_reportview_selected === 'inabstract', 'fa-circle-o': exception_reportview_selected !== 'inabstract' }"></span>
+											<span ng-click="exception_reportview_selected = 'inabstract'">In Abstract</span>
+										</div>
+					 	 			</div>
+					 	 		</div>	
+					 	 		<br/>
+					 	 		<div class="row" ng-show="row_2">
+					 	 			<div class="col-xs-4">
+					 	 				<label>O&M Section</label>
+					 	 				<select class="form-control" style="height: 30px;"
+								  			ng-model="exception.omsection"
+								  			ng-options="o as o.value for o in exception_om_list" ng-change="get_meter_reader_info()" ng-disabled="omsection_disable">
+							  				<option value="">----Choose O&M Section---</option>
+							  			</select>
+					 	 			</div>
+					 	 			<div class="col-xs-4">
+					 	 				<label>Meter Code</label>
+					 	 				<select class="form-control" style="height: 30px;"
+								  			ng-model="exception.metercode"
+								  			ng-options="o as o.value for o in exception_MeterReaderCode" ng-disabled="mrcode_disable">
+							  				<option value="">----Choose Meter Code---</option>
+							  			</select>
+					 	 			</div>
+					 	 			<div class="col-xs-4">
+					 	 				<label>Camp</label>
+					 	 				<select class="form-control" style="height: 30px;"
+								  			ng-model="exception.camp"
+								  			ng-options="o as o.value for o in camp_list">
+							  				<option value="">----Choose Camp---</option>
+							  			</select>
+					 	 			</div>
+					 	 		</div>
+					 	 		
+					 	 		<div class="row" ng-show="row_3">
+					 	 		<hr/>
+					 	 			<div class="col-xs-4">
+					 	 				<label>Percentage</label>
+					 	 				<select class="form-control" style="height: 30px;"
+								  			ng-model="exception.percentage"
+								  			ng-options="o as o.value for o in percentage_list">
+							  				<option value="">----Choose Percentage---</option>
+							  			</select>
+					 	 			</div>
+					 	 			<div class="col-xs-4">
+					 	 				<label>Amount</label>
+					 	 				<input type="text" class="form-control" ng-model="exception.amount">
+					 	 			</div>
+					 	 			<div class="col-xs-4">
+					 	 				<label>To Amount</label>
+					 	 				<input type="text" class="form-control" ng-model="exception.to_amount">
+					 	 			</div>
+					 	 		</div>	
+					 	 		
+					 	 		<div class="row" id="dateoption_fa" ng-show="div_dateoption">
+					 	 		<hr/>
+					 	 			<div class="col-xs-3" ng-show="date_1">
+					 	 				<div ng-click="others_dateoption_selected = 'datewise'"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': others_dateoption_selected === 'datewise', 'fa-circle-o': others_dateoption_selected !== 'datewise' }"></span>
+											<span ng-click="others_dateoption_selected = 'datewise'">Datewise</span>
+										</div>
+					 	 			</div>
+					 	 			<div class="col-xs-3" ng-show="date_2">
+					 	 				<div ng-click="others_dateoption_selected = 'daterangewise'"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': others_dateoption_selected === 'daterangewise', 'fa-circle-o': others_dateoption_selected !== 'daterangewise' }"></span>
+											<span ng-click="others_dateoption_selected = 'daterangewise'">Date-Rangewise</span>
+										</div>
+					 	 			</div>
+					 	 			<div class="col-xs-3" ng-show="date_3">
+					 	 				<div ng-click="others_dateoption_selected = 'monthwise'"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': others_dateoption_selected === 'monthwise', 'fa-circle-o': others_dateoption_selected !== 'monthwise' }"></span>
+											<span ng-click="others_dateoption_selected = 'monthwise'">Monthwsie</span>
+										</div>
+					 	 			</div>
+					 	 		</div>
+					 	 		<br>
+		 	 				  	<div class="row">
+							  		<div class="form-inline form-compact col-xs-4"  ng-show="others_dateoption_selected === 'datewise' || others_dateoption_selected === 'daterangewise'">
+										<label for="dfromdate" class="labelchange">{{(others_dateoption_selected === 'datewise' ? 'Date':'From Date')}}</label>
+										<div class=' form-inline input-group input-append date dsfromdate'
+											data-provide="datepicker">
+											<input type='text' class="form-control" id="dfromdate"
+												readonly="readonly" name="dfromdate" ng-model="others.dfromdate"
+												> <span
+												class="input-group-addon datepicker"> <span
+												class="glyphicon glyphicon-calendar"></span>
+											</span>
+										</div>
+										
+									</div>
+									<div class="form-inline form-compact col-xs-4"   ng-show="others_dateoption_selected === 'daterangewise'">
+										<label for="dfromdate" class="labelchange">To Date</label>
+										<div class=' form-inline input-group input-append date dtodate'
+											data-provide="datepicker">
+											<input type='text' class="form-control" id="dtodate"
+												readonly="readonly" name="dtodate" ng-model="others.dtodate"
+												> <span
+												class="input-group-addon datepicker"> <span
+												class="glyphicon glyphicon-calendar"></span>
+											</span>
+										</div>
+										
+									</div>
+									<div class="form-inline form-compact col-xs-4"  ng-show="others_dateoption_selected === 'monthwise'">
+										<label for="dfromdate" class="labelchange">Month - Year</label>
+										<div class=' form-inline input-group input-append date dmonthyear'
+											data-provide="datepicker">
+											<input type='text' class="form-control" id="dmonthyear"
+												readonly="readonly" name="dmonthyear" ng-model="others.dmonthyear"
+												> <span
+												class="input-group-addon datepicker"> <span
+												class="glyphicon glyphicon-calendar"></span>
+											</span>
+										</div>
+										
+									</div>
+								</div>
+								
+								<br>
+								<div class="row	">
+								<hr>
+							  		<div id="other_reports_2" class="col-xs-12"  ng-show="div_tariff_selection">
+							  			<div class="tariffs">
+								  			<label>Tariff</label>
+								  			<div class="width-100 tariff-selection" >
+												<div class="width-33 pull-left" ng-repeat="tariff in tariff_list" ng-class="{'selected' : selected}" 
+													ng-click="selected = !selected" param="{{tariff.key}}"  >
+													<span class="fa" ng-class="{'fa-circle': selected, 'fa-circle-o': !selected }"></span>{{tariff.value}}
+												</div>
+											</div>
+							  			</div>
+							  		</div>
+								</div>
+					 	 		<br/>
+					 	 		<div class="row">
+					 	 			<div class="col-xs-4">
+					 	 				<button class="btn btn-primary" ng-click="generate_report()">Generate</button>
+										<button class="btn btn-warning" ng-click="clear_form()">Clear</button>
+					 	 			</div>
+					 	 		</div>	
+				 	 		</div>
+					 	 </div>
+				 	 </div>
+				</div>
+				<div class="col-xs-3">
+				</div>
+			</div>	
+	</div>
+</div>
+
+<script>
+$('.dsfromdate').datetimepicker({
+	format : 'dd/mm/yyyy',
+	minView : 2,
+	autoclose : 1,
+	//startDate : new Date(new Date().setDate(new Date().getDate() - 15)),
+	endDate : new Date()
+});
+$('.dtodate').datetimepicker({
+	format : 'dd/mm/yyyy',
+	minView : 2,
+	autoclose : 1,
+	//startDate : new Date(),
+	endDate : new Date()
+});
+
+$('.dmonthyear').datetimepicker({
+	 format: 'M-yyyy',
+	    startView:3,
+	    minView : 3,
+		autoclose : 1,
+});
+
+</script>
+			

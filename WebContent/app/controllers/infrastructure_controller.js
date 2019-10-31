@@ -2226,10 +2226,13 @@ if(infrastructure_flow === 'transformer_meter_master'){
 	    }
 	    
 		$scope.modal= {};
+		$scope.temp_row = {};
 		var assessedconsumptiondetails_temp = [];
 	    $scope.rowDblClick = function( row) {
 	       //alert('Row double-clicked!\n'+'Full Name  --> '+row.entity.stn_name+' '+row.entity.fdr_name) 
 	       //add code here 
+	    	
+	    	$scope.temp_row = angular.copy(row.entity);
 	    	
 	    	$scope.assessedconsumptiondetails = {};
 	    	
@@ -2245,7 +2248,7 @@ if(infrastructure_flow === 'transformer_meter_master'){
 					"station_code": row.entity.stn_cd,
 					"feeder_code" : row.entity.fdr_cd,
 					"om_code" : row.entity.om_cd,
-					"reading_date" : row.entity.prev_rdg_dt,
+					"reading_date" : $scope.readingDate,
 					"transformer_code":row.entity.dtc_cd
 				}
 				remote.load("getentryrecordsforassessed", function(response){
@@ -2267,8 +2270,14 @@ if(infrastructure_flow === 'transformer_meter_master'){
 	    	}else{
 	    		
 		    	var request = {
-						"conn_type": $rootScope.user.connection_type,	
-						"location_code" : $rootScope.user.location_code,					
+						"conn_type":      $rootScope.user.connection_type,	
+						"location_code" : $rootScope.user.location_code,	
+						"userid" :        $rootScope.user.user_id,
+						"reading_date":   $scope.readingDate,
+						"station_code":   $scope.temp_row.stn_cd,
+						"feeder_code" :   $scope.temp_row.fdr_cd,
+						"om_code" :       $scope.temp_row.om_cd,
+						"transformer_code":$scope.temp_row.dtc_cd,
 						"assessedconsumptiondetails":$scope.assessedconsumptiondetails
 					}
 					remote.load("save_assessed_consumption_details", function(response){

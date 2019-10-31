@@ -5,7 +5,50 @@
 	<div class="container-fluid content">
 		<div class="cb-wrapper accounts-bill-cancellation">
 			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
-			<div class="action width-100">
+			
+			<div class="row">
+				<div class="col-xs-4">
+				</div>
+				<div class="col-xs-4">
+					<div class="panel panel-primary">
+      	     		 <div class="panel-heading"><h3 class="panel-title">Reconcillation</h3></div>
+					 	 <div class="panel-body">
+					 	 
+					 	 	<div class="row">
+					 	 		<div class="col-xs-12">
+					 	 			<label>RR Number</label>
+					 	 			<input type="text" ng-disabled="disable_rr_no" ng-model="data.rr_no" class="form-control" id="rr_no" ng-enter="getRRnoDetails()" />
+					 	 		</div>
+					 	 		<div class="col-xs-12">
+					 	 			<label>Bill Date</label>
+					 	 			<input type="text" ng-disabled="true" ng-model="data.bill_dt" class="form-control" />
+					 	 		</div>
+					 	 		<div class="col-xs-12">
+					 	 			<label>Bill Number</label>
+					 	 			<input type="text" ng-disabled="true" ng-model="data.bill_no" class="form-control" />
+					 	 		</div>
+					 	 		<div class="col-xs-12">
+					 	 			<label>Remarks</label>
+					 	 			<textarea ng-model="data.remarks" id="remarks" class="form-control text-area mandatory"></textarea>
+					 	 		</div>
+					 	 	</div>
+					 	 	
+					 	 	<hr>
+					 	 		<div class="row">
+					 	 			<div class="col-xs-12">
+										<button class="btn btn-primary" ng-click="cancel_bill()">Submit</button>
+										<button class="btn btn-warning" ng-click="clear_entries()">Clear</button>
+					 	 			</div>
+					 	 		</div>	
+					 	 		
+					 	 </div>
+					 </div>
+				 </div>
+				 <div class="col-xs-4">
+				</div>
+			</div>
+					 	 
+<!-- 			<div class="action width-100">
 				<table class="width-25">
 					<tbody>
 						<tr>
@@ -38,7 +81,7 @@
 					<button ng-click="clear_entries()">Clear</button>
 					<button ng-click="cancel_bill()">Submit</button>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </div>

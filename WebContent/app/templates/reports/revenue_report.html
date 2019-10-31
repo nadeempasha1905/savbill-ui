@@ -1,0 +1,228 @@
+<style>
+.fa{
+vertical-align: baseline;
+    padding-right: 10px;
+    font-size: 16px;
+    color: #3EB1E7;
+}
+.curso:hover {
+	cursor: pointer;
+}
+
+hr {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+
+#load_fa .fa {
+	vertical-align: baseline;
+    padding-right: 10px;
+    font-size: 16px;
+    color: #3c763d;
+}
+#dmd_consmp_fa .fa {
+	vertical-align: baseline;
+    padding-right: 10px;
+    font-size: 16px;
+    color: #a7001f;
+}
+#dateoption_fa .fa {
+	vertical-align: baseline;
+    padding-right: 10px;
+    font-size: 16px;
+    color: #c75c00;
+}
+#reporttype_1_fa .fa {
+	vertical-align: baseline;
+    padding-right: 10px;
+    font-size: 16px;
+    color: #349696;
+}
+#reporttype_2_fa .fa {
+	vertical-align: baseline;
+    padding-right: 10px;
+    font-size: 16px;
+    color: #96347c;
+}
+
+</style>
+<div ng-include="'app/templates/sav_menu.html'" user-info="$root.user" style="margin-top: 50px;" ></div>
+	<div class="container-fluid content">
+		<div class="cb-wrapper main-generate-add-mmd-and-deposits-intrest">
+			<web-bread-crumb items="$root.breadcrumb" class="pull-left"></web-bread-crumb>
+
+
+			<div class="row">
+				<div class="col-xs-3">
+				</div>
+				<div class="col-xs-6">
+					<div class="panel panel-primary">
+      	     		 <div class="panel-heading"><h3 class="panel-title">Revenue Report</h3></div>
+					 	 <div class="panel-body">
+					 	 		<div class="row" id="dmd_consmp_fa">
+					 	 			<div class="col-xs-3" >
+					 	 				<div ng-click="reportwise_selected = 'rrnumberwise'"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': reportwise_selected === 'rrnumberwise', 'fa-circle-o': reportwise_selected !== 'rrnumberwise' }"></span>
+											<span ng-click="reportwise_selected = 'rrnumberwise'">RR Number</span>
+										</div>
+					 	 			</div>
+					 	 			<div class="col-xs-3" >
+					 	 				<div ng-click="reportwise_selected = 'tariffwsie'"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': reportwise_selected === 'tariffwsie', 'fa-circle-o': reportwise_selected !== 'tariffwsie' }"></span>
+											<span ng-click="reportwise_selected = 'tariffwsie'">Tariff</span>
+										</div>
+					 	 			</div>
+					 	 			<div class="col-xs-3" >
+					 	 				<div ng-click="reportwise_selected = 'omsectionwise'"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': reportwise_selected === 'omsectionwise', 'fa-circle-o': reportwise_selected !== 'omsectionwise' }"></span>
+											<span ng-click="reportwise_selected = 'omsectionwise'">OM Section</span>
+										</div>
+					 	 			</div>
+					 	 			<div class="col-xs-3" >
+					 	 				<div ng-click="reportwise_selected = 'mrcodewise'"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': reportwise_selected === 'mrcodewise', 'fa-circle-o': reportwise_selected !== 'mrcodewise' }"></span>
+											<span ng-click="reportwise_selected = 'mrcodewise'">Meter Code</span>
+										</div>
+					 	 			</div>
+					 	 		</div>
+					 	 		<hr>
+					 	 		<div class="row">
+					 	 			<div class="col-xs-4">
+					 	 				<label>RR Number</label>
+					 	 				<input type="text" class="form-control" ng-model="revenue.rrnumber" ng-disabled="reportwise_selected !== 'rrnumberwise'">
+					 	 			</div>
+					 	 			<div class="col-xs-4">
+					 	 				<label>O&M Section</label>
+					 	 				<select class="form-control" style="height: 30px;"
+								  			ng-model="doorlockmnr.omsection"
+								  			ng-options="o as o.value for o in om_list" ng-disabled="reportwise_selected !== 'omsectionwise'">
+							  				<option value="">----Choose O&M Section---</option>
+							  			</select>
+					 	 			</div>
+					 	 			<div class="col-xs-4">
+					 	 				<label>Meter Code</label>
+					 	 				<select class="form-control" style="height: 30px;"
+								  			ng-model="doorlockmnr.metercode"
+								  			ng-options="o as o.value for o in meter_code_list" ng-disabled="reportwise_selected !== 'mrcodewise'">
+							  				<option value="">----Choose Meter Code---</option>
+							  			</select>
+					 	 			</div>
+							  		<div id="other_reports_2" class="col-xs-12" >
+							  			<div class="tariffs">
+								  			<label>Tariff</label>
+								  			<div class="width-100 tariff-selection" >
+												<div class="width-33 pull-left" ng-repeat="tariff in tariff_list" ng-class="{'selected' : selected}" 
+													ng-click="selected = !selected" param="{{tariff.key}}"  ng-show="reportwise_selected === 'tariffwsie'" >
+													<span class="fa" ng-class="{'fa-circle': selected, 'fa-circle-o': !selected }"></span>{{tariff.value}}
+												</div>
+											</div>
+							  			</div>
+							  		</div>
+					 	 		</div>
+					 	 		<div class="row" id="dateoption_fa">
+					 	 		<hr/>
+					 	 			<div class="col-xs-3" ng-show="date_1">
+					 	 				<div ng-click="dateoption_selected = 'datewise'"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': dateoption_selected === 'datewise', 'fa-circle-o': dateoption_selected !== 'datewise' }"></span>
+											<span ng-click="dateoption_selected = 'datewise'">Datewise</span>
+										</div>
+					 	 			</div>
+					 	 			<div class="col-xs-3" ng-show="date_2">
+					 	 				<div ng-click="dateoption_selected = 'daterangewise'"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': dateoption_selected === 'daterangewise', 'fa-circle-o': dateoption_selected !== 'daterangewise' }"></span>
+											<span ng-click="dateoption_selected = 'daterangewise'">Date-Rangewise</span>
+										</div>
+					 	 			</div>
+					 	 			<div class="col-xs-3" ng-show="date_3">
+					 	 				<div ng-click="dateoption_selected = 'monthwise'"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': dateoption_selected === 'monthwise', 'fa-circle-o': dateoption_selected !== 'monthwise' }"></span>
+											<span ng-click="dateoption_selected = 'monthwise'">Monthwsie</span>
+										</div>
+					 	 			</div>
+					 	 		</div>
+					 	 		<br>
+		 	 				  	<div class="row">
+							  		<div class="form-inline form-compact col-xs-4"  ng-show="dateoption_selected === 'datewise' || dateoption_selected === 'daterangewise'">
+										<label for="dfromdate" class="labelchange">{{(dateoption_selected === 'datewise' ? 'Date':'From Date')}}</label>
+										<div class=' form-inline input-group input-append date dsfromdate'
+											data-provide="datepicker">
+											<input type='text' class="form-control" id="dfromdate"
+												readonly="readonly" name="dfromdate" ng-model="revenue.dfromdate"
+												> <span
+												class="input-group-addon datepicker"> <span
+												class="glyphicon glyphicon-calendar"></span>
+											</span>
+										</div>
+										
+									</div>
+									<div class="form-inline form-compact col-xs-4"   ng-show="dateoption_selected === 'daterangewise'">
+										<label for="dfromdate" class="labelchange">To Date</label>
+										<div class=' form-inline input-group input-append date dtodate'
+											data-provide="datepicker">
+											<input type='text' class="form-control" id="dtodate"
+												readonly="readonly" name="dtodate" ng-model="revenue.dtodate"
+												> <span
+												class="input-group-addon datepicker"> <span
+												class="glyphicon glyphicon-calendar"></span>
+											</span>
+										</div>
+										
+									</div>
+									<div class="form-inline form-compact col-xs-4"  ng-show="dateoption_selected === 'monthwise'">
+										<label for="dfromdate" class="labelchange">Month - Year</label>
+										<div class=' form-inline input-group input-append date dmonthyear'
+											data-provide="datepicker">
+											<input type='text' class="form-control" id="dmonthyear"
+												readonly="readonly" name="dmonthyear" ng-model="revenue.dmonthyear"
+												> <span
+												class="input-group-addon datepicker"> <span
+												class="glyphicon glyphicon-calendar"></span>
+											</span>
+										</div>
+										
+									</div>
+								</div>
+								<br>
+								<hr>
+					 	 		<div class="row">
+					 	 			<div class="col-xs-12">
+					 	 				<button class="btn btn-primary" ng-click="generate_report()">Generate</button>
+										<button class="btn btn-warning" ng-click="clear_form()">Clear</button>
+					 	 			</div>
+					 	 		</div>	
+					 	 </div>
+				 	 </div>
+				</div>
+				<div class="col-xs-3">
+				</div>
+			</div>	
+	</div>
+</div>
+
+<script>
+$('.dsfromdate').datetimepicker({
+	format : 'dd/mm/yyyy',
+	minView : 2,
+	autoclose : 1,
+	//startDate : new Date(new Date().setDate(new Date().getDate() - 15)),
+	endDate : new Date()
+});
+$('.dtodate').datetimepicker({
+	format : 'dd/mm/yyyy',
+	minView : 2,
+	autoclose : 1,
+	//startDate : new Date(),
+	endDate : new Date()
+});
+
+$('.dmonthyear').datetimepicker({
+	 format: 'M-yyyy',
+	    startView:3,
+	    minView : 3,
+		autoclose : 1,
+});
+
+</script>
+			

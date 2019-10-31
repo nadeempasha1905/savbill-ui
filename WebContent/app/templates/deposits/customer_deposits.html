@@ -43,7 +43,7 @@
 				</table>
 				<div class="width-25 pull-right padding-top-10">
 					<button ng-click="load_deposit_details($event)" class="">Show</button>
-					<button ng-click="add_customer_deposit_details()">Add New</button>
+					<button ng-click="add_new_customer_deposits_details()">Add New</button>
 					<button ng-click="customer_deposits_clear()" class="customer-deposits-clear">Clear</button>
 				</div>
 			</div>
@@ -55,3 +55,45 @@
 		</div>
 	</div>
 </div>
+
+
+<style>
+	.modal-dialog{
+		width: 50%;
+	}
+</style>
+<div class="modal fade" id="addDepositModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><b>Add New Deposits</b></h4>
+      </div>
+      <div class="modal-body">
+			<div class="row">
+				<div class="col-xs-6">
+					<label>RR Number</label>
+					<input type="text" class="form-control mandatory" ng-model="add_deposit.rrnumber">
+				</div>
+				<div class="col-xs-6">
+					<label>Receipt No</label>
+					<input type="text" class="form-control mandatory" ng-model="add_deposit.receiptnumber">
+				</div>
+			</div>
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+$('.dfreceiptdate').datetimepicker({
+	format : 'dd/mm/yyyy',
+	minView : 2,
+	autoclose : 1,
+	//startDate : new Date(new Date().setDate(new Date().getDate() - 15)),
+	endDate : new Date()
+});
+</script>

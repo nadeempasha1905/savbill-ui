@@ -73,13 +73,29 @@
       </div>
       <div class="modal-body">
        <div class="row">
-	    	<div class="col-xs-12"><label>Reading Date     :</label> &nbsp;{{modal.readingdate}}</div>
+       		<div class="col-xs-12">
+       			<table class="table table-sm table-hover table-striped thalign table-bordered">
+       				<tr>
+       					<td><label>Reading Date</label></td><td>{{readingDate}}</td>
+       					<td><label>Previous Reading Date</label></td><td>{{modal.readingdate}}</td>
+       				</tr>
+       				<tr>
+       					<td><label>O&M Section</label></td><td>{{modal.omsection}}</td>
+       					<td><label>Station Name</label></td><td>{{modal.stationname}}</td>
+       				</tr>
+       				<tr>
+       					<td><label>Feeder Name</label></td><td>{{modal.feedername}}</td>
+       					<td><label>Transformer Name</label></td><td>{{modal.transformername}}</td>
+       				</tr>
+       			</table>
+       		</div>
+       
+	    	<!-- <div class="col-xs-12"><label>Reading Date     :</label> &nbsp;{{modal.readingdate}}</div>
 	    	<div class="col-xs-12"><label>O&M Section      :</label> &nbsp;{{modal.omsection}}</div>
 	    	<div class="col-xs-12"><label>Station Name     :</label> &nbsp;{{modal.stationname}}</div>
 	    	<div class="col-xs-12"><label>Feeder Name      :</label> &nbsp;{{modal.feedername}}</div>
-	    	<div class="col-xs-12"><label>Transformer Name :</label> &nbsp;{{modal.transformername}}</div>
+	    	<div class="col-xs-12"><label>Transformer Name :</label> &nbsp;{{modal.transformername}}</div> -->
 		</div>
-		<br>
 		<div class="row">
 	 		<div class="col-xs-12" style="width: 100%;margin-top: 5px;">
 				<table id="assessedconsumptiondetails_table" class="table table-sm table-hover table-striped thalign table-bordered" style="width: 100%;">

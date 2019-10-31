@@ -1869,6 +1869,7 @@ accounts_controller.controller('accounts_controller',['$scope','$rootScope','rem
 				return;
 			}
 			var request = {
+				location_code: $rootScope.user.location_code,
 				conn_type: $rootScope.user.connection_type,
 				approverid : $rootScope.user.user_id,
 				data: selected_rows,
@@ -1886,6 +1887,7 @@ accounts_controller.controller('accounts_controller',['$scope','$rootScope','rem
 			}
 			var request = {
 				conn_type: $rootScope.user.connection_type,
+				location_code: $rootScope.user.location_code,
 				rejecterid : $rootScope.user.user_id,
 				data: selected_rows
 			};
