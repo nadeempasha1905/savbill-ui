@@ -105,6 +105,14 @@ hr {
 							  				<option value="">----Choose O&M Section---</option>
 							  			</select>
 					 	 			</div>
+					 	 			<div class="col-xs-4">
+					 	 				<label>Meter Code</label>
+					 	 				<select class="form-control" style="height: 30px;"
+								  			ng-model="adjustment.metercode"
+								  			ng-options="o as o.value for o in meter_code_list" >
+							  				<option value="">----Choose Meter Code---</option>
+							  			</select>
+					 	 			</div>
 					 	 		</div>
 					 	 		
 					 	 		<div class="row" id="dateoption_fa">

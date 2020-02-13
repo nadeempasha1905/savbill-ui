@@ -52,7 +52,7 @@ hr {
 					 	 			<div class="col-xs-3" >
 					 	 				<div ng-click="doorlockmnr_type_selected = 'faultymnr'"  class="curso">
 											<span class="fa" ng-class="{'fa-circle': doorlockmnr_type_selected === 'faultymnr', 'fa-circle-o': doorlockmnr_type_selected !== 'faultymnr' }"></span>
-											<span ng-click="doorlockmnr_type_selected = 'faultymnr'">Faulty MNR</span>
+											<span ng-click="doorlockmnr_type_selected = 'faultymnr'">MNR/Meter Faulty</span>
 										</div>
 					 	 			</div>
 					 	 			<div class="col-xs-3" >
@@ -65,24 +65,31 @@ hr {
 					 	 		<hr>
 					 	 		<div class="row" >
 					 	 			<div class="col-xs-3" >
-					 	 				<div ng-click="doorlockmnr_reporttype_selected = 'indetail'"  class="curso">
+					 	 				<div ng-click="doorlockmnr_reporttype_selected = 'indetail';reportwise_selected = '';monthstype_selected = '';"  class="curso">
 											<span class="fa" ng-class="{'fa-circle': doorlockmnr_reporttype_selected === 'indetail', 'fa-circle-o': doorlockmnr_reporttype_selected !== 'indetail' }"></span>
-											<span ng-click="doorlockmnr_reporttype_selected = 'indetail'">In Detail</span>
+											<span ng-click="doorlockmnr_reporttype_selected = 'indetail';reportwise_selected = '';monthstype_selected = '';">In Detail</span>
 										</div>
 					 	 			</div>
 					 	 			<div class="col-xs-3" >
-					 	 				<div ng-click="doorlockmnr_reporttype_selected = 'inabstract'"  class="curso">
+					 	 				<div ng-click="doorlockmnr_reporttype_selected = 'inabstract';reportwise_selected = '';monthstype_selected = '';"  class="curso">
 											<span class="fa" ng-class="{'fa-circle': doorlockmnr_reporttype_selected === 'inabstract', 'fa-circle-o': doorlockmnr_reporttype_selected !== 'inabstract' }"></span>
-											<span ng-click="doorlockmnr_reporttype_selected = 'inabstract'">In Abstract</span>
+											<span ng-click="doorlockmnr_reporttype_selected = 'inabstract';reportwise_selected = '';monthstype_selected = '';">In Abstract</span>
 										</div>
 					 	 			</div>
 					 	 		</div>	
+					 	 		
+					 	 		<div class="row" id="load_fa"   ng-show="doorlockmnr_reporttype_selected === 'inabstract'"> 
 					 	 		<hr>
-					 	 		<div class="row" id="load_fa">
 					 	 			<div class="col-xs-3" >
-					 	 				<div ng-click="reportwise_selected = 'tariffwsie'"  class="curso">
-											<span class="fa" ng-class="{'fa-circle': reportwise_selected === 'tariffwsie', 'fa-circle-o': reportwise_selected !== 'tariffwsie' }"></span>
-											<span ng-click="reportwise_selected = 'tariffwsie'">Tariff - Wise</span>
+					 	 				<div ng-click="reportwise_selected = 'tariffwise'"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': reportwise_selected === 'tariffwise', 'fa-circle-o': reportwise_selected !== 'tariffwise' }"></span>
+											<span ng-click="reportwise_selected = 'tariffwise'">Tariff - Wise</span>
+										</div>
+					 	 			</div>
+					 	 			<div class="col-xs-3" >
+					 	 				<div ng-click="reportwise_selected = 'subtariffwise'"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': reportwise_selected === 'subtariffwise', 'fa-circle-o': reportwise_selected !== 'subtariffwise' }"></span>
+											<span ng-click="reportwise_selected = 'subtariffwise'">Sub-Tariff - Wise</span>
 										</div>
 					 	 			</div>
 					 	 			<div class="col-xs-3" >
@@ -98,14 +105,49 @@ hr {
 										</div>
 					 	 			</div>
 					 	 		</div>
+					 	 		<div class="row" id="load_fa" ng-show="doorlockmnr_reporttype_selected === 'indetail'">
+					 	 		<hr/>
+					 	 			<div class="col-xs-4" >
+					 	 				<label>Months Type</label>
+					 	 				<select class="form-control" 
+								  			ng-model="doorlockmnr.monthstype"
+								  			ng-options="o as o.value for o in months_type_list">
+							  				<option value="">----Choose Months Type---</option>
+							  			</select>
+					 	 				<!-- <div ng-click="monthstype_selected = 'between'"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': monthstype_selected === 'between', 'fa-circle-o': monthstype_selected !== 'between' }"></span>
+											<span ng-click="monthstype_selected = 'between'">Between</span>
+										</div>
+					 	 				<div ng-click="monthstype_selected = 'greaterthan_equalsto'"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': monthstype_selected === 'greaterthan_equalsto', 'fa-circle-o': monthstype_selected !== 'greaterthan_equalsto' }"></span>
+											<span ng-click="monthstype_selected = 'greaterthan_equalsto'">Greater Than Equals To</span>
+										</div>
+										<div ng-click="monthstype_selected = 'equalsto'"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': monthstype_selected === 'equalsto', 'fa-circle-o': monthstype_selected !== 'equalsto' }"></span>
+											<span ng-click="monthstype_selected = 'equalsto'">Equals To</span>
+										</div> -->
+					 	 			</div>
+					 	 			<div class="col-xs-8" ng-show="doorlockmnr.monthstype">
+					 	 			
+					 	 				<label ng-if="doorlockmnr.monthstype.key === 'between'">Between</label>	
+					 	 				<label ng-if="doorlockmnr.monthstype.key === 'greaterthan_equalsto'">Greater Than Equals To </label>
+					 	 				<label ng-if="doorlockmnr.monthstype.key === 'equalsto'">Equals To </label>
+					 	 				<br/>
+					 	 				<input class="form-control" type="text" ng-model="doorlockmnr.monthtype_from_value" style="width: 40%;display: unset;"> 
+					 	 				<span ng-show="doorlockmnr.monthstype.key === 'between'" >&nbsp;and&nbsp;</span>
+					 	 				<input class="form-control" type="text" ng-model="doorlockmnr.monthtype_to_value" style="width: 40%;display: unset;"
+					 	 				ng-show="doorlockmnr.monthstype.key === 'between'"> 
+				 	 				</div>
+					 	 		</div>
+					 	 		
+					 	 		<div class="row"   ng-show="doorlockmnr_reporttype_selected === 'inabstract'">
 					 	 		<hr>
-					 	 		<div class="row">
 							  		<div id="other_reports_2" class="col-xs-8" >
 							  			<div class="tariffs">
 								  			<label>Tariff</label>
 								  			<div class="width-100 tariff-selection" >
 												<div class="width-33 pull-left" ng-repeat="tariff in tariff_list" ng-class="{'selected' : selected}" 
-													ng-click="selected = !selected" param="{{tariff.key}}"  ng-show="reportwise_selected === 'tariffwsie'" >
+													ng-click="selected = !selected" param="{{tariff.key}}"  >
 													<span class="fa" ng-class="{'fa-circle': selected, 'fa-circle-o': !selected }"></span>{{tariff.value}}
 												</div>
 											</div>
@@ -115,7 +157,7 @@ hr {
 					 	 				<label>O&M Section</label>
 					 	 				<select class="form-control" style="height: 30px;"
 								  			ng-model="doorlockmnr.omsection"
-								  			ng-options="o as o.value for o in om_list" ng-disabled="reportwise_selected !== 'omsectionwise'">
+								  			ng-options="o as o.value for o in om_list" >
 							  				<option value="">----Choose O&M Section---</option>
 							  			</select>
 					 	 			</div>
@@ -123,7 +165,7 @@ hr {
 					 	 				<label>Meter Code</label>
 					 	 				<select class="form-control" style="height: 30px;"
 								  			ng-model="doorlockmnr.metercode"
-								  			ng-options="o as o.value for o in meter_code_list" ng-disabled="reportwise_selected !== 'mrcodewise'">
+								  			ng-options="o as o.value for o in meter_code_list" >
 							  				<option value="">----Choose Meter Code---</option>
 							  			</select>
 					 	 			</div>

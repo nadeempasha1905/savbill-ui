@@ -61,32 +61,60 @@ hr {
 											<span ng-click="abnormal_type_selected = 'subnormal'">Sub-Normal</span>
 										</div>
 					 	 			</div>
-					 	 			<div class="col-xs-3" >
+					 	 			<!-- <div class="col-xs-3" >
 					 	 				<label>Consumption (Per KW)</label>
 					 	 				<input type="text" class="form-control" ng-model="abnormal.rrnumber">
-					 	 			</div>
+					 	 			</div> -->
 					 	 		</div>	
+					 	 		<div class="row" id="load_fa" >
+					 	 		<hr/>
+					 	 			<div class="col-xs-3" >
+					 	 				<div ng-click="consumption_selected = 'loadbasis';abnormal.consumption_percentage = '';"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': consumption_selected === 'loadbasis', 'fa-circle-o': consumption_selected !== 'loadbasis' }"></span>
+											<span ng-click="consumption_selected = 'loadbasis';abnormal.consumption_percentage = '';">On Load Basis</span>
+										</div>
+									</div>	
+									<div class="col-xs-3"  >	
+					 	 				<div ng-click="consumption_selected = 'percentage';abnormal.consumption_percentage = '200';"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': consumption_selected === 'percentage', 'fa-circle-o': consumption_selected !== 'percentage' }"></span>
+											<span ng-click="consumption_selected = 'percentage';abnormal.consumption_percentage = '200';">On Percentage</span>
+										</div>
+					 	 			</div>
+					 	 			<div class="col-xs-3" ng-show="consumption_selected">
+					 	 			
+					 	 				<label ng-if="consumption_selected === 'loadbasis'">Consumption (Per KW)</label>	
+					 	 				<label ng-if="consumption_selected === 'percentage'">Percentage(%)</label>
+					 	 				<input type="text" class="form-control" ng-model="abnormal.consumption_percentage">
+				 	 				</div>
+					 	 		</div>
 					 	 		<hr>
 					 	 		<div class="row" >
 					 	 			<div class="col-xs-3" >
-					 	 				<div ng-click="abnormal_reporttype_selected = 'indetail'"  class="curso">
+					 	 				<div ng-click="abnormal_reporttype_selected = 'indetail';reportwise_selected = '';"  class="curso">
 											<span class="fa" ng-class="{'fa-circle': abnormal_reporttype_selected === 'indetail', 'fa-circle-o': abnormal_reporttype_selected !== 'indetail' }"></span>
-											<span ng-click="abnormal_reporttype_selected = 'indetail'">In Detail</span>
+											<span ng-click="abnormal_reporttype_selected = 'indetail';reportwise_selected = '';">In Detail</span>
 										</div>
 					 	 			</div>
 					 	 			<div class="col-xs-3" >
-					 	 				<div ng-click="abnormal_reporttype_selected = 'inabstract'"  class="curso">
+					 	 				<div ng-click="abnormal_reporttype_selected = 'inabstract';reportwise_selected = '';"  class="curso">
 											<span class="fa" ng-class="{'fa-circle': abnormal_reporttype_selected === 'inabstract', 'fa-circle-o': abnormal_reporttype_selected !== 'inabstract' }"></span>
-											<span ng-click="abnormal_reporttype_selected = 'inabstract'">In Abstract</span>
+											<span ng-click="abnormal_reporttype_selected = 'inabstract';reportwise_selected = '';">In Abstract</span>
 										</div>
 					 	 			</div>
 					 	 		</div>	
+					 	 		
+					 	 		<div class="row" id="load_fa" ng-show="abnormal_reporttype_selected === 'inabstract'">
 					 	 		<hr>
-					 	 		<div class="row" id="load_fa">
 					 	 			<div class="col-xs-3" >
-					 	 				<div ng-click="reportwise_selected = 'tariffwsie'"  class="curso">
-											<span class="fa" ng-class="{'fa-circle': reportwise_selected === 'tariffwsie', 'fa-circle-o': reportwise_selected !== 'tariffwsie' }"></span>
-											<span ng-click="reportwise_selected = 'tariffwsie'">Tariff - Wise</span>
+					 	 				<div ng-click="reportwise_selected = 'tariffwise'"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': reportwise_selected === 'tariffwise', 'fa-circle-o': reportwise_selected !== 'tariffwise' }"></span>
+											<span ng-click="reportwise_selected = 'tariffwise'">Tariff - Wise</span>
+										</div>
+					 	 			</div>
+					 	 			<div class="col-xs-3" >
+					 	 				<div ng-click="reportwise_selected = 'subtariffwise'"  class="curso">
+											<span class="fa" ng-class="{'fa-circle': reportwise_selected === 'subtariffwise', 'fa-circle-o': reportwise_selected !== 'subtariffwise' }"></span>
+											<span ng-click="reportwise_selected = 'subtariffwise'">Sub-tariff - Wise</span>
 										</div>
 					 	 			</div>
 					 	 			<div class="col-xs-3" >
@@ -109,7 +137,7 @@ hr {
 								  			<label>Tariff</label>
 								  			<div class="width-100 tariff-selection" >
 												<div class="width-33 pull-left" ng-repeat="tariff in tariff_list" ng-class="{'selected' : selected}" 
-													ng-click="selected = !selected" param="{{tariff.key}}"  ng-show="reportwise_selected === 'tariffwsie'" >
+													ng-click="selected = !selected" param="{{tariff.key}}"  >
 													<span class="fa" ng-class="{'fa-circle': selected, 'fa-circle-o': !selected }"></span>{{tariff.value}}
 												</div>
 											</div>
@@ -119,7 +147,7 @@ hr {
 					 	 				<label>O&M Section</label>
 					 	 				<select class="form-control" style="height: 30px;"
 								  			ng-model="doorlockmnr.omsection"
-								  			ng-options="o as o.value for o in om_list" ng-disabled="reportwise_selected !== 'omsectionwise'">
+								  			ng-options="o as o.value for o in om_list"  >
 							  				<option value="">----Choose O&M Section---</option>
 							  			</select>
 					 	 			</div>
@@ -127,7 +155,7 @@ hr {
 					 	 				<label>Meter Code</label>
 					 	 				<select class="form-control" style="height: 30px;"
 								  			ng-model="doorlockmnr.metercode"
-								  			ng-options="o as o.value for o in meter_code_list" ng-disabled="reportwise_selected !== 'mrcodewise'">
+								  			ng-options="o as o.value for o in meter_code_list"  >
 							  				<option value="">----Choose Meter Code---</option>
 							  			</select>
 					 	 			</div>

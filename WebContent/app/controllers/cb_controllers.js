@@ -224,6 +224,9 @@ $scope.getfinancialyears = function(){
 	
 	remote.load("getfinancialyears", function(response){
 		$scope.FIN_YEARS = response.FINANCIAL_YEARS;
+		
+		 $scope.search.financial_years = $scope.FIN_YEARS[1];// $filter('filter')($scope.FIN_YEARS,{year:'2018-2019'},true)[0]; 
+		 
 	},{
 		"Conn_Type": $rootScope.user.connection_type
 	}, 'POST');
@@ -241,7 +244,9 @@ $scope.grouptype = null;
 
     $scope.refreshchart_tab1 = function(type){
     	
-    	 $scope.search.financial_years = $scope.FIN_YEARS[1];// $filter('filter')($scope.FIN_YEARS,{year:'2018-2019'},true)[0]; 
+    	
+    	
+    //	 $scope.search.financial_years = $scope.FIN_YEARS[1];// $filter('filter')($scope.FIN_YEARS,{year:'2018-2019'},true)[0]; 
     	
     	$scope.createmaindashboard();
     	
@@ -425,8 +430,9 @@ $scope.grouptype = null;
 
     	remote.load("dashboard_billingefficiency_comparision", function(response){
 			console.log(response);
-			
+			$scope.myindex_1 = 0;
 			$scope.BILL_EFF_CARDS = response.BILLING_EFFICIENCY_DASHBOARD;
+			//$scope.myindex = $scope.BILL_EFF_CARDS.length
 			$scope.bill_eff_card_overall = response.BILLING_EFFICIENCY_DASHBOARD[0];
 			
 			$scope.fillpie_onclick_card($scope.bill_eff_card_overall.billed,$scope.bill_eff_card_overall.notbilled,$scope.bill_eff_card_overall.trf);
@@ -636,7 +642,7 @@ $scope.grouptype = null;
     };
     
     setTimeout(function () {
-    	$scope.refreshchart_tab1('TRF');
+    	$scope.refreshchart_tab1('TRF');$scope.type_selected = 'TRF';
     }, 500);
     
     $scope.activaTab = function(tab){
@@ -644,7 +650,7 @@ $scope.grouptype = null;
     	  $('.nav-tabs a[href="#' + tab + '"]').tab('show');
     	  if(tab === 'bill_eff_tab'){
     		  setTimeout(function () {
-    		    	$scope.refreshchart_tab1('TRF');
+    		    	$scope.refreshchart_tab1('TRF');$scope.type_selected = 'TRF';
     		    }, 500);
     	  }else if(tab === 'coll_eff_tab'){
     		  setTimeout(function () {

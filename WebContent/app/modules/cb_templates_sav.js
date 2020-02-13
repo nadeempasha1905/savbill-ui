@@ -159,6 +159,7 @@ var templates = {
 		'disconn_reconn_reports' : baseURL +'app/templates/reports/disconn_reconn_payment_report.html',
 		'rr_6b_and_temp_discon_list' : baseURL +'app/templates/reports/rr_6b_and_temp_discon_list.html',
 		'high_value_cheque_report' : baseURL +'app/templates/reports/high_value_cheque_report.html',
+		'cheque_dishonour_reports' : baseURL +'app/templates/reports/cheque_dishonour_report.html',
 		'revenue_report' : baseURL +'app/templates/reports/revenue_report.html',
 		'debit_and_withdrawal' : baseURL +'app/templates/reports/debit_and_withdrawl.html',
 		

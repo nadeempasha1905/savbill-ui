@@ -1779,6 +1779,17 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 				}
 			}
 			
+			var $selected_tariffs = $('#other_reports_2').find('.tariffs').find('.tariff-selection').find('.selected');
+			console.log($selected_tariffs);
+			var request_tariffs ='';
+			$selected_tariffs.each(function(key, tariff){
+				console.log(tariff);
+				request_tariffs = request_tariffs + "'"+$(tariff).attr('param')+"'" +"," ;
+			});
+			if(request_tariffs.length > 1){
+				request_tariffs = request_tariffs.substr(0,request_tariffs.length-1);
+			}
+			
 			$('#loading').show();
 			$http.get($rootScope.serviceURL+'generate_debit_withdrawal_report?conn_type='+$rootScope.user.connection_type
 					+"&reporttype_selected="+($scope.reporttype_selected ? $scope.reporttype_selected : '')
@@ -1794,7 +1805,7 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 					+"&from_date="+($scope.debit_withdrawal.dfromdate ? $scope.debit_withdrawal.dfromdate : '')
 					+"&to_date="+($scope.debit_withdrawal.dtodate ? $scope.debit_withdrawal.dtodate : '')
 					+"&month_year="+($scope.debit_withdrawal.dmonthyear ? $scope.debit_withdrawal.dmonthyear : '')
-					+"&tariffs="
+					+"&tariffs="+request_tariffs
 					+"&location_code="+$rootScope.user.location_code
 					+"&subdivision_name="+$rootScope.user.subDivision
 					+"&company="+$rootScope.user.company
@@ -1900,6 +1911,17 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 				}
 			}
 			
+			var $selected_tariffs = $('#other_reports_2').find('.tariffs').find('.tariff-selection').find('.selected');
+			console.log($selected_tariffs);
+			var request_tariffs ='';
+			$selected_tariffs.each(function(key, tariff){
+				console.log(tariff);
+				request_tariffs = request_tariffs + "'"+$(tariff).attr('param')+"'" +"," ;
+			});
+			if(request_tariffs.length > 1){
+				request_tariffs = request_tariffs.substr(0,request_tariffs.length-1);
+			}
+			
 			$('#loading').show();
 			$http.get($rootScope.serviceURL+'generate_credit_report?conn_type='+$rootScope.user.connection_type
 					+"&reporttype_selected="+($scope.credit_reporttype_selected ? $scope.credit_reporttype_selected : '')
@@ -1913,7 +1935,7 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 					+"&from_date="+($scope.credit.dfromdate ? $scope.credit.dfromdate : '')
 					+"&to_date="+($scope.credit.dtodate ? $scope.credit.dtodate : '')
 					+"&month_year="+($scope.credit.dmonthyear ? $scope.credit.dmonthyear : '')
-					+"&tariffs="
+					+"&tariffs="+request_tariffs
 					+"&location_code="+$rootScope.user.location_code
 					+"&subdivision_name="+$rootScope.user.subDivision
 					+"&company="+$rootScope.user.company
@@ -1977,7 +1999,7 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 		$scope.date_3 = true;
 		$scope.dateoption_selected = 'datewise';
 		$scope.adjustment_reporttype_selected = 'indetail';
-		$scope.Adjustment_Type = [{key:'Revenue',value:'Revenue'},{key:'Non-Revenue',value:'Non-Revenue'}];
+		$scope.Adjustment_Type = [{key:'revenue',value:'Revenue'},{key:'nonrevenue',value:'Non-Revenue'}];
 		$scope.get_tarifflist = function(){
 			var request = {
 					"Conn_Type": $rootScope.user.connection_type,
@@ -1994,6 +2016,14 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 			remote.load("getomunitlist", function(response){
 				$scope.adjustment_om_list = response.OM_LIST;
 			}, request , 'POST', false, false, true);
+			
+			request = {
+					"conn_type": $rootScope.user.connection_type,
+					"location_code": $rootScope.user.location_code
+				}
+			remote.load("getmrcodelist", function(response){
+				$scope.meter_code_list = response.MeterReaderCode;
+			}, request , 'POST', false, false, true);
 			};	
 		$scope.get_tarifflist();
 		
@@ -2003,6 +2033,68 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 			$scope.dateoption_selected = 'datewise';
 			$scope.adjustment_reporttype_selected = 'indetail';
 			$scope.get_tarifflist();
+		};
+		
+		$scope.generate_report = function(){
+			
+			var filename = "adjustments_report";
+			
+			filename = filename+'_'+$scope.adjustment_reporttype_selected ; 
+			
+			//if(!$scope.adjustment.fromtype){notify.warn("Please Select Adjustment Type - From");return;}
+			//if(!$scope.adjustment.totype){notify.warn("Please Select Adjustment Type - To");return;}
+			
+			if($scope.dateoption_selected){
+				if($scope.dateoption_selected === 'datewise'){
+					if(!$scope.adjustment.dfromdate){notify.warn("Please Select Date");return;}
+				}else if($scope.dateoption_selected === 'daterangewise'){
+					if(!$scope.adjustment.dfromdate){notify.warn("Please Select From Date");return;}
+					if(!$scope.adjustment.dtodate){notify.warn("Please Select To Date");return;}
+				}else if($scope.dateoption_selected === 'monthwise'){
+					if(!$scope.adjustment.dmonthyear){notify.warn("Please Select month");return;}
+				}
+			}
+			
+			var $selected_tariffs = $('#other_reports_2').find('.tariffs').find('.tariff-selection').find('.selected');
+			console.log($selected_tariffs);
+			var request_tariffs ='';
+			$selected_tariffs.each(function(key, tariff){
+				console.log(tariff);
+				request_tariffs = request_tariffs + "'"+$(tariff).attr('param')+"'" +"," ;
+			});
+			if(request_tariffs.length > 1){
+				request_tariffs = request_tariffs.substr(0,request_tariffs.length-1);
+			}
+			
+			$('#loading').show();
+			$http.get($rootScope.serviceURL+'generate_adjustment_report?conn_type='+$rootScope.user.connection_type
+					+"&reporttype_selected="+($scope.adjustment_reporttype_selected ? $scope.adjustment_reporttype_selected : '')
+					+"&fromtype="+($scope.adjustment.fromtype ? $scope.adjustment.fromtype.key : '')
+					+"&totype="+($scope.adjustment.totype ? $scope.adjustment.totype.key : '')
+					+"&om_section="+($scope.adjustment.omsection ? $scope.adjustment.omsection.key : '')
+					+"&meter_code="+($scope.adjustment.metercode ? $scope.adjustment.metercode.key : '')
+					+"&reading_day="
+					+"&dateoption_selected="+($scope.dateoption_selected ? $scope.dateoption_selected : '')
+					+"&from_date="+($scope.adjustment.dfromdate ? $scope.adjustment.dfromdate : '')
+					+"&to_date="+($scope.adjustment.dtodate ? $scope.adjustment.dtodate : '')
+					+"&month_year="+($scope.adjustment.dmonthyear ? $scope.adjustment.dmonthyear : '')
+					+"&tariffs="+request_tariffs
+					+"&location_code="+$rootScope.user.location_code
+					+"&subdivision_name="+$rootScope.user.subDivision
+					+"&company="+$rootScope.user.company
+					+"&username="+$rootScope.user.user_id
+					+"&filename="+filename
+					,{ responseType : 'arraybuffer'}).then(handleResponse)
+					
+		      function handleResponse(response){
+		       		
+				var pdfFile = new Blob([response.data], { type : 'application/pdf' });	
+		       	var downloadURL = URL.createObjectURL(pdfFile);
+		       	$('#loading').hide();
+		       	$window.open(downloadURL);
+		       	
+	     	  };
+			
 		};
 		
 	    $scope.$watch('adjustment.dfromdate', function (newval, oldval) {
@@ -2052,7 +2144,7 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 		$scope.dateoption_selected = 'datewise';
 		$scope.doorlockmnr_reporttype_selected = 'indetail';
 		$scope.doorlockmnr_type_selected = 'faultymnr';
-		$scope.reportwise_selected = 'tariffwsie';
+		$scope.reportwise_selected = '';
 		
 		
 		$scope.get_tarifflist = function(){
@@ -2079,6 +2171,9 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 			remote.load("getmrcodelist", function(response){
 				$scope.meter_code_list = response.MeterReaderCode;
 			}, request , 'POST', false, false, true);
+			
+			$scope.months_type_list = [{key:'between',value:'Between'},{key:'greaterthan_equalsto',value:'Greater Than Equals To'},{key:'equalsto',value:'Equals To'}];
+			
 			};	
 		$scope.get_tarifflist();
 		
@@ -2092,8 +2187,83 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 			$scope.dateoption_selected = 'datewise';
 			$scope.doorlockmnr_reporttype_selected = 'indetail';
 			$scope.doorlockmnr_type_selected = 'faultymnr';
-			$scope.reportwise_selected = 'tariffwsie';
+			$scope.reportwise_selected = '';
 			$scope.get_tarifflist();
+		};
+		
+		$scope.generate_report = function(){
+			
+			var filename = "dl_mnr_report";
+			
+			//filename = filename+'_'+$scope.doorlockmnr_reporttype_selected ; 
+			
+			//if(!$scope.adjustment.fromtype){notify.warn("Please Select Adjustment Type - From");return;}
+			//if(!$scope.adjustment.totype){notify.warn("Please Select Adjustment Type - To");return;}
+			
+			if($scope.doorlockmnr_reporttype_selected === 'inabstract'){
+				if($scope.reportwise_selected === 'tariffwise' || $scope.reportwise_selected === 'subtariffwise'){
+					filename = filename+'_'+$scope.doorlockmnr_reporttype_selected +'_tariffwise'; 
+				}else if($scope.reportwise_selected === 'omsectionwise' || $scope.reportwise_selected === 'mrcodewise'){
+					filename = filename+'_'+$scope.doorlockmnr_reporttype_selected; 
+				}
+			}else{
+				filename = filename+'_'+$scope.doorlockmnr_reporttype_selected; 
+			}
+			
+			if($scope.dateoption_selected){
+				if($scope.dateoption_selected === 'datewise'){
+					if(!$scope.doorlockmnr.dfromdate){notify.warn("Please Select Date");return;}
+				}else if($scope.dateoption_selected === 'daterangewise'){
+					if(!$scope.doorlockmnr.dfromdate){notify.warn("Please Select From Date");return;}
+					if(!$scope.doorlockmnr.dtodate){notify.warn("Please Select To Date");return;}
+				}else if($scope.dateoption_selected === 'monthwise'){
+					if(!$scope.doorlockmnr.dmonthyear){notify.warn("Please Select month");return;}
+				}
+			}
+			
+			var $selected_tariffs = $('#other_reports_2').find('.tariffs').find('.tariff-selection').find('.selected');
+			console.log($selected_tariffs);
+			var request_tariffs ='';
+			$selected_tariffs.each(function(key, tariff){
+				console.log(tariff);
+				request_tariffs = request_tariffs + "'"+$(tariff).attr('param')+"'" +"," ;
+			});
+			if(request_tariffs.length > 1){
+				request_tariffs = request_tariffs.substr(0,request_tariffs.length-1);
+			}
+			
+			$('#loading').show();
+			$http.get($rootScope.serviceURL+'generate_dlrmnr_report?conn_type='+$rootScope.user.connection_type
+					+"&reporttype_selected="+($scope.doorlockmnr_reporttype_selected ? $scope.doorlockmnr_reporttype_selected : '')
+					+"&doorlockmnr_type_selected="+($scope.doorlockmnr_type_selected ? $scope.doorlockmnr_type_selected : '')
+					+"&reportwise_selected="+($scope.reportwise_selected ? $scope.reportwise_selected : '')
+					+"&monthstype="+($scope.doorlockmnr.monthstype ? $scope.doorlockmnr.monthstype.key : '')
+					+"&from_months="+($scope.doorlockmnr.monthtype_from_value ? $scope.doorlockmnr.monthtype_from_value : '')
+					+"&to_months="+($scope.doorlockmnr.monthtype_to_value ? $scope.doorlockmnr.monthtype_to_value : '')
+					+"&om_section="+($scope.doorlockmnr.omsection ? $scope.doorlockmnr.omsection.key : '')
+					+"&meter_code="+($scope.doorlockmnr.metercode ? $scope.doorlockmnr.metercode.key : '')
+					+"&reading_day="
+					+"&dateoption_selected="+($scope.dateoption_selected ? $scope.dateoption_selected : '')
+					+"&from_date="+($scope.doorlockmnr.dfromdate ? $scope.doorlockmnr.dfromdate : '')
+					+"&to_date="+($scope.doorlockmnr.dtodate ? $scope.doorlockmnr.dtodate : '')
+					+"&month_year="+($scope.doorlockmnr.dmonthyear ? $scope.doorlockmnr.dmonthyear : '')
+					+"&tariffs="+request_tariffs
+					+"&location_code="+$rootScope.user.location_code
+					+"&subdivision_name="+$rootScope.user.subDivision
+					+"&company="+$rootScope.user.company
+					+"&username="+$rootScope.user.user_id
+					+"&filename="+filename
+					,{ responseType : 'arraybuffer'}).then(handleResponse)
+					
+		      function handleResponse(response){
+		       		
+				var pdfFile = new Blob([response.data], { type : 'application/pdf' });	
+		       	var downloadURL = URL.createObjectURL(pdfFile);
+		       	$('#loading').hide();
+		       	$window.open(downloadURL);
+		       	
+	     	  };
+			
 		};
 		
 	    $scope.$watch('doorlockmnr.dfromdate', function (newval, oldval) {
@@ -2138,8 +2308,8 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 		$scope.present = {};
 		
 		$scope.date_1 = true;
-		$scope.date_2 = true;
-		$scope.date_3 = true;
+		$scope.date_2 = false;
+		$scope.date_3 = false;
 		$scope.dateoption_selected = 'datewise';
 		
 		$scope.get_tarifflist = function(){
@@ -2174,10 +2344,65 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 			$scope.present = null;
 			
 			$scope.date_1 = true;
-			$scope.date_2 = true;
-			$scope.date_3 = true;
+			$scope.date_2 = false;
+			$scope.date_3 = false;
 			$scope.dateoption_selected = 'datewise';
 			$scope.get_tarifflist();
+		};
+		
+		$scope.generate_report = function(){
+			
+			var filename = "present_reading_less_than_previous_reading";
+			
+			if($scope.dateoption_selected){
+				if($scope.dateoption_selected === 'datewise'){
+					if(!$scope.present.dfromdate){notify.warn("Please Select Date");return;}
+				}else if($scope.dateoption_selected === 'daterangewise'){
+					if(!$scope.present.dfromdate){notify.warn("Please Select From Date");return;}
+					if(!$scope.present.dtodate){notify.warn("Please Select To Date");return;}
+				}else if($scope.dateoption_selected === 'monthwise'){
+					if(!$scope.present.dmonthyear){notify.warn("Please Select month");return;}
+				}
+			}
+			
+			var $selected_tariffs = $('#other_reports_2').find('.tariffs').find('.tariff-selection').find('.selected');
+			console.log($selected_tariffs);
+			var request_tariffs ='';
+			$selected_tariffs.each(function(key, tariff){
+				console.log(tariff);
+				request_tariffs = request_tariffs + "'"+$(tariff).attr('param')+"'" +"," ;
+			});
+			if(request_tariffs.length > 1){
+				request_tariffs = request_tariffs.substr(0,request_tariffs.length-1);
+			}
+			
+			$('#loading').show();
+			$http.get($rootScope.serviceURL+'generate_present_reading_less_report?conn_type='+$rootScope.user.connection_type
+					+"&reporttype_selected="
+					+"&om_section="+($scope.present.omsection ? $scope.present.omsection.key : '')
+					+"&meter_code="+($scope.present.metercode ? $scope.present.metercode.key : '')
+					+"&reading_day="
+					+"&dateoption_selected="+($scope.dateoption_selected ? $scope.dateoption_selected : '')
+					+"&from_date="+($scope.present.dfromdate ? $scope.present.dfromdate : '')
+					+"&to_date="+($scope.present.dtodate ? $scope.present.dtodate : '')
+					+"&month_year="+($scope.present.dmonthyear ? $scope.present.dmonthyear : '')
+					+"&tariffs="+request_tariffs
+					+"&location_code="+$rootScope.user.location_code
+					+"&subdivision_name="+$rootScope.user.subDivision
+					+"&company="+$rootScope.user.company
+					+"&username="+$rootScope.user.user_id
+					+"&filename="+filename
+					,{ responseType : 'arraybuffer'}).then(handleResponse)
+					
+		      function handleResponse(response){
+		       		
+				var pdfFile = new Blob([response.data], { type : 'application/pdf' });	
+		       	var downloadURL = URL.createObjectURL(pdfFile);
+		       	$('#loading').hide();
+		       	$window.open(downloadURL);
+		       	
+	     	  };
+			
 		};
 		
 	    $scope.$watch('present.dfromdate', function (newval, oldval) {
@@ -2226,7 +2451,8 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 		$scope.dateoption_selected = 'datewise';
 		$scope.abnormal_reporttype_selected = 'indetail';
 		$scope.abnormal_type_selected = 'abnormal';
-		$scope.reportwise_selected = 'tariffwsie';
+		$scope.reportwise_selected = '';
+		$scope.consumption_selected = 'loadbasis';
 		
 		
 		$scope.get_tarifflist = function(){
@@ -2266,8 +2492,85 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 			$scope.dateoption_selected = 'datewise';
 			$scope.abnormal_reporttype_selected = 'indetail';
 			$scope.abnormal_type_selected = 'abnormal';
-			$scope.reportwise_selected = 'tariffwsie';
+			$scope.reportwise_selected = '';
+			$scope.consumption_selected = 'loadbasis';
 			$scope.get_tarifflist();
+		};
+		
+		$scope.generate_report = function(){
+			
+			var filename = "abnormal_subnormal_report";
+			
+			//filename = filename+'_'+$scope.doorlockmnr_reporttype_selected ; 
+			
+			//if(!$scope.adjustment.fromtype){notify.warn("Please Select Adjustment Type - From");return;}
+			//if(!$scope.adjustment.totype){notify.warn("Please Select Adjustment Type - To");return;}
+			
+			if($scope.abnormal_reporttype_selected === 'inabstract'){
+				if($scope.reportwise_selected === 'tariffwise' || $scope.reportwise_selected === 'subtariffwise'){
+					filename = filename+'_'+$scope.abnormal_reporttype_selected +'_tariffwise'; 
+				}else if($scope.reportwise_selected === 'omsectionwise' || $scope.reportwise_selected === 'mrcodewise'){
+					filename = filename+'_'+$scope.abnormal_reporttype_selected; 
+				}
+			}else{
+				filename = filename+'_'+$scope.abnormal_reporttype_selected; 
+			}
+			
+			if($scope.dateoption_selected){
+				if($scope.dateoption_selected === 'datewise'){
+					if(!$scope.abnormal.dfromdate){notify.warn("Please Select Date");return;}
+				}else if($scope.dateoption_selected === 'daterangewise'){
+					if(!$scope.abnormal.dfromdate){notify.warn("Please Select From Date");return;}
+					if(!$scope.abnormal.dtodate){notify.warn("Please Select To Date");return;}
+				}else if($scope.dateoption_selected === 'monthwise'){
+					if(!$scope.abnormal.dmonthyear){notify.warn("Please Select month");return;}
+				}
+			}
+			
+			var $selected_tariffs = $('#other_reports_2').find('.tariffs').find('.tariff-selection').find('.selected');
+			console.log($selected_tariffs);
+			var request_tariffs ='';
+			$selected_tariffs.each(function(key, tariff){
+				console.log(tariff);
+				request_tariffs = request_tariffs + "'"+$(tariff).attr('param')+"'" +"," ;
+			});
+			if(request_tariffs.length > 1){
+				request_tariffs = request_tariffs.substr(0,request_tariffs.length-1);
+			}
+			
+			if(!$scope.abnormal.consumption_percentage){notify.warn("Please enter Load Basis/Percentgae Value");return;}
+			
+			$('#loading').show();
+			$http.get($rootScope.serviceURL+'generate_abnormal_subnormal_report?conn_type='+$rootScope.user.connection_type
+					+"&reporttype_selected="+($scope.abnormal_type_selected ? $scope.abnormal_type_selected : '')
+					+"&abnormal_reporttype_selected="+($scope.abnormal_reporttype_selected ? $scope.abnormal_reporttype_selected : '')
+					+"&reportwise_selected="+($scope.reportwise_selected ? $scope.reportwise_selected : '')
+					+"&consumption_selected="+($scope.consumption_selected ? $scope.consumption_selected : '')
+					+"&consumption_percentage="+($scope.abnormal.consumption_percentage ? $scope.abnormal.consumption_percentage : '')
+					+"&om_section="+($scope.abnormal.omsection ? $scope.abnormal.omsection.key : '')
+					+"&meter_code="+($scope.abnormal.metercode ? $scope.abnormal.metercode.key : '')
+					+"&reading_day="
+					+"&dateoption_selected="+($scope.dateoption_selected ? $scope.dateoption_selected : '')
+					+"&from_date="+($scope.abnormal.dfromdate ? $scope.abnormal.dfromdate : '')
+					+"&to_date="+($scope.abnormal.dtodate ? $scope.abnormal.dtodate : '')
+					+"&month_year="+($scope.abnormal.dmonthyear ? $scope.abnormal.dmonthyear : '')
+					+"&tariffs="+request_tariffs
+					+"&location_code="+$rootScope.user.location_code
+					+"&subdivision_name="+$rootScope.user.subDivision
+					+"&company="+$rootScope.user.company
+					+"&username="+$rootScope.user.user_id
+					+"&filename="+filename
+					,{ responseType : 'arraybuffer'}).then(handleResponse)
+					
+		      function handleResponse(response){
+		       		
+				var pdfFile = new Blob([response.data], { type : 'application/pdf' });	
+		       	var downloadURL = URL.createObjectURL(pdfFile);
+		       	$('#loading').hide();
+		       	$window.open(downloadURL);
+		       	
+	     	  };
+			
 		};
 	    $scope.$watch('abnormal.dfromdate', function (newval, oldval) {
 	        console.log(newval);
@@ -2312,6 +2615,8 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 		$scope.date_2 = true;
 		$scope.date_3 = true;
 		$scope.dateoption_selected = 'datewise';
+		$scope.zero_reporttype_selected  = '';
+		$scope.reportwise_selected = '';
 		
 		$scope.get_tarifflist = function(){
 			var request = {
@@ -2331,10 +2636,81 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 			}, request , 'POST', false, false, true);
 			
 			$scope.having_count_list = [{key:'12',value:'>=12'},{key:'6',value:'>=6'},{key:'3',value:'>=3'},{key:'1',value:'>=1'}];
+			$scope.months_type_list = [{key:'between',value:'Between'},{key:'greaterthan_equalsto',value:'Greater Than Equals To'},{key:'equalsto',value:'Equals To'}];
+			
 			
 			};	
 			
 			$scope.get_tarifflist();
+			
+			$scope.generate_report = function(){
+				
+				var filename = "zero_consumption_report";
+				
+				if($scope.zero_reporttype_selected === 'inabstract'){
+					if($scope.reportwise_selected === 'tariffwise' || $scope.reportwise_selected === 'subtariffwise'){
+						filename = filename+'_'+$scope.zero_reporttype_selected +'_tariffwise'; 
+					}else if($scope.reportwise_selected === 'omsectionwise' || $scope.reportwise_selected === 'mrcodewise'){
+						filename = filename+'_'+$scope.zero_reporttype_selected; 
+					}
+				}else{
+					filename = filename+'_'+$scope.zero_reporttype_selected; 
+				}
+				
+				if($scope.dateoption_selected){
+					if($scope.dateoption_selected === 'datewise'){
+						if(!$scope.zero.dfromdate){notify.warn("Please Select Date");return;}
+					}else if($scope.dateoption_selected === 'daterangewise'){
+						if(!$scope.zero.dfromdate){notify.warn("Please Select From Date");return;}
+						if(!$scope.zero.dtodate){notify.warn("Please Select To Date");return;}
+					}else if($scope.dateoption_selected === 'monthwise'){
+						if(!$scope.zero.dmonthyear){notify.warn("Please Select month");return;}
+					}
+				}
+				
+				var $selected_tariffs = $('#other_reports_2').find('.tariffs').find('.tariff-selection').find('.selected');
+				console.log($selected_tariffs);
+				var request_tariffs ='';
+				$selected_tariffs.each(function(key, tariff){
+					console.log(tariff);
+					request_tariffs = request_tariffs + "'"+$(tariff).attr('param')+"'" +"," ;
+				});
+				if(request_tariffs.length > 1){
+					request_tariffs = request_tariffs.substr(0,request_tariffs.length-1);
+				}
+				
+				$('#loading').show();
+				$http.get($rootScope.serviceURL+'generate_zero_consumption_report?conn_type='+$rootScope.user.connection_type
+						+"&reporttype_selected="+($scope.zero_reporttype_selected ? $scope.zero_reporttype_selected : '')
+						+"&reportwise_selected="+($scope.reportwise_selected ? $scope.reportwise_selected : '')
+						+"&monthstype="+($scope.zero.monthstype ? $scope.zero.monthstype.key : '')
+						+"&from_months="+($scope.zero.monthtype_from_value ? $scope.zero.monthtype_from_value : '')
+						+"&to_months="+($scope.zero.monthtype_to_value ? $scope.zero.monthtype_to_value : '')
+						+"&om_section="+($scope.zero.omsection ? $scope.zero.omsection.key : '')
+						+"&meter_code="+($scope.zero.metercode ? $scope.zero.metercode.key : '')
+						+"&reading_day="
+						+"&dateoption_selected="+($scope.dateoption_selected ? $scope.dateoption_selected : '')
+						+"&from_date="+($scope.zero.dfromdate ? $scope.zero.dfromdate : '')
+						+"&to_date="+($scope.zero.dtodate ? $scope.zero.dtodate : '')
+						+"&month_year="+($scope.zero.dmonthyear ? $scope.zero.dmonthyear : '')
+						+"&tariffs="+request_tariffs
+						+"&location_code="+$rootScope.user.location_code
+						+"&subdivision_name="+$rootScope.user.subDivision
+						+"&company="+$rootScope.user.company
+						+"&username="+$rootScope.user.user_id
+						+"&filename="+filename
+						,{ responseType : 'arraybuffer'}).then(handleResponse)
+						
+			      function handleResponse(response){
+			       		
+					var pdfFile = new Blob([response.data], { type : 'application/pdf' });	
+			       	var downloadURL = URL.createObjectURL(pdfFile);
+			       	$('#loading').hide();
+			       	$window.open(downloadURL);
+			       	
+		     	  };
+				
+			};
 		$scope.clear_form = function(){
 			
 			$scope.zero = null;
@@ -2343,6 +2719,8 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 			$scope.date_2 = true;
 			$scope.date_3 = true;
 			$scope.dateoption_selected = 'datewise';
+			$scope.zero_reporttype_selected  = '';
+			$scope.reportwise_selected = '';
 			$scope.get_tarifflist();
 		};
 	    $scope.$watch('zero.dfromdate', function (newval, oldval) {
@@ -2896,6 +3274,66 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 			};	
 		$scope.get_tarifflist();
 		
+		$scope.generate_report = function(){
+			
+			var filename = "high_value_cheque_report";
+			
+				filename = filename+'_'+$scope.reporttype_selected; 
+			
+			if($scope.dateoption_selected){
+				if($scope.dateoption_selected === 'datewise'){
+					if(!$scope.highvalue.dfromdate){notify.warn("Please Select Date");return;}
+				}else if($scope.dateoption_selected === 'daterangewise'){
+					if(!$scope.highvalue.dfromdate){notify.warn("Please Select From Date");return;}
+					if(!$scope.highvalue.dtodate){notify.warn("Please Select To Date");return;}
+				}else if($scope.dateoption_selected === 'monthwise'){
+					if(!$scope.highvalue.dmonthyear){notify.warn("Please Select month");return;}
+				}
+			}
+			
+			var $selected_tariffs = $('#other_reports_2').find('.tariffs').find('.tariff-selection').find('.selected');
+			console.log($selected_tariffs);
+			var request_tariffs ='';
+			$selected_tariffs.each(function(key, tariff){
+				console.log(tariff);
+				request_tariffs = request_tariffs + "'"+$(tariff).attr('param')+"'" +"," ;
+			});
+			if(request_tariffs.length > 1){
+				request_tariffs = request_tariffs.substr(0,request_tariffs.length-1);
+			}
+			
+			$('#loading').show();
+			$http.get($rootScope.serviceURL+'generate_high_value_report?conn_type='+$rootScope.user.connection_type
+					+"&reporttype_selected="+($scope.reporttype_selected ? $scope.reporttype_selected : '')
+					+"&cheque_from_amount="+($scope.highvalue.cheque_from_amount ? $scope.highvalue.cheque_from_amount : '')
+					+"&cheque_to_amount="+($scope.highvalue.cheque_to_amount ? $scope.highvalue.cheque_to_amount : '')
+					+"&reportwise_selected="+ 
+					+"&om_section="+ 
+					+"&meter_code="+ 
+					+"&reading_day="
+					+"&dateoption_selected="+($scope.dateoption_selected ? $scope.dateoption_selected : '')
+					+"&from_date="+($scope.highvalue.dfromdate ? $scope.highvalue.dfromdate : '')
+					+"&to_date="+($scope.highvalue.dtodate ? $scope.highvalue.dtodate : '')
+					+"&month_year="+($scope.highvalue.dmonthyear ? $scope.highvalue.dmonthyear : '')
+					+"&tariffs="+request_tariffs
+					+"&location_code="+$rootScope.user.location_code
+					+"&subdivision_name="+$rootScope.user.subDivision
+					+"&company="+$rootScope.user.company
+					+"&username="+$rootScope.user.user_id
+					+"&filename="+filename
+					,{ responseType : 'arraybuffer'}).then(handleResponse)
+					
+		      function handleResponse(response){
+		       		
+				var pdfFile = new Blob([response.data], { type : 'application/pdf' });	
+		       	var downloadURL = URL.createObjectURL(pdfFile);
+		       	$('#loading').hide();
+		       	$window.open(downloadURL);
+		       	
+	     	  };
+			
+		};
+		
 		$scope.clear_form = function(){
 			
 			$scope.highvalue = null;
@@ -2938,6 +3376,135 @@ report_controller.controller('report_controller',['$scope','$rootScope','remote'
 	          if ((moment(date1).isAfter(date2)) === true) {
 	            notify.warn("From Date should be lesser !!!");
 	            $scope.highvalue.dtodate = null;
+	            return;
+	          }
+	        }
+	      });
+		
+	}
+	
+	if(report_flow === 'cheque_dishonour_reports'){
+
+		$scope.cheque_dis = {};
+		
+		$scope.date_1 = true;
+		$scope.date_2 = true;
+		$scope.date_3 = true;
+		$scope.dateoption_selected = 'datewise';
+		$scope.reporttype_selected = 'indetail';
+		
+		
+		$scope.get_tarifflist = function(){
+			var request = {
+					"Conn_Type": $rootScope.user.connection_type,
+					"Location_Code": $rootScope.user.location_code 
+				}
+				remote.load("getConsumerMasterPickListValues", function(response){
+					$scope.tariff_list = response.CONSUMER_MASTER_PICKLIST.TariffCode;
+				}, request , 'POST', false, false, true);
+			};	
+		$scope.get_tarifflist();
+		
+		$scope.generate_report = function(){
+			
+			var filename = "cheque_dishonour";
+			
+				filename = filename+'_'+$scope.reporttype_selected; 
+			
+			if($scope.dateoption_selected){
+				if($scope.dateoption_selected === 'datewise'){
+					if(!$scope.cheque_dis.dfromdate){notify.warn("Please Select Date");return;}
+				}else if($scope.dateoption_selected === 'daterangewise'){
+					if(!$scope.cheque_dis.dfromdate){notify.warn("Please Select From Date");return;}
+					if(!$scope.cheque_dis.dtodate){notify.warn("Please Select To Date");return;}
+				}else if($scope.dateoption_selected === 'monthwise'){
+					if(!$scope.cheque_dis.dmonthyear){notify.warn("Please Select month");return;}
+				}
+			}
+			
+			var $selected_tariffs = $('#other_reports_2').find('.tariffs').find('.tariff-selection').find('.selected');
+			console.log($selected_tariffs);
+			var request_tariffs ='';
+			$selected_tariffs.each(function(key, tariff){
+				console.log(tariff);
+				request_tariffs = request_tariffs + "'"+$(tariff).attr('param')+"'" +"," ;
+			});
+			if(request_tariffs.length > 1){
+				request_tariffs = request_tariffs.substr(0,request_tariffs.length-1);
+			}
+			
+			$('#loading').show();
+			$http.get($rootScope.serviceURL+'generate_high_value_report?conn_type='+$rootScope.user.connection_type
+					+"&reporttype_selected="+($scope.reporttype_selected ? $scope.reporttype_selected : '')
+					+"&reportwise_selected="+ 
+					+"&om_section="+ 
+					+"&meter_code="+ 
+					+"&reading_day="
+					+"&dateoption_selected="+($scope.dateoption_selected ? $scope.dateoption_selected : '')
+					+"&from_date="+($scope.cheque_dis.dfromdate ? $scope.cheque_dis.dfromdate : '')
+					+"&to_date="+($scope.cheque_dis.dtodate ? $scope.cheque_dis.dtodate : '')
+					+"&month_year="+($scope.cheque_dis.dmonthyear ? $scope.cheque_dis.dmonthyear : '')
+					+"&tariffs="+request_tariffs
+					+"&location_code="+$rootScope.user.location_code
+					+"&subdivision_name="+$rootScope.user.subDivision
+					+"&company="+$rootScope.user.company
+					+"&username="+$rootScope.user.user_id
+					+"&filename="+filename
+					,{ responseType : 'arraybuffer'}).then(handleResponse)
+					
+		      function handleResponse(response){
+		       		
+				var pdfFile = new Blob([response.data], { type : 'application/pdf' });	
+		       	var downloadURL = URL.createObjectURL(pdfFile);
+		       	$('#loading').hide();
+		       	$window.open(downloadURL);
+		       	
+	     	  };
+			
+		};
+		
+		$scope.clear_form = function(){
+			
+			$scope.cheque_dis = null;
+			
+			$scope.date_1 = true;
+			$scope.date_2 = true;
+			$scope.date_3 = true;
+			$scope.dateoption_selected = 'datewise';
+			$scope.reporttype_selected = 'indetail';
+			$scope.get_tarifflist();
+		};
+		
+	    $scope.$watch('cheque_dis.dfromdate', function (newval, oldval) {
+	        console.log(newval);
+	        if($scope.dateoption_selected === 'daterangewise'){
+		        if (newval) {
+	        	 if ($scope.cheque_dis.dfromdate && $scope.cheque_dis.dfromdate ) {
+	        		  var date1 = moment($scope.cheque_dis.dfromdate, 'DD-MM-YYYY');
+			          var date2 = moment($scope.cheque_dis.dtodate, 'DD-MM-YYYY');
+			          if ((moment(date1).isAfter(date2)) === true) {
+			            notify.warn("From Date should be lesser !!!");
+			            $scope.cheque_dis.dfromdate = null;
+			            return;
+			          }
+	        	 }	
+		        }
+	        }
+	      });
+		
+	    $scope.$watch('cheque_dis.dtodate', function (newval, oldval) {
+	        console.log(newval);
+	        if (newval) {
+	          if ($scope.cheque_dis.dfromdate === undefined || $scope.cheque_dis.dfromdate === null) {
+	        	  notify.warn("From Date should not be empty !!!");
+	        	  $scope.cheque_dis.dtodate = '';
+	            return;
+	          }
+	          var date1 = moment($scope.cheque_dis.dfromdate, 'DD-MM-YYYY');
+	          var date2 = moment($scope.cheque_dis.dtodate, 'DD-MM-YYYY');
+	          if ((moment(date1).isAfter(date2)) === true) {
+	            notify.warn("From Date should be lesser !!!");
+	            $scope.cheque_dis.dtodate = null;
 	            return;
 	          }
 	        }

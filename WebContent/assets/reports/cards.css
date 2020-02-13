@@ -197,6 +197,12 @@ a.wrimagecard:hover, .wrimagecard-topimage:hover {
     padding-bottom: 0.75rem;
     position: relative;
 }
+.wrimagecard-topimage_title1 {
+        padding: 0px 0px;
+    height: 72px;
+    padding-bottom: 0.75rem;
+    position: relative;
+}
 .wrimagecard-topimage a {
     border-bottom: none;
     text-decoration: none;
